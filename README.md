@@ -42,4 +42,4 @@ add or change files now</li>
 
 
 
-Note : if you get this `*** Please tell me who you are.` message when you run `git push ` then read a little further and do what is says
+Note : if you get this `*** Please tell me who you are.` message when you run `git push ` then read a little further and do what is says.
