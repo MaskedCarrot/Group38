@@ -15,7 +15,7 @@ Download git for windows from<a href "www.google.com> here</a> Then use git bash
 
 <li> 
 
-`git clone <url>` if you have not cloned the repo
+Fork the repo and copy the URL from code button then run `git clone <url>` if you have not cloned the repo.
 
 </li>
 <li>
