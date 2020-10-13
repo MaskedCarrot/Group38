@@ -6,7 +6,7 @@
 
 <h4>Windows</h4>
    <p>
-Download git for windows from<a href "www.google.com> here</a>
+Download git for windows from<a href "www.google.com> here</a> Then use git bash.
    </p>
   
   
