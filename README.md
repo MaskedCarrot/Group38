@@ -6,7 +6,7 @@
 
 <h4>Windows</h4>
    <p>
-Download git for windows from<a href="https://git-scm.com/downloads"> here</a> Then use git bash.
+Download git for windows from<a href="https://git-scm.com/downloads"> here</a> Install and then open git bash from start menu.
    </p>
   
   
