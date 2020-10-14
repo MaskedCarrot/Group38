@@ -29,9 +29,10 @@ Fork the repo and copy the URL from code button then run `git clone <url>` if yo
 <li> 
 
 add or change files now</li>
-<li> 
-
-`git add .`</li>
+<li>
+ 
+ Run `git status` Now if you  see a few red lines. Run `git add <all red lines one by one>`
+</li>
 <li>
 
 `git commit -m "Describe you change"`</li>
