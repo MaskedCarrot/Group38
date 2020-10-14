@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Group#38</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_id">User ID</string>
+    <string name="login">Login</string>
+    <string name="user">User</string>
+    <string name="booking">Booking</string>
+
+    <string-array name="source">
+        <item>From</item>
+        <item>Mumbai</item>
+        <item>Chicago</item>
+        <item>New York</item>
+        <item>Singapore</item>
+        <item>Chicago</item>
+    </string-array>
+
+    <string-array name="destination">
+        <item>To</item>
+        <item>Mumbai</item>
+        <item>Chicago</item>
+        <item>New York</item>
+        <item>Singapore</item>
+        <item>Chicago</item>
+    </string-array>
+
+
+</resources>
