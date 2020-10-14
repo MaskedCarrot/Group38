@@ -40,6 +40,10 @@ add or change files now</li>
 `git push origin yourName`</li>
 </ul>
 
+<ul>
+ 
+ Thne go to the forked repo of your github account and click on `create pull request`
+ </ul>
 
 
 Note : if you get this `*** Please tell me who you are.` message when you run `git push ` then read a little further and do what is says.
