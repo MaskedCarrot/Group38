@@ -43,7 +43,7 @@ add or change files now</li>
 
 <ul>
  
- Thne go to the forked repo of your github account and click on `create pull request`
+ Then go to the forked repo of your github account and click on `create pull request`
  </ul>
 
 
