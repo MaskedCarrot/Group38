@@ -29,7 +29,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
@@ -50,3 +49,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tilUsername" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

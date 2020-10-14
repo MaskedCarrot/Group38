@@ -1,13 +1,6 @@
 package com.ap.group38.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +10,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ap.group38.R;
 import com.ap.group38.adapter.BookingAdapter;
 import com.ap.group38.adapter.OnClickListener;
-
-import java.util.Objects;
 
 public class BookingFragment extends Fragment implements OnClickListener {
 
@@ -30,11 +27,12 @@ public class BookingFragment extends Fragment implements OnClickListener {
     private Spinner destination;
     private BookingAdapter adapter;
     private ProgressBar progressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_booking, container, false);
+        View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
         source = view.findViewById(R.id.spSource);
         destination = view.findViewById(R.id.spDestination);
@@ -71,7 +69,7 @@ public class BookingFragment extends Fragment implements OnClickListener {
         return view;
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setAdapter(adapter);
     }
@@ -96,3 +94,4 @@ public class BookingFragment extends Fragment implements OnClickListener {
         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_nav_booking_to_confirmShipFragment);
     }
 }
+

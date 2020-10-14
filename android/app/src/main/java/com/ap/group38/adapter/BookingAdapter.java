@@ -13,14 +13,14 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
 
     OnClickListener onClickListener;
 
-    public BookingAdapter(OnClickListener onClickListener){
+    public BookingAdapter(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vh_ships , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vh_ships, parent, false);
         return new ViewHolder(view, onClickListener);
     }
 
@@ -34,11 +34,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         return 8;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         OnClickListener onClickListener;
 
-        public ViewHolder(@NonNull View itemView , OnClickListener Listener) {
+        public ViewHolder(@NonNull View itemView, OnClickListener Listener) {
             super(itemView);
             onClickListener = Listener;
             itemView.setOnClickListener(this);
@@ -50,3 +50,4 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         }
     }
 }
+

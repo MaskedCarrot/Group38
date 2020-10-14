@@ -6,12 +6,13 @@
     tools:context=".fragment.UserFragment">
 
     <TextView
-        android:gravity="center"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:text="User details and logout button here"
-        style="@style/TextAppearance.MaterialComponents.Headline6"/>
+        android:gravity="center"
+        android:text="User details and logout button here" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
