@@ -56,8 +56,7 @@ Note : if you get this `*** Please tell me who you are.` message when you run `g
  
   `git fetch upstream`
   
-  `git checkout main`
+  `git checkout yourName`
   
   `git merge upstream/main`
   
-  `git checkout -b your-branch-name`
