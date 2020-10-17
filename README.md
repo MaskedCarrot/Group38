@@ -50,7 +50,7 @@ add or change files now</li>
 Note : if you get this `*** Please tell me who you are.` message when you run `git push ` then read a little further and do what is says.
 
 
-<h4>To update your repo</h4>
+<h4> To update your repo </h4>
 
  `git remote add upstream https://github.com/MaskedCarrot/Group38.git`
  
