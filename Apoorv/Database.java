@@ -13,9 +13,10 @@ import java.util.ArrayList;;
 public class Database {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ship_booking";
- 
-    private static final String USER = "maskedcarrot";
-    private static final String PASS = "oshuoshu";
+    
+    //User Credentials
+    private static final String USER = "";
+    private static final String PASS = "";
 
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
