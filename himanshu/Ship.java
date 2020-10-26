@@ -1,7 +1,7 @@
-package ship;
+package himanshu;
 import java.time.*;
 
-abstract class Ship
+public abstract class Ship
 {
 	protected int shipID;
 	protected String from;

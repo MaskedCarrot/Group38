@@ -1,4 +1,6 @@
-class user{
+package Ritik;
+
+public class user{
 	int userID;
 	long phoneNumber;
 	String name;
@@ -8,53 +10,53 @@ class user{
 	String email;
 	String password;
 
-	public setUserID(int userID) {
+	public void setUserID(int userID) {
   	this.userID = userID;
 	}
 	
-	public getUserID() {
+	public int getUserID() {
   	return userID;
 	}
-	public setPhoneNumber(long phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
   	this.phoneNumber = phoneNumber;
 	}
 	
-	public getPhoneNumber() {
+	public long getPhoneNumber() {
   	return phoneNumber;
 	}
-	public setName(String name) {
+	public void setName(String name) {
   	this.name = name;
 	}
 	
-	public getName() {
+	public String getName() {
   	return name;
 	}
-	public setAge(int age) {
+	public void setAge(int age) {
   	this.age = age;
 	}
 	
-	public getAge() {
+	public int getAge() {
   	return age;
 	}
-	public setGender(Gender gender) {
+	public void setGender(Gender gender) {
   	this.gender = gender;
 	}
 	
-	public getGender() {
+	public Gender getGender() {
   	return gender;
 	}
-	public setEmail(String email) {
+	public void setEmail(String email) {
   	this.email = email;
 	}
 	
-	public getEmail() {
+	public String getEmail() {
   	return email;
 	}
-	public setPassword(String password) {
+	public void setPassword(String password) {
   	this.password = password;
 	}
 	
-	public getPassword() {
+	public String getPassword() {
   	return password;
 	}
 

@@ -1,4 +1,6 @@
-Class Booking
+package Aniket;
+
+abstract class Booking
 {
 	protected int bookingID;
 	protected int shipID;

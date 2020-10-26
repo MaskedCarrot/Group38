@@ -1,18 +1,20 @@
-class admin{
+package Ritik;
+
+public class admin{
 	int adminId;
 	String password;
-	public setAdminId(int adminId) {
+	public void setAdminId(int adminId) {
   	this.adminId = adminId;
 	}
 	
-	public getAdminId() {
+	public int getAdminId() {
   	return adminId;
 	}
-	public setPassword(String password) {
+	public void setPassword(String password) {
   	this.password = password;
 	}
 	
-	public getPassword() {
+	public String getPassword() {
   	return password;
 	}
 }

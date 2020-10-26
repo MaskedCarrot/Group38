@@ -1,7 +1,8 @@
-package ship;
+package himanshu;
+
 import java.time.*;
 
-class CruiseShip extends Ship
+public class CruiseShip extends Ship
 {
 	private int totalSeats;
 	private int costPerPerson;

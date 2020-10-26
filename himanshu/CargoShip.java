@@ -1,7 +1,8 @@
-package ship;
+package himanshu;
+
 import java.time.*;
 
-class CargoShip extends Ship
+public class CargoShip extends Ship
 {
 	private int capacity;
 	private int chargesPerTonne;

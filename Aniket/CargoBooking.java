@@ -1,3 +1,5 @@
+package Aniket;
+
 Class CargoBooking extends Booking
 {
 	private int capacity;

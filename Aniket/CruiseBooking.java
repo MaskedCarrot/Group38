@@ -1,3 +1,5 @@
+package Aniket;
+
 Class CruiseBooking extends Booking
 {
 	private int seats;
