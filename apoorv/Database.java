@@ -1,4 +1,4 @@
-package Apoorv;
+package apoorv;
 
 import java.sql.Statement;
 import java.sql.Connection;
