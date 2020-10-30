@@ -1,9 +1,10 @@
 package Aniket;
 
-Class CargoBooking extends Booking
+public class CargoBooking extends Booking
 {
-	private int capacity;
-	private int cost;
+	public int capacity;
+	public int cost;
+	/*
 	public void Book()
 	{
 		System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
@@ -33,4 +34,5 @@ Class CargoBooking extends Booking
 		CargoBookingDatabase DB=new CargoBookingDatabase();
 		DB.deleteCargoBooking(ID);
 	}
+*/
 }

@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;;
+import java.util.ArrayList;
 
-public class Database {
+class Database {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ship_booking";
     
@@ -23,7 +23,7 @@ public class Database {
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
 
-    public  List<Map<String, Object>> executeQuerry(String querry){
+    protected  List<Map<String, Object>> executeQuerry(String querry){
     
         Connection conn = null;
         Statement stmt = null;
@@ -32,24 +32,18 @@ public class Database {
         List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 
         try{
-            
-            //Class.forName("com.mysql.jdbc.Driver");
 
-            LOGGER.log(Level.INFO ,"Connecting to database..." );
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
+            //LOGGER.log(Level.INFO ,"Connecting to database..." );
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            LOGGER.log(Level.INFO ,"Creating statement..." );
-
+            //LOGGER.log(Level.INFO ,"Creating statement..." );
             stmt = conn.createStatement();
-
             rs = stmt.executeQuery(querry);
 
-            
+        
             Map<String, Object> row = null;
-
-
-
             java.sql.ResultSetMetaData metaData = rs.getMetaData();
             Integer columnCount = metaData.getColumnCount();
 
@@ -62,7 +56,7 @@ public class Database {
             }
 
 
-            LOGGER.log(Level.INFO ,"Cleaning environment" );
+            //LOGGER.log(Level.INFO ,"Cleaning environment" );
             rs.close();
             stmt.close();
             conn.close();
@@ -74,16 +68,30 @@ public class Database {
                 if(stmt!=null)
                     stmt.close();
             }catch(SQLException se2){
-
+                LOGGER.log(Level.WARNING , "SQL EXCEPTION");
+                se2.printStackTrace();
             }
             try{
                 if(conn!=null)
                     conn.close();
             }catch(SQLException se){
+                LOGGER.log(Level.WARNING , "SQL EXCEPTION");
                 se.printStackTrace();
             }
         }
         return resultList;
     }
 
+    protected int convertObjectToInt(Object object){
+        return Integer.parseInt(object.toString());
     }
+
+    protected String convertObjectToString(Object object){
+        return object.toString();
+    }
+
+    protected Long convertObjectToLong(Object object){
+        return Long.parseLong(object.toString());
+    }
+
+}

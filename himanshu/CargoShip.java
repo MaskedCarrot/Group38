@@ -4,13 +4,13 @@ import java.time.*;
 
 public class CargoShip extends Ship
 {
-	private int capacity;
-	private int chargesPerTonne;
-	private int bookedCapacity;
-
+	public int capacity;
+	public int chargesPerTonne;
+	public int bookedCapacity;
+	/*
 	public void addShip()
 	{
-		getCargoShipInput();
+		//getCargoShipInput(); 
 		Database DB = new Database();
 		DB.insertCargoShip(shipID, from, to, departureTime,
 			arrivalTime, capacity, chargesPerTonne, bookedCapacity);
@@ -47,4 +47,5 @@ public class CargoShip extends Ship
 		Database DB = new Database();
 		DB.searchCargoShipsByDestination(location);
 	}
+	*/
 }

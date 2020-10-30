@@ -2,11 +2,13 @@ package Aniket;
 
 abstract class Booking
 {
-	protected int bookingID;
-	protected int shipID;
-	protected int userID;
-	protected boolean isWaiting;
-	public void Book();
-	public void getBookingStatus();
-	public void cancelBooking();
+	public int bookingID;
+	public int shipID;
+	public int userID;
+	public boolean isWaiting;
+	/*
+	public abstract void Book();
+	public abstract void getBookingStatus();
+	public abstract void cancelBooking();
+	*/
 }

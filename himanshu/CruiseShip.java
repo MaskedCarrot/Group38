@@ -4,9 +4,10 @@ import java.time.*;
 
 public class CruiseShip extends Ship
 {
-	private int totalSeats;
-	private int costPerPerson;
-	private int bookedSeats;
+	public int totalSeats;
+	public int costPerPerson;
+	public int bookedSeats;
+	/*
 
 	public void addShip()
 	{
@@ -47,4 +48,5 @@ public class CruiseShip extends Ship
 		Database DB = new Database();
 		DB.searchCruiseShipsByDestination(location);
 	}
+	*/
 }

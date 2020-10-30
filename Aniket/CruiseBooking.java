@@ -1,9 +1,9 @@
 package Aniket;
-
-class CruiseBooking extends Booking
+public class CruiseBooking extends Booking
 {
-	private int seats;
-	private int cost;
+	public int seats;
+	public int cost;
+	/*
 	public void Book()
 	{
 		System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
@@ -32,4 +32,6 @@ class CruiseBooking extends Booking
 		CruiseBookingDatabase DB=new CruiseBookingDatabase();
 		DB.deleteCruiseBooking(ID);
 	}
+
+*/
 }

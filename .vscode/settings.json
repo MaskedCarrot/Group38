@@ -4,5 +4,9 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
-    }
+    },
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/home/maskedcarrot/Projects/Group38/**/*.jar"
+    ]
 }
