@@ -14,8 +14,8 @@ public class Repository extends Database implements Dao {
 
 
     public Boolean checkUserCredentials(int userId , String password){
-        String querry = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userID = "+userId+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuerry(querry);
+        String Query = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userID = "+userId+" and password = \""+password+"\"";
+        List<Map<String, Object>> resultList = executeQuery(Query);
         Boolean b = false;
         try{
             int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
@@ -29,8 +29,8 @@ public class Repository extends Database implements Dao {
 
 
     public Boolean checkAdminCreadentials(int adminId  , String password){
-        String querry = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE adminId = "+adminId+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuerry(querry);
+        String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE adminId = "+adminId+" and password = \""+password+"\"";
+        List<Map<String, Object>> resultList = executeQuery(Query);
         Boolean b = false;
         try{
             int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
@@ -49,9 +49,28 @@ public class Repository extends Database implements Dao {
         booking.shipID = shipId;
         booking.userID  = userID;
         booking.cost = cost;
-        booking.isWaiting = isWaiting;
+        booking.isWaiting = isWaiting;//removed?????
+
+        // System.out.println("Enter number of tonnes to be Booked: ");
+        // int space=sc.nextInt();
+        //CALCULATE COST
+
+        String Query="SELECT COUNT(cruiseBookingID) AS Seats_Booked FROM cruiseBookingTable WHERE cruiseShipID='"+shipId+"'";
+        List<Map<String, Object>> resultList = executeQuery(Query);
         try{
-            
+            int result = Integer.parseInt(resultList.get(0).get("Seats_Booked").toString());
+            Query="SELECT totalSeats FROM cruiseShipTable WHERE cruiseShipID='"+shipId+"'";
+            resultList = executeQuery(Query);
+            int result2 = Integer.parseInt(resultList.get(0).get("totalSeats").toString());
+            if(result<result2)
+            {
+                // isWaiting=false;
+            }
+            else
+            {
+                // isWaiting=true;
+            }
+            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(";
         }catch(Exception e){
             
         }
@@ -67,8 +86,8 @@ public class Repository extends Database implements Dao {
     
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
         ArrayList<CargoShip> list = new ArrayList<>();
-        String querry = "select * from cargoShipsTable where toLocation = \""+to+"\" and fromLocation = \""+from+"\" order by arrivalTime asc";
-        List<Map<String, Object>> resultList = executeQuerry(querry);
+        String Query = "select * from cargoShipsTable where toLocation = \""+to+"\" and fromLocation = \""+from+"\" order by arrivalTime asc";
+        List<Map<String, Object>> resultList = executeQuery(Query);
 
         for(int i =0 ;i<resultList.size() ;i++){
             CargoShip cargoShip = new CargoShip();
@@ -92,8 +111,8 @@ public class Repository extends Database implements Dao {
     public ArrayList<CruiseShip> listAllCruiseShips(String from , String to){
                 
         ArrayList<CruiseShip> list = new ArrayList<>();
-        String querry = "select * from cruiseShipsDatabase where toLocation = \""+to+"\" and fromLocation = \""+from+"\" order by arrivalTime asc";
-        List<Map<String, Object>> resultList = executeQuerry(querry);
+        String Query = "select * from cruiseShipsDatabase where toLocation = \""+to+"\" and fromLocation = \""+from+"\" order by arrivalTime asc";
+        List<Map<String, Object>> resultList = executeQuery(Query);
 
 
         for(int i =0 ;i<resultList.size() ;i++){
@@ -106,16 +125,12 @@ public class Repository extends Database implements Dao {
             cruiseShip.arrivalTime = convertObjectToLong(row.get("arrivalTime")) ;
             cruiseShip.departureTime = convertObjectToLong(row.get("departureTime"));
             cruiseShip.bookedSeats = convertObjectToInt(row.get("bookedSeats"));
-            cruiseShip.costPerPerson = convertObjectToInt(row.get("cost"))
+            cruiseShip.costPerPerson = convertObjectToInt(row.get("cost"));
             cruiseShip.totalSeats = convertObjectToInt(row.get("totalSeats"));
             
             list.add(cruiseShip);
         }
-        return list;
-        
-        
-        return list ;
-        
+        return list;        
     }
 
 

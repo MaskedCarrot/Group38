@@ -23,7 +23,7 @@ class Database {
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
 
-    protected  List<Map<String, Object>> executeQuerry(String querry){
+    protected  List<Map<String, Object>> executeQuery(String Query){
     
         Connection conn = null;
         Statement stmt = null;
@@ -40,7 +40,7 @@ class Database {
 
             //LOGGER.log(Level.INFO ,"Creating statement..." );
             stmt = conn.createStatement();
-            rs = stmt.executeQuery(querry);
+            rs = stmt.executeQuery(Query);
 
         
             Map<String, Object> row = null;
