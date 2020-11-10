@@ -27,14 +27,14 @@ public class Main {
     		return;
 
         System.out.print("Enter email ID: ");
-    	String emailID = sc.next();
+    	int emailID = sc.nextInt();
     	System.out.print("Enter password: ");
     	String password = sc.next();
         if (choice == 1) {
         	while (!repository.checkUserCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
-		    	emailID = sc.next();
+		    	emailID = sc.nextInt();
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
@@ -45,7 +45,7 @@ public class Main {
         	while (!repository.checkAdminCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
-		    	emailID = sc.next();
+		    	emailID = sc.nextInt();
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
@@ -55,7 +55,7 @@ public class Main {
         }
     }
 
-    private static void userFunctionality(String emailID, String password) {
+    private static void userFunctionality(int emailID, String password) {
     	while (true) {
     		System.out.println("\n1. Book a cruise ship");
     		System.out.println("2. Book a cargo ship");
@@ -79,7 +79,7 @@ public class Main {
     	}
     }
 
-    private static void adminFunctionality(String emailID, String password) {
+    private static void adminFunctionality(int emailID, String password) {
     	while (true) {
     		System.out.println("\n1. Add a cruise ship");
     		System.out.println("2. Add a cargo ship");

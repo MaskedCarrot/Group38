@@ -1,12 +1,13 @@
-package group38.apoorv;
+package apoorv;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import group38.himanshu.CargoShip;
-import group38.himanshu.CruiseShip;
-import group38.Aniket.CruiseBooking;
-import group38.Aniket.CargoBooking;
+import himanshu.CargoShip;
+import himanshu.CruiseShip;
+import Aniket.CruiseBooking;
+import Aniket.CargoBooking;
+
 
 
 public class Repository extends Database implements Dao {
@@ -44,10 +45,10 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean bookCruiseShip(int shipId , int cost , int userID , Boolean isWaiting){
+    public Boolean bookCruiseShip(int shipId , int cost , int userId , Boolean isWaiting){
         CruiseBooking booking = new CruiseBooking();
         booking.shipID = shipId;
-        booking.userID  = userID;
+        booking.userId  = userId;
         booking.cost = cost;
         booking.isWaiting = isWaiting;//removed?????
 
@@ -82,7 +83,7 @@ public class Repository extends Database implements Dao {
     public Boolean bookCragoShip(int shipId , double tonne , int userId){
         CargoBooking booking=new CargoBooking();
         booking.shipID = shipId;
-        booking.userID  = userId;
+        booking.userId  = userId;
         // booking.cost = cost;
         // booking.isWaiting = isWaiting;//removed?????
         return false ;

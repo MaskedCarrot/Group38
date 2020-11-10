@@ -1,15 +1,15 @@
-package group38.apoorv;
+package apoorv;
 
 import java.util.ArrayList;
-import group38.himanshu.CargoShip;
-import group38.himanshu.CruiseShip;
+import himanshu.CargoShip;
+import himanshu.CruiseShip;
 
 interface Dao  {
 
-    Boolean checkUserCredentials(String userEmail , String password);
+    Boolean checkUserCredentials(int userId , String password);
     Boolean checkAdminCreadentials(String adminEmail  , String password);
 
-    Boolean bookCruiseShip(int shipId , int cost , int userId , Boolean isWaiting);
+    Boolean bookCruiseShip(int shipId , int cost ,int userId , Boolean isWaiting);
     Boolean bookCragoShip(int shipId , double cost , int userId);
     
     ArrayList<CargoShip> listAllCargoShips(String to , String from);
