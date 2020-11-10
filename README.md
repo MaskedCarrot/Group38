@@ -1,4 +1,7 @@
 # Group 38-7
+
+[![Build Status](https://travis-ci.com/MaskedCarrot/Group38.svg?branch=main)](https://travis-ci.com/MaskedCarrot/Group38)
+
 <h4> Ubuntu </h4>
 
  `sudo apt-get install git`
