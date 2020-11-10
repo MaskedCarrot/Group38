@@ -6,23 +6,25 @@ import himanshu.CruiseShip;
 
 interface Dao  {
 
-    Boolean checkUserCredentials(int userId , String password);
-    Boolean checkAdminCreadentials(String adminEmail  , String password);
+    boolean checkUserCredentials(String userEmail , String password);
+    boolean checkAdminCredentials(String adminEmail  , String password);
 
-    Boolean bookCruiseShip(int shipId , int cost ,int userId , Boolean isWaiting);
-    Boolean bookCragoShip(int shipId , double cost , int userId);
+    boolean bookCruiseShip(int shipId , int cost ,int userId , boolean isWaiting);
+    boolean bookCragoShip(int shipId , double cost , int userId);
     
     ArrayList<CargoShip> listAllCargoShips(String to , String from);
     ArrayList<CruiseShip> listAllCruiseShips(String to , String from);
 
-    Boolean addCargoShip(CargoShip cargoShip);
-    Boolean addCruiseShip(CruiseShip cruiseShip);
+    boolean addCargoShip(CargoShip cargoShip);
+    boolean addCruiseShip(CruiseShip cruiseShip);
     
-    Boolean removeCargoShip(int shipId);
-    Boolean removeCruiseShip(int shipId);
+    boolean removeCargoShip(int shipId);
+    boolean removeCruiseShip(int shipId);
 
         
-    Boolean updateCargoShip(CargoShip cargoShip);
-    Boolean updateCruiseShip(CruiseShip cruiseShip);
+    boolean updateCargoShip(CargoShip cargoShip);
+    boolean updateCruiseShip(CruiseShip cruiseShip);
+
+    int getUserID(String emailID);
 
 }

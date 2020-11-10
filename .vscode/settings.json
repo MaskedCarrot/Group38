@@ -8,5 +8,6 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "/home/maskedcarrot/Projects/Group38/**/*.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

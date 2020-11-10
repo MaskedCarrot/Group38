@@ -4,6 +4,7 @@ use ship_booking;
 create table adminTable (
 adminId int AUTO_INCREMENT,
 password varchar(30),
+email varchar(30) UNIQUE;
 PRIMARY KEY (adminId)
 );
 create table userTable (
@@ -13,7 +14,7 @@ name varchar(30),
 age int,
 gender ENUM('M' , 'F') ,
 password varchar(30),
-email varchar(30),
+email varchar(30) UNIQUE,
 PRIMARY KEY (userID)
 );
 create table cruiseShipTable (

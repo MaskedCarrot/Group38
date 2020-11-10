@@ -1,10 +1,11 @@
 package group38;
-import apoorv.Repository;
+import apoorv.*;
 import java.util.*;
 import himanshu.*;
 import Aniket.*;
 
 public class Main {
+
 	private static Repository repository = new Repository();
 	private static Scanner sc = new Scanner(System.in);
 
@@ -27,31 +28,34 @@ public class Main {
     		return;
 
         System.out.print("Enter email ID: ");
-    	int emailID = sc.nextInt();
-    	System.out.print("Enter password: ");
+    	String emailID = sc.next();
+		int userID = repository.getUserID(emailID);
+		System.out.print("Enter password: ");
     	String password = sc.next();
         if (choice == 1) {
         	while (!repository.checkUserCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
-		    	emailID = sc.nextInt();
+		    	emailID = sc.next();
+				userID = repository.getUserID(emailID);
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
 
         	System.out.println("User login successful.");
-        	userFunctionality(emailID, password);
+        	userFunctionality(userID, password);
         } else {
         	while (!repository.checkAdminCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
-		    	emailID = sc.nextInt();
+		    	emailID = sc.next();
+				userID = repository.getUserID(emailID);
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
 
         	System.out.println("Admin login successful.");
-        	adminFunctionality(emailID, password);
+        	adminFunctionality(userID, password);
         }
     }
 

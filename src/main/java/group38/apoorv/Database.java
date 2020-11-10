@@ -18,7 +18,7 @@ class Database {
     
     //User Credentials
     private static final String USER = "maskedcarrot";
-    private static final String PASS = "";
+    private static final String PASS = "oshuoshu";
 
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 

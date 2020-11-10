@@ -14,11 +14,11 @@ public class Repository extends Database implements Dao {
 
 
 
-    public Boolean checkUserCredentials(String userEmail , String password){
-        String Query = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userEmail = "+userEmail+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuery(Query);
-        Boolean b = false;
+    public boolean checkUserCredentials(String userEmail , String password){
+        boolean b = false;
         try{
+            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '"+userEmail+"' AND password = \""+password+"\"";
+            List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
             if(result == 1 )
                 b = true;
@@ -29,11 +29,11 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean checkAdminCreadentials(String adminEmail  , String password){
-        String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE admin = "+adminEmail+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuery(Query);
-        Boolean b = false;
+    public boolean checkAdminCredentials(String adminEmail, String password){
+        boolean b = false;
         try{
+            String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE email = "+adminEmail+" and password = \""+password+"\"";
+            List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
             if(result == 1 )
                 b = true;
@@ -45,7 +45,7 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean bookCruiseShip(int shipId , int cost , int userId , Boolean isWaiting){
+    public boolean bookCruiseShip(int shipId , int cost , int userId , boolean isWaiting){
         CruiseBooking booking = new CruiseBooking();
         booking.shipID = shipId;
         booking.userId  = userId;
@@ -80,7 +80,7 @@ public class Repository extends Database implements Dao {
     }
     
 
-    public Boolean bookCragoShip(int shipId , double tonne , int userId){
+    public boolean bookCragoShip(int shipId , double tonne , int userId){
         CargoBooking booking=new CargoBooking();
         booking.shipID = shipId;
         booking.userId  = userId;
@@ -140,7 +140,7 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean addCargoShip(CargoShip cargoShip){
+    public boolean addCargoShip(CargoShip cargoShip){
         String Query="INSERT INTO cargoShipsTable(fromLocation,toLocation,departureTime,arrivalTime,capacity,chargesPerTonne,bookedCapacity) VALUES('"+cargoShip.from+
         "','"+cargoShip.to+"','"+cargoShip.departureTime+"','"+cargoShip.arrivalTime+"','"+cargoShip.capacity+"','"+cargoShip.chargesPerTonne+"','"+cargoShip.bookedCapacity+"')";
         // List<Map<String, Object>> resultList = executeQuery(Query);
@@ -148,7 +148,7 @@ public class Repository extends Database implements Dao {
         // return false ;
         return true;
     }
-    public Boolean addCruiseShip(CruiseShip cruiseShip){
+    public boolean addCruiseShip(CruiseShip cruiseShip){
         String Query="INSERT INTO cruiseShipsTable(fromLocation,toLocation,departureTime,arrivalTime,totalSeats,cost,bookedSeats) VALUES('"+cruiseShip.from+
         "','"+cruiseShip.to+"','"+cruiseShip.departureTime+"','"+cruiseShip.arrivalTime+"','"+cruiseShip.totalSeats+"','"+cruiseShip.costPerPerson+"','"+cruiseShip.bookedSeats+"')";
         // List<Map<String, Object>> resultList = executeQuery(Query);
@@ -157,14 +157,14 @@ public class Repository extends Database implements Dao {
         return true;
     }
     
-    public Boolean removeCargoShip(int shipId){
+    public boolean removeCargoShip(int shipId){
         String Query="DELETE FROM cargoShipsTable WHERE cargoShipID='"+shipId+"'";
         // List<Map<String, Object>> resultList = executeQuery(Query);
         executeQuery(Query);
         // return false ;
         return true;
     }
-    public Boolean removeCruiseShip(int shipId){
+    public boolean removeCruiseShip(int shipId){
         String Query="DELETE FROM cruiseShipsTable WHERE cruiseShipID='"+shipId+"'";
         // List<Map<String, Object>> resultList = executeQuery(Query);
         executeQuery(Query);
@@ -173,7 +173,7 @@ public class Repository extends Database implements Dao {
     }
 
         
-    public Boolean updateCargoShip(CargoShip cargoShip){
+    public boolean updateCargoShip(CargoShip cargoShip){
         String Query="UPDATE cargoShipsTable SET fromLocation='"+cargoShip.from+"',toLocation='"+cargoShip.to+"',departureTime='"+cargoShip.departureTime+"',arrivalTime='"+cargoShip.arrivalTime
         +"',capacity='"+cargoShip.capacity+"',chargesPerTonne='"+cargoShip.chargesPerTonne+"',bookedCapacity='"+cargoShip.bookedCapacity+"' WHERE cargoShipID='"+cargoShip.shipId+"'";
         executeQuery(Query);
@@ -181,7 +181,7 @@ public class Repository extends Database implements Dao {
         // return false ;
         return true;
     }
-    public Boolean updateCruiseShip(CruiseShip cruiseShip){
+    public boolean updateCruiseShip(CruiseShip cruiseShip){
         String Query="UPDATE cruiseShipsTable SET fromLocation='"+cruiseShip.from+"',toLocation='"+cruiseShip.to+"',departureTime='"+cruiseShip.departureTime+"',arrivalTime='"+cruiseShip.arrivalTime
         +"',totalSeats='"+cruiseShip.totalSeats+"',cost='"+cruiseShip.costPerPerson+"',bookedSeats='"+cruiseShip.bookedSeats+"' WHERE cruiseShipID='"+cruiseShip.shipId+"'";
         executeQuery(Query);
@@ -189,6 +189,26 @@ public class Repository extends Database implements Dao {
         // return false ;
         return true;
     }
-
-
+    public boolean cancelCruiseBoooking(int bookingID){
+        String Query="UPDATE cruiseBookingTable SET statusFlag='"+3+"' WHERE cruiseShipID='"+bookingID+"'";
+        executeQuery(Query);
+        return true;
+    }
+    public boolean cancelCargoBoooking(int bookingID){
+        String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoShipID='"+bookingID+"'";
+        executeQuery(Query);
+        return true;
+    }
+    public int getUserID(String emailID)
+    {
+        String Query="SELECT userID FROM userTable WHERE email='"+emailID+"'";
+        int result=0;
+        try{
+        List<Map<String, Object>> resultList = executeQuery(Query);
+        result = Integer.parseInt(resultList.get(0).get("userID").toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
