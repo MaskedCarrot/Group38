@@ -1,0 +1,14 @@
+apply plugin: 'application'
+
+mainClassName = 'group38.Main'
+
+repositories {
+   flatDir {
+       dirs 'drivers'
+   }
+}
+
+
+dependencies {
+   implementation name: 'mysql-connector-java-8.0.22'
+}
