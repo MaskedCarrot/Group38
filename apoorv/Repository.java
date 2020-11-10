@@ -44,11 +44,11 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean bookCruiseShip(int shipId , int cost , int userID , Boolean isWaiting){
+    public Boolean bookCruiseShip(int shipId , int userID , int seats, Boolean isWaiting){
         CruiseBooking booking = new CruiseBooking();
         booking.shipID = shipId;
         booking.userID  = userID;
-        booking.cost = cost;
+        // booking.cost = cost;
         booking.isWaiting = isWaiting;//removed?????
 
         // System.out.println("Enter number of tonnes to be Booked: ");
