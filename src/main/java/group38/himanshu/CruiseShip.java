@@ -1,22 +1,44 @@
 package himanshu;
 
-// import java.time.*;
-
 public class CruiseShip extends Ship
 {
-	public int totalSeats;
-	public int costPerPerson;
-	public int bookedSeats;
-	/*
+	private int totalSeats;
+	private int costPerPerson;
+	private int bookedSeats;
 
-	public void addShip()
-	{
-		getCruiseShipInput();
+	CruiseShip() {
+		super();
+		totalSeats = -1;
+		costPerPerson = -1;
+		bookedSeats = -1;
+	}
+	
+	CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats, int costPerPerson, int bookedSeats) {
+		super(shipID, from, to, departureTime, arrivalTime);
+		totalSeats = this.totalSeats;
+		costPerPerson = this.costPerPerson;
+		bookedSeats = this.bookedSeats;
+	}
+
+	public void addShip() {
+		System.out.println()
 		Database DB = new Database();
 		DB.insertCruiseShip(shipID, from, to, departureTime,
 			arrivalTime, totalSeats, costPerPerson, bookedSeats);
 	}
 
+	public int getCapacity() {
+		return capacity;
+	}
+	
+	public int getChargesPerTonne() {
+		return chargesPerTonne;
+	}
+	
+	public int getBookedCapacity() {
+		return bookedCapacity;
+	}
+/*
 	public void searchShipsByDepartureTime()
 	{
 		System.out.println("Enter departure time: ");

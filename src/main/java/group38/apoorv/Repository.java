@@ -17,7 +17,7 @@ public class Repository extends Database implements Dao {
     public boolean checkUserCredentials(String userEmail , String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '"+userEmail+"' AND password = \""+password+"\"";
+            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '"+userEmail+"' AND password = '"+password+"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
             if(result == 1 )
@@ -32,7 +32,7 @@ public class Repository extends Database implements Dao {
     public boolean checkAdminCredentials(String adminEmail, String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE email = "+adminEmail+" and password = \""+password+"\"";
+            String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE email = '"+adminEmail+"' and password = '"+password+"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
             if(result == 1 )
@@ -45,19 +45,19 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public boolean bookCruiseShip(int shipId , int cost , int userId , boolean isWaiting){
-        CruiseBooking booking = new CruiseBooking();
-        booking.shipID = shipId;
-        booking.userId  = userId;
-        booking.cost = cost;
-        booking.isWaiting = isWaiting;//removed?????
+    public boolean bookCruiseShip(int shipId , int cost , int userId , int status_flag){
+        // CruiseBooking booking = new CruiseBooking();
+        // booking.shipID = shipId;
+        // booking.userId  = userId;
+        // booking.cost = cost;
+        // booking.isWaiting = isWaiting;//removed?????
 
         // System.out.println("Enter number of tonnes to be Booked: ");
         // int space=sc.nextInt();
         //CALCULATE COST
 
-        String Query="SELECT COUNT(cruiseBookingID) AS Seats_Booked FROM cruiseBookingTable WHERE cruiseShipID='"+shipId+"'";
-        List<Map<String, Object>> resultList = executeQuery(Query);
+        // String Query="SELECT COUNT(cruiseBookingID) AS Seats_Booked FROM cruiseBookingTable WHERE cruiseShipID='"+shipId+"'";
+        // List<Map<String, Object>> resultList = executeQuery(Query);
         try{
             int result = Integer.parseInt(resultList.get(0).get("Seats_Booked").toString());
             Query="SELECT totalSeats FROM cruiseShipTable WHERE cruiseShipID='"+shipId+"'";
@@ -73,14 +73,14 @@ public class Repository extends Database implements Dao {
             }
             Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(";
         }catch(Exception e){
-            
+            e.printStackTrace();
         }
         return false ;
         
     }
     
 
-    public boolean bookCragoShip(int shipId , double tonne , int userId){
+    public boolean bookCargoShip(int shipId , int cost, int userId, int status_flag){
         CargoBooking booking=new CargoBooking();
         booking.shipID = shipId;
         booking.userId  = userId;
@@ -92,23 +92,27 @@ public class Repository extends Database implements Dao {
     
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
         ArrayList<CargoShip> list = new ArrayList<>();
-        String Query = "select * from cargoShipsTable where toLocation = \""+to+"\" and fromLocation = \""+from+"\" order by arrivalTime asc";
-        List<Map<String, Object>> resultList = executeQuery(Query);
+        try { 
+            String Query = "SELECT * FROM cargoShipsTable WHERE toLocation = \""+to+"\" AND fromLocation = \""+from+"\" ORDER BY arrivalTime ASC";
+            List<Map<String, Object>> resultList = executeQuery(Query);
 
-        for(int i =0 ;i<resultList.size() ;i++){
-            CargoShip cargoShip = new CargoShip();
-            Map<String, Object> row = resultList.get(i);
-
-            cargoShip.shipId = convertObjectToInt(row.get("cargoShipID"));
-            cargoShip.from = convertObjectToString(row.get("fromLocation"));
-            cargoShip.to = convertObjectToString(row.get("toLocation"));
-            cargoShip.arrivalTime = convertObjectToLong(row.get("arrivalTime")) ;
-            cargoShip.departureTime = convertObjectToLong(row.get("departureTime"));
-            cargoShip.bookedCapacity = convertObjectToInt(row.get("bookedCapacity"));
-            cargoShip.capacity  = convertObjectToInt(row.get("capacity"));
-            cargoShip.chargesPerTonne = convertObjectToInt(row.get("chargesPerTonne"));
-            
-            list.add(cargoShip);
+            for(int i =0 ;i<resultList.size() ;i++){
+                Map<String, Object> row = resultList.get(i);
+                CargoShip cargoShip = new CargoShip(
+                    convertObjectToInt(row.get("cargoShipID")),
+                    convertObjectToString(row.get("fromLocation")),
+                    convertObjectToString(row.get("toLocation")),
+                    convertObjectToLong(row.get("departureTime")),
+                    convertObjectToLong(row.get("arrivalTime")),
+                    convertObjectToInt(row.get("chargesPerTonne")),
+                    convertObjectToInt(row.get("capacity")),
+                    convertObjectToInt(row.get("bookedCapacity")),
+                );
+                list.add(cargoShip);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
         }
         return list;
         
@@ -124,16 +128,18 @@ public class Repository extends Database implements Dao {
         for(int i =0 ;i<resultList.size() ;i++){
             CruiseShip cruiseShip = new CruiseShip();
             Map<String, Object> row = resultList.get(i);
-    
-            cruiseShip.shipId = convertObjectToInt(row.get("cargoShipID"));
-            cruiseShip.from = convertObjectToString(row.get("fromLocation"));
-            cruiseShip.to = convertObjectToString(row.get("toLocation"));
-            cruiseShip.arrivalTime = convertObjectToLong(row.get("arrivalTime")) ;
-            cruiseShip.departureTime = convertObjectToLong(row.get("departureTime"));
-            cruiseShip.bookedSeats = convertObjectToInt(row.get("bookedSeats"));
-            cruiseShip.costPerPerson = convertObjectToInt(row.get("cost"));
-            cruiseShip.totalSeats = convertObjectToInt(row.get("totalSeats"));
             
+            cruiseShip(
+                convertObjectToInt(row.get("CruiseShipID"),
+                convertObjectToString(row.get("fromLocation"),
+                convertObjectToString(row.get("toLocation"),
+                convertObjectToLong(row.get("departureTime"),
+                convertObjectToLong(row.get("arrivalTime"),
+                convertObjectToInt(row.get("totalSeats"), 
+                convertObjectToInt(row.get("cost"),
+                convertObjectToInt(row.get("bookedSeats")
+            )
+        
             list.add(cruiseShip);
         }
         return list;        
@@ -149,9 +155,9 @@ public class Repository extends Database implements Dao {
         return true;
     }
     public boolean addCruiseShip(CruiseShip cruiseShip){
+
         String Query="INSERT INTO cruiseShipsTable(fromLocation,toLocation,departureTime,arrivalTime,totalSeats,cost,bookedSeats) VALUES('"+cruiseShip.from+
         "','"+cruiseShip.to+"','"+cruiseShip.departureTime+"','"+cruiseShip.arrivalTime+"','"+cruiseShip.totalSeats+"','"+cruiseShip.costPerPerson+"','"+cruiseShip.bookedSeats+"')";
-        // List<Map<String, Object>> resultList = executeQuery(Query);
         executeQuery(Query);
         // return false ;
         return true;
@@ -211,4 +217,26 @@ public class Repository extends Database implements Dao {
         }
         return result;
     }
+
+
+    public void cleanUpBookings(){
+
+        long currnetTIme = Util.getCurrentTimeInMilli()
+
+        String query = "UPDATE cruiseBookingTable SET statusFlag = "+3+"WHERE statusFlag = "2 +"and "; 
+        try {
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
+/*
+statusFlag flags
+0 is past booking 
+1 is confirm 
+2 is wainting
+3 is cancelled 
+*/

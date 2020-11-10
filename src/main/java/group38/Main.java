@@ -15,7 +15,7 @@ public class Main {
 
     private static void loginMenu()
     {
-    	System.out.println("1. Login as user");
+    	System.out.println("\n1. Login as user");
         System.out.println("2. Login as admin");
         System.out.println("0. Exit");
         System.out.print("Enter a choice: ");
@@ -59,19 +59,23 @@ public class Main {
         }
     }
 
-    private static void userFunctionality(int emailID, String password) {
+    private static void userFunctionality(int userID, String password) {
     	while (true) {
     		System.out.println("\n1. Book a cruise ship");
     		System.out.println("2. Book a cargo ship");
     		System.out.println("3. Search cargo ships");
     		System.out.println("4. Search cruise ships");
     		System.out.println("5. Cancel booking");
-    		System.out.println("4. List bookings");
-    		System.out.println("5. Logout");
+    		System.out.println("6. List bookings");
+    		System.out.println("0. Logout");
 
     		System.out.print("Enter a choice: ");
     		int choice = sc.nextInt();
 
+			if (choice == 0) {
+				loginMenu();
+				break;
+			}
     		if (choice == 1) {
     			CruiseShip cruiseShip;
     			CruiseBooking cruiseBooking;
@@ -83,7 +87,7 @@ public class Main {
     	}
     }
 
-    private static void adminFunctionality(int emailID, String password) {
+    private static void adminFunctionality(int adminID, String password) {
     	while (true) {
     		System.out.println("\n1. Add a cruise ship");
     		System.out.println("2. Add a cargo ship");
@@ -91,10 +95,21 @@ public class Main {
     		System.out.println("4. Remove a cargo ship");
     		System.out.println("5. Update a cruise ship");
     		System.out.println("6. Update a cargo ship");
-    		System.out.println("0. Exit");
+			System.out.println("0. Logout")
 
     		System.out.print("Enter a choice: ");
     		int choice = sc.nextInt();
+
+			if (choice == 0) {
+				loginMenu();
+				break;
+			}
+
+			CruiseShip cruiseShip = new CruiseShip();
+			CargoShip cargoShip = new CargoShip();
+			if (choice == 1) {
+				cruiseShip.addShip();
+			}
     	}
     }
 }

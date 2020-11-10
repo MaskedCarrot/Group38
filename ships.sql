@@ -1,12 +1,16 @@
 drop database ship_booking;
+
 create database ship_booking;
+
 use ship_booking;
+
 create table adminTable (
 adminId int AUTO_INCREMENT,
 password varchar(30),
-email varchar(30) UNIQUE;
+email varchar(30) UNIQUE,
 PRIMARY KEY (adminId)
 );
+
 create table userTable (
 userID int AUTO_INCREMENT,
 phoneNumber int,
@@ -17,6 +21,7 @@ password varchar(30),
 email varchar(30) UNIQUE,
 PRIMARY KEY (userID)
 );
+
 create table cruiseShipTable (
 cruiseShipID int AUTO_INCREMENT,
 fromLocation char,
@@ -28,6 +33,7 @@ cost int,
 bookedSeats int,
 PRIMARY KEY (cruiseShipID)
 );
+
 create table cargoShipsTable (
 cargoShipID int AUTO_INCREMENT,
 fromLocation varchar(30),
@@ -39,30 +45,34 @@ chargesPerTonne int,
 bookedCapacity int,
 PRIMARY KEY (cargoShipID)
 );
+
 create table cruiseBookingTable (
 cruiseBookingID int AUTO_INCREMENT,
 cruiseShipID int,
 userID int,
 seats int,
 cost int,
+statusFlag int,
 PRIMARY KEY (cruiseBookingID),
 constraint fk1 foreign key(cruiseShipID) references cruiseShipTable(cruiseShipID),
 constraint fk2 foreign key(userID) references userTable(userID)
 );
+
 create table cargoBookingTable (
 cargoBookingID int AUTO_INCREMENT,
 cargoShipID int,
 userID int,
 capacity int,
 cost int,
+statusFlag int,
 PRIMARY KEY (cargoBookingID),
 constraint fk3 foreign key(cargoShipID) references cargoShipsTable(cargoShipID),
 constraint fk4 foreign key(userID) references userTable(userID)
 );
 
-insert into adminTable(password) values
-("testAdmin1"),
-("testAdmin2");
+insert into adminTable(password,email) values
+("testAdmin1","admin1@38.com"),
+("testAdmin2","admin2@38.com");
 
 insert into userTable( phoneNumber , name , age , gender , password , email ) values 
 (1234567890 , "user1" , 33 , 'M' , "testUser1" , "user1@38.com"),
