@@ -1,4 +1,6 @@
 package himanshu;
+import apoorv.*;
+import java.util.Scanner;
 
 public class CruiseShip extends Ship
 {
@@ -6,14 +8,14 @@ public class CruiseShip extends Ship
 	private int costPerPerson;
 	private int bookedSeats;
 
-	CruiseShip() {
+	public CruiseShip() {
 		super();
 		totalSeats = -1;
 		costPerPerson = -1;
 		bookedSeats = -1;
 	}
 	
-	CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats, int costPerPerson, int bookedSeats) {
+	public CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats, int costPerPerson, int bookedSeats) {
 		super(shipID, from, to, departureTime, arrivalTime);
 		totalSeats = this.totalSeats;
 		costPerPerson = this.costPerPerson;
@@ -21,22 +23,49 @@ public class CruiseShip extends Ship
 	}
 
 	public void addShip() {
-		System.out.println()
-		Database DB = new Database();
-		DB.insertCruiseShip(shipID, from, to, departureTime,
-			arrivalTime, totalSeats, costPerPerson, bookedSeats);
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter source: ");
+		from = sc.nextLine();
+		System.out.print("Enter destination: ");
+		to = sc.nextLine();
+
+		System.out.print("Enter departure time in HH:MM format: ");
+		String time = sc.nextLine();
+		int hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+		int mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		Util u = new Util();
+		departureTime = u.convertTimeToMinutes(hh, mm);
+
+		System.out.print("Enter arrival time in HH:MM format: ");
+		time = sc.nextLine();
+		hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+		mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		arrivalTime = u.convertTimeToMinutes(hh, mm);
+
+		System.out.print("Enter total seats: ");
+		totalSeats = sc.nextInt();
+		System.out.print("Enter cost per person: ");
+		costPerPerson = sc.nextInt();
+		bookedSeats = 0;
+
+		Repository repository = new Repository();
+		boolean success = repository.addCruiseShip(this);
+		if (success)
+			System.out.println("Ship added successfully.");
+		else
+			System.out.println("Could not add ship.");
 	}
 
-	public int getCapacity() {
-		return capacity;
+	public int getTotalSeats() {
+		return totalSeats;
 	}
 	
-	public int getChargesPerTonne() {
-		return chargesPerTonne;
+	public int getCostPerPerson() {
+		return costPerPerson;
 	}
 	
-	public int getBookedCapacity() {
-		return bookedCapacity;
+	public int getBookedSeats() {
+		return bookedSeats;
 	}
 /*
 	public void searchShipsByDepartureTime()

@@ -5,10 +5,10 @@ create database ship_booking;
 use ship_booking;
 
 create table adminTable (
-adminId int AUTO_INCREMENT,
+adminID int AUTO_INCREMENT,
 password varchar(30),
 email varchar(30) UNIQUE,
-PRIMARY KEY (adminId)
+PRIMARY KEY (adminID)
 );
 
 create table userTable (
@@ -22,12 +22,12 @@ email varchar(30) UNIQUE,
 PRIMARY KEY (userID)
 );
 
-create table cruiseShipTable (
+create table cruiseShipsTable (
 cruiseShipID int AUTO_INCREMENT,
-fromLocation char,
-toLocation char,
-departureTime time,
-arrivalTime time,
+fromLocation varchar(30),
+toLocation varchar(30),
+departureTime long,
+arrivalTime long,
 totalSeats int,
 cost int,
 bookedSeats int,
@@ -54,7 +54,7 @@ seats int,
 cost int,
 statusFlag int,
 PRIMARY KEY (cruiseBookingID),
-constraint fk1 foreign key(cruiseShipID) references cruiseShipTable(cruiseShipID),
+constraint fk1 foreign key(cruiseShipID) references cruiseShipsTable(cruiseShipID),
 constraint fk2 foreign key(userID) references userTable(userID)
 );
 
@@ -81,6 +81,15 @@ insert into userTable( phoneNumber , name , age , gender , password , email ) va
 insert into cargoShipsTable( fromLocation , toLocation , departureTime , arrivalTime , capacity , chargesPerTonne , bookedCapacity) values 
 ("chicago" , "London" , 209842042 , 04234234 , 433 , 34 , 343) ,
 ("new york" , "amsterdam" , 209842042 , 04234234 , 433 , 34 , 343) ,
+("singapore" , "sydney" , 209842042 , 04234234 , 433 , 34 , 343) ,
+("tokyo" , "mumbai" , 209842042 , 04234234 , 433 , 34 , 343),
+("tokyo" , "london" , 209842042 , 04234234 , 433 , 34 , 343),
+("tokyo" , "mumbai" , 2098422342 , 0423422334 , 4332 , 323 , 3);
+
+
+insert into cruiseShipsTable( fromLocation , toLocation , departureTime , arrivalTime , totalSeats , cost , bookedSeats) values 
+("chicago" , "London" , 2098042 , 04234234 , 433 , 34 , 343) ,
+("new york" , "amsterdam" , 2842042 , 04234234 , 433 , 34 , 343) ,
 ("singapore" , "sydney" , 209842042 , 04234234 , 433 , 34 , 343) ,
 ("tokyo" , "mumbai" , 209842042 , 04234234 , 433 , 34 , 343),
 ("tokyo" , "london" , 209842042 , 04234234 , 433 , 34 , 343),

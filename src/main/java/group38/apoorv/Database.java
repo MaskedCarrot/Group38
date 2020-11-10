@@ -82,6 +82,51 @@ class Database {
         return resultList;
     }
 
+    protected  int executeUpdate(String Query){
+    
+        Connection conn = null;
+        Statement stmt = null;
+        int rs = 0;
+
+        // List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            //LOGGER.log(Level.INFO ,"Connecting to database..." );
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+
+            //LOGGER.log(Level.INFO ,"Creating statement..." );
+            stmt = conn.createStatement();
+            rs = stmt.executeUpdate(Query);
+
+
+            //LOGGER.log(Level.INFO ,"Cleaning environment" );
+            stmt.close();
+            conn.close();
+        }catch(Exception e){
+            LOGGER.log(Level.WARNING ,"errors for Class.forName");
+            e.printStackTrace();
+        }finally{
+            try{
+                if(stmt!=null)
+                    stmt.close();
+            }catch(SQLException se2){
+                LOGGER.log(Level.WARNING , "SQL EXCEPTION");
+                se2.printStackTrace();
+            }
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                LOGGER.log(Level.WARNING , "SQL EXCEPTION");
+                se.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
     protected int convertObjectToInt(Object object){
         return Integer.parseInt(object.toString());
     }

@@ -29,10 +29,10 @@ public class Main {
 
         System.out.print("Enter email ID: ");
     	String emailID = sc.next();
-		int userID = repository.getUserID(emailID);
 		System.out.print("Enter password: ");
     	String password = sc.next();
         if (choice == 1) {
+			int userID = repository.getUserID(emailID);
         	while (!repository.checkUserCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
@@ -45,17 +45,18 @@ public class Main {
         	System.out.println("User login successful.");
         	userFunctionality(userID, password);
         } else {
+			int adminID = repository.getAdminID(emailID);
         	while (!repository.checkAdminCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
 		    	emailID = sc.next();
-				userID = repository.getUserID(emailID);
+				adminID = repository.getAdminID(emailID);
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
 
         	System.out.println("Admin login successful.");
-        	adminFunctionality(userID, password);
+        	adminFunctionality(adminID, password);
         }
     }
 
@@ -73,6 +74,7 @@ public class Main {
     		int choice = sc.nextInt();
 
 			if (choice == 0) {
+				System.out.println("Logged out successfully.");
 				loginMenu();
 				break;
 			}
@@ -95,12 +97,13 @@ public class Main {
     		System.out.println("4. Remove a cargo ship");
     		System.out.println("5. Update a cruise ship");
     		System.out.println("6. Update a cargo ship");
-			System.out.println("0. Logout")
+			System.out.println("0. Logout");
 
     		System.out.print("Enter a choice: ");
     		int choice = sc.nextInt();
 
 			if (choice == 0) {
+				System.out.println("Logged out successfully.");
 				loginMenu();
 				break;
 			}

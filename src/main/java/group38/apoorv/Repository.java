@@ -17,7 +17,7 @@ public class Repository extends Database implements Dao {
     public boolean checkUserCredentials(String userEmail , String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '"+userEmail+"' AND password = '"+password+"'";
+            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "' AND password = '"+password+"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
             if(result == 1 )
@@ -32,7 +32,7 @@ public class Repository extends Database implements Dao {
     public boolean checkAdminCredentials(String adminEmail, String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE email = '"+adminEmail+"' and password = '"+password+"'";
+            String Query = "SELECT COUNT(adminID) as \"adminCount\" from adminTable WHERE email = '"+adminEmail+"' and password = '"+password+"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
             int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
             if(result == 1 )
@@ -45,7 +45,7 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public boolean bookCruiseShip(int shipId , int cost , int userId , int status_flag){
+    public boolean bookCruiseShip(int shipID , int cost , int userID , int status_flag){
         // CruiseBooking booking = new CruiseBooking();
         // booking.shipID = shipId;
         // booking.userId  = userId;
@@ -58,36 +58,38 @@ public class Repository extends Database implements Dao {
 
         // String Query="SELECT COUNT(cruiseBookingID) AS Seats_Booked FROM cruiseBookingTable WHERE cruiseShipID='"+shipId+"'";
         // List<Map<String, Object>> resultList = executeQuery(Query);
-        try{
-            int result = Integer.parseInt(resultList.get(0).get("Seats_Booked").toString());
-            Query="SELECT totalSeats FROM cruiseShipTable WHERE cruiseShipID='"+shipId+"'";
-            resultList = executeQuery(Query);
-            int result2 = Integer.parseInt(resultList.get(0).get("totalSeats").toString());
-            if(result<result2)
-            {
-                // isWaiting=false;
-            }
-            else
-            {
-                // isWaiting=true;
-            }
-            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(";
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        // try{
+        //     int result = Integer.parseInt(resultList.get(0).get("Seats_Booked").toString());
+        //     Query="SELECT totalSeats FROM cruiseShipTable WHERE cruiseShipID='"+shipId+"'";
+        //     resultList = executeQuery(Query);
+        //     int result2 = Integer.parseInt(resultList.get(0).get("totalSeats").toString());
+        //     if(result<result2)
+        //     {
+        //         // isWaiting=false;
+        //     }
+        //     else
+        //     {
+        //         // isWaiting=true;
+        //     }
+        //     Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(";
+        // }catch(Exception e){
+        //     e.printStackTrace();
+        // }
         return false ;
         
     }
     
 
-    public boolean bookCargoShip(int shipId , int cost, int userId, int status_flag){
-        CargoBooking booking=new CargoBooking();
-        booking.shipID = shipId;
-        booking.userId  = userId;
+    public boolean bookCargoShip(int shipID , int cost, int userID, int status_flag){
+        // CargoBooking booking=new CargoBooking();
+        // booking.shipID = shipId;
+        // booking.userId  = userId;
         // booking.cost = cost;
         // booking.isWaiting = isWaiting;//removed?????
         return false ;
     }
+
+   
     
     
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
@@ -106,8 +108,7 @@ public class Repository extends Database implements Dao {
                     convertObjectToLong(row.get("arrivalTime")),
                     convertObjectToInt(row.get("chargesPerTonne")),
                     convertObjectToInt(row.get("capacity")),
-                    convertObjectToInt(row.get("bookedCapacity")),
-                );
+                    convertObjectToInt(row.get("bookedCapacity")));
                 list.add(cargoShip);
             }
         }
@@ -126,19 +127,17 @@ public class Repository extends Database implements Dao {
 
 
         for(int i =0 ;i<resultList.size() ;i++){
-            CruiseShip cruiseShip = new CruiseShip();
             Map<String, Object> row = resultList.get(i);
-            
-            cruiseShip(
-                convertObjectToInt(row.get("CruiseShipID"),
-                convertObjectToString(row.get("fromLocation"),
-                convertObjectToString(row.get("toLocation"),
-                convertObjectToLong(row.get("departureTime"),
-                convertObjectToLong(row.get("arrivalTime"),
-                convertObjectToInt(row.get("totalSeats"), 
-                convertObjectToInt(row.get("cost"),
-                convertObjectToInt(row.get("bookedSeats")
-            )
+            CruiseShip cruiseShip = new CruiseShip(
+                convertObjectToInt(row.get("CruiseShipID")),
+                convertObjectToString(row.get("fromLocation")),
+                convertObjectToString(row.get("toLocation")),
+                convertObjectToLong(row.get("departureTime")),
+                convertObjectToLong(row.get("arrivalTime")),
+                convertObjectToInt(row.get("totalSeats")), 
+                convertObjectToInt(row.get("cost")),
+                convertObjectToInt(row.get("bookedSeats"))
+            );
         
             list.add(cruiseShip);
         }
@@ -147,62 +146,106 @@ public class Repository extends Database implements Dao {
 
 
     public boolean addCargoShip(CargoShip cargoShip){
-        String Query="INSERT INTO cargoShipsTable(fromLocation,toLocation,departureTime,arrivalTime,capacity,chargesPerTonne,bookedCapacity) VALUES('"+cargoShip.from+
-        "','"+cargoShip.to+"','"+cargoShip.departureTime+"','"+cargoShip.arrivalTime+"','"+cargoShip.capacity+"','"+cargoShip.chargesPerTonne+"','"+cargoShip.bookedCapacity+"')";
-        // List<Map<String, Object>> resultList = executeQuery(Query);
-        executeQuery(Query);
-        // return false ;
+        int capacity,chargesPerTonne,bookedCapacity;
+        String from,to;
+        Long departureTime,arrivalTime;
+        capacity=cargoShip.getCapacity();
+        chargesPerTonne=cargoShip.getChargesPerTonne();
+        bookedCapacity=cargoShip.getBookedCapacity();
+        from=cargoShip.getFrom();
+        to=cargoShip.getTo();
+        departureTime=cargoShip.getDepartureTime();
+        arrivalTime=cargoShip.getArrivalTime();
+        try{
+            String Query="INSERT INTO cargoShipsTable(fromLocation,toLocation,departureTime,arrivalTime,capacity,chargesPerTonne,bookedCapacity) VALUES('"+from+
+            "','"+to+"','"+departureTime+"','"+arrivalTime+"','"+capacity+"','"+chargesPerTonne+"','"+bookedCapacity+"')";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;
+        }
         return true;
     }
     public boolean addCruiseShip(CruiseShip cruiseShip){
-
-        String Query="INSERT INTO cruiseShipsTable(fromLocation,toLocation,departureTime,arrivalTime,totalSeats,cost,bookedSeats) VALUES('"+cruiseShip.from+
-        "','"+cruiseShip.to+"','"+cruiseShip.departureTime+"','"+cruiseShip.arrivalTime+"','"+cruiseShip.totalSeats+"','"+cruiseShip.costPerPerson+"','"+cruiseShip.bookedSeats+"')";
-        executeQuery(Query);
-        // return false ;
+        int totalSeats,costPerPerson,bookedSeats;
+        String from,to;
+        Long departureTime,arrivalTime;
+        totalSeats=cruiseShip.getTotalSeats();
+        costPerPerson=cruiseShip.getCostPerPerson();
+        bookedSeats=cruiseShip.getBookedSeats();
+        from=cruiseShip.getFrom();
+        to=cruiseShip.getTo();
+        departureTime=cruiseShip.getDepartureTime();
+        arrivalTime=cruiseShip.getArrivalTime();
+        try{
+            String Query="INSERT INTO cruiseShipsTable(fromLocation,toLocation,departureTime,arrivalTime,totalSeats,cost,bookedSeats) VALUES('"+from+
+            "','"+to+"','"+departureTime+"','"+arrivalTime+"','"+totalSeats+"','"+costPerPerson+"','"+bookedSeats+"')";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;            
+        }
         return true;
     }
     
-    public boolean removeCargoShip(int shipId){
-        String Query="DELETE FROM cargoShipsTable WHERE cargoShipID='"+shipId+"'";
-        // List<Map<String, Object>> resultList = executeQuery(Query);
-        executeQuery(Query);
-        // return false ;
+    public boolean removeCargoShip(int shipID){
+        try{
+            String Query="DELETE FROM cargoShipsTable WHERE cargoShipID='"+shipID+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;
+        }
         return true;
     }
-    public boolean removeCruiseShip(int shipId){
-        String Query="DELETE FROM cruiseShipsTable WHERE cruiseShipID='"+shipId+"'";
-        // List<Map<String, Object>> resultList = executeQuery(Query);
-        executeQuery(Query);
-        // return false ;
+    public boolean removeCruiseShip(int shipID){
+        try{
+            String Query="DELETE FROM cruiseShipsTable WHERE cruiseShipID='"+shipID+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;
+        }
         return true;
     }
 
         
     public boolean updateCargoShip(CargoShip cargoShip){
-        String Query="UPDATE cargoShipsTable SET fromLocation='"+cargoShip.from+"',toLocation='"+cargoShip.to+"',departureTime='"+cargoShip.departureTime+"',arrivalTime='"+cargoShip.arrivalTime
-        +"',capacity='"+cargoShip.capacity+"',chargesPerTonne='"+cargoShip.chargesPerTonne+"',bookedCapacity='"+cargoShip.bookedCapacity+"' WHERE cargoShipID='"+cargoShip.shipId+"'";
-        executeQuery(Query);
-        
-        // return false ;
+        try{
+            String Query="UPDATE cargoShipsTable SET fromLocation='"+cargoShip.getFrom()+"',toLocation='"+cargoShip.getTo()+"',departureTime='"+cargoShip.getDepartureTime()
+            +"',arrivalTime='"+cargoShip.getArrivalTime()+"',capacity='"+cargoShip.getCapacity()+"',chargesPerTonne='"+cargoShip.getChargesPerTonne()+"',bookedCapacity='"+cargoShip.getBookedCapacity()+"' WHERE cargoShipID='"+cargoShip.getShipID()+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;
+        }
         return true;
     }
     public boolean updateCruiseShip(CruiseShip cruiseShip){
-        String Query="UPDATE cruiseShipsTable SET fromLocation='"+cruiseShip.from+"',toLocation='"+cruiseShip.to+"',departureTime='"+cruiseShip.departureTime+"',arrivalTime='"+cruiseShip.arrivalTime
-        +"',totalSeats='"+cruiseShip.totalSeats+"',cost='"+cruiseShip.costPerPerson+"',bookedSeats='"+cruiseShip.bookedSeats+"' WHERE cruiseShipID='"+cruiseShip.shipId+"'";
-        executeQuery(Query);
-        
-        // return false ;
+        try{   
+            String Query="UPDATE cruiseShipsTable SET fromLocation='"+cruiseShip.getFrom()+"',toLocation='"+cruiseShip.getTo()+"',departureTime='"+cruiseShip.getDepartureTime()+"',arrivalTime='"+cruiseShip.getArrivalTime()
+            +"',totalSeats='"+cruiseShip.getTotalSeats()+"',cost='"+cruiseShip.getCostPerPerson()+"',bookedSeats='"+cruiseShip.getBookedSeats()+"' WHERE cruiseShipID='"+cruiseShip.getShipID()+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false ;
+        }
         return true;
     }
     public boolean cancelCruiseBoooking(int bookingID){
         String Query="UPDATE cruiseBookingTable SET statusFlag='"+3+"' WHERE cruiseShipID='"+bookingID+"'";
-        executeQuery(Query);
+        executeUpdate(Query);
         return true;
     }
     public boolean cancelCargoBoooking(int bookingID){
         String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoShipID='"+bookingID+"'";
-        executeQuery(Query);
+        executeUpdate(Query);
         return true;
     }
     public int getUserID(String emailID)
@@ -217,7 +260,21 @@ public class Repository extends Database implements Dao {
         }
         return result;
     }
+    public int getAdminID(String emailID)
+    {
+        String Query="SELECT adminID FROM adminTable WHERE email='"+emailID+"'";
+        int result=0;
+        try{
+        List<Map<String, Object>> resultList = executeQuery(Query);
+        result = Integer.parseInt(resultList.get(0).get("adminID").toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
 
+    /*
 
     public void cleanUpBookings(){
 
@@ -230,6 +287,7 @@ public class Repository extends Database implements Dao {
             e.printStackTrace();
         }
     }
+    */
 }
 
 

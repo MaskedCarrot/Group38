@@ -2,21 +2,21 @@ package himanshu;
 
 public abstract class Ship
 {
-	private int shipId;
-	private String from;
-	private String to;
-	private Long departureTime;
-	private Long arrivalTime;
+	protected int shipID;
+	protected String from;
+	protected String to;
+	protected Long departureTime;
+	protected Long arrivalTime;
 
-	Ship() {
+	public Ship() {
 		shipID = -1;
 		from = "";
 		to = "";
-		departureTime = -1;
-		arrivalTime = -1;
+		departureTime = -1L;
+		arrivalTime = -1L;
 	}
 
-	Ship(int shipID, String from, String to, Long departureTime, Long arrivalTime) {
+	public Ship(int shipID, String from, String to, Long departureTime, Long arrivalTime) {
 		this.shipID = shipID;
 		this.from = from;
 		this.to = to;
@@ -24,8 +24,8 @@ public abstract class Ship
 		this.arrivalTime = arrivalTime;
 	}
 
-	public int getShipId() {
-		return shipId;
+	public int getShipID() {
+		return shipID;
 	}
 
 	public String getFrom() {

@@ -1,4 +1,5 @@
 package himanshu;
+import apoorv.Util;
 
 // import java.time.*;
 
@@ -8,20 +9,23 @@ public class CargoShip extends Ship
 	private int chargesPerTonne;
 	private int bookedCapacity;
 
-	CargoShip() {
+	public CargoShip() {
 		super();
 		capacity = -1;
 		chargesPerTonne = -1;
 		bookedCapacity = -1;
 	}
 	
-	CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity, int chargesPerTonne, int bookedCapacity) {
+	public CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity, int chargesPerTonne, int bookedCapacity) {
 		super(shipID, from, to, departureTime, arrivalTime);
 		this.capacity = capacity;
 		this.chargesPerTonne = chargesPerTonne;
 		this.bookedCapacity = bookedCapacity;
 	}
 
+	public void addShip() {
+		//
+	}
 
 	public int getCapacity() {
 		return capacity;
@@ -33,8 +37,7 @@ public class CargoShip extends Ship
 
 	public int getBookedCapacity() {
 		return bookedCapacity;
-	}
-	
+	}	
 
 	/*
 	public void addShip()

@@ -9,8 +9,8 @@ interface Dao  {
     boolean checkUserCredentials(String userEmail , String password);
     boolean checkAdminCredentials(String adminEmail  , String password);
 
-    boolean bookCruiseShip(int shipId , int cost ,int userId , int status_flag);
-    boolean bookCargoShip(int shipId , double cost , int userId, int status_flag);
+    boolean bookCruiseShip(int shipID , int cost ,int userID , int status_flag);
+    boolean bookCargoShip(int shipID , int cost , int userID, int status_flag);
     
     ArrayList<CargoShip> listAllCargoShips(String to , String from);
     ArrayList<CruiseShip> listAllCruiseShips(String to , String from);
@@ -18,8 +18,8 @@ interface Dao  {
     boolean addCargoShip(CargoShip cargoShip);
     boolean addCruiseShip(CruiseShip cruiseShip);
     
-    boolean removeCargoShip(int shipId);
-    boolean removeCruiseShip(int shipId);
+    boolean removeCargoShip(int shipID);
+    boolean removeCruiseShip(int shipID);
 
         
     boolean updateCargoShip(CargoShip cargoShip);

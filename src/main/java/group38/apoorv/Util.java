@@ -1,22 +1,25 @@
-package src.main.java.group38.apoorv;
+package apoorv;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class Util {
 
-        public long getCurrentTimeInMilli(){
-                Date date = new Date();
-                return date.getTime();
+        public long getCurrentTimeInMinutes(){
+                int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                int minutes = Calendar.getInstance().get(Calendar.MINUTE);
+                return Long.valueOf(hour * 60 + minutes); 
 
         }
 
-        public long convertDateToMilli(Date date){
-                return date.getTime();
+        public long convertTimeToMinutes(long hh, long mm) {
+                return Long.valueOf(hh * 60 + mm);
         }
 
-        public Date convertMilliToDate(Long milli){
 
-                return null;
+        public String convertMinuteToTime(int minutes){
+                int hour = minutes%60;
+                int min = minutes/60;
+                return hour+":"+min;
         }
-        
+
 }
