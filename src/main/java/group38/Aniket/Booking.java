@@ -4,7 +4,7 @@ abstract class Booking
 {
 	public int bookingID;
 	public int shipID;
-	public int userID;
+	public String email;
 	public boolean isWaiting;
 	/*
 	public abstract void Book();

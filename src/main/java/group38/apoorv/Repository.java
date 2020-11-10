@@ -1,20 +1,20 @@
-package apoorv;
+package group38.apoorv;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-// import Ritik.user;
-import himanshu.CargoShip;
-import himanshu.CruiseShip;
-import Aniket.CruiseBooking;
-import Aniket.CargoBooking;
+import group38.himanshu.CargoShip;
+import group38.himanshu.CruiseShip;
+import group38.Aniket.CruiseBooking;
+import group38.Aniket.CargoBooking;
+
 
 public class Repository extends Database implements Dao {
 
 
 
-    public Boolean checkUserCredentials(int userId , String password){
-        String Query = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userID = "+userId+" and password = \""+password+"\"";
+    public Boolean checkUserCredentials(String userEmail , String password){
+        String Query = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userEmail = "+userEmail+" and password = \""+password+"\"";
         List<Map<String, Object>> resultList = executeQuery(Query);
         Boolean b = false;
         try{
@@ -28,8 +28,8 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public Boolean checkAdminCreadentials(int adminId  , String password){
-        String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE adminId = "+adminId+" and password = \""+password+"\"";
+    public Boolean checkAdminCreadentials(String adminEmail  , String password){
+        String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE admin = "+adminEmail+" and password = \""+password+"\"";
         List<Map<String, Object>> resultList = executeQuery(Query);
         Boolean b = false;
         try{
