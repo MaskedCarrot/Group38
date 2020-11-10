@@ -16,7 +16,7 @@ interface Dao  {
     ArrayList<CruiseShip> listAllCruiseShips(String to , String from);
 
     Boolean addCargoShip(CargoShip cargoShip);
-    Boolean addCruissShip(CruiseShip cruiseShip);
+    Boolean addCruiseShip(CruiseShip cruiseShip);
     
     Boolean removeCargoShip(int shipId);
     Boolean removeCruiseShip(int shipId);
