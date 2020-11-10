@@ -118,7 +118,7 @@ public class Repository extends Database implements Dao {
         for(int i =0 ;i<resultList.size() ;i++){
             CruiseShip cruiseShip = new CruiseShip();
             Map<String, Object> row = resultList.get(i);
-
+    
             cruiseShip.shipId = convertObjectToInt(row.get("cargoShipID"));
             cruiseShip.from = convertObjectToString(row.get("fromLocation"));
             cruiseShip.to = convertObjectToString(row.get("toLocation"));
