@@ -1,4 +1,4 @@
-# Group38
+# Group 38-7
 <h4> Ubuntu </h4>
 
  `sudo apt-get install git`
