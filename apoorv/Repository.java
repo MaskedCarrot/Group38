@@ -157,18 +157,36 @@ public class Repository extends Database implements Dao {
     }
     
     public Boolean removeCargoShip(int shipId){
-        return false ;
+        String Query="DELETE FROM cargoShipsTable WHERE cargoShipID='"+shipId+"'";
+        // List<Map<String, Object>> resultList = executeQuery(Query);
+        executeQuery(Query);
+        // return false ;
+        return true;
     }
     public Boolean removeCruiseShip(int shipId){
-        return false ;
+        String Query="DELETE FROM cruiseShipsTable WHERE cruiseShipID='"+shipId+"'";
+        // List<Map<String, Object>> resultList = executeQuery(Query);
+        executeQuery(Query);
+        // return false ;
+        return true;
     }
 
         
     public Boolean updateCargoShip(CargoShip cargoShip){
-        return false ;
+        String Query="UPDATE cargoShipsTable SET fromLocation='"+cargoShip.from+"',toLocation='"+cargoShip.to+"',departureTime='"+cargoShip.departureTime+"',arrivalTime='"+cargoShip.arrivalTime
+        +"',capacity='"+cargoShip.capacity+"',chargesPerTonne='"+cargoShip.chargesPerTonne+"',bookedCapacity='"+cargoShip.bookedCapacity+"' WHERE cargoShipID='"+cargoShip.shipId+"'";
+        executeQuery(Query);
+        
+        // return false ;
+        return true;
     }
     public Boolean updateCruiseShip(CruiseShip cruiseShip){
-        return false ;
+        String Query="UPDATE cruiseShipsTable SET fromLocation='"+cruiseShip.from+"',toLocation='"+cruiseShip.to+"',departureTime='"+cruiseShip.departureTime+"',arrivalTime='"+cruiseShip.arrivalTime
+        +"',totalSeats='"+cruiseShip.totalSeats+"',cost='"+cruiseShip.costPerPerson+"',bookedSeats='"+cruiseShip.bookedSeats+"' WHERE cruiseShipID='"+cruiseShip.shipId+"'";
+        executeQuery(Query);
+        
+        // return false ;
+        return true;
     }
 
 
