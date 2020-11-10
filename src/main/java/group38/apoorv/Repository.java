@@ -14,14 +14,15 @@ public class Repository extends Database implements Dao {
 
 
     public Boolean checkUserCredentials(int userId , String password){
-        String Query = "SELECT COUNT(userID) as \"userCount\" from userTable WHERE userID = "+userId+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuery(Query);
-        Boolean b = false;
         try{
+            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE userID = "+userId+" AND password = \""+password+"\"";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            boolean b = false;
             int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
             if(result == 1 )
                 b = true;
-        }catch(Exception e){
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
         return b;
@@ -29,14 +30,15 @@ public class Repository extends Database implements Dao {
 
 
     public Boolean checkAdminCreadentials(int adminId  , String password){
-        String Query = "SELECT COUNT(adminId) as \"adminCount\" from adminTable WHERE adminId = "+adminId+" and password = \""+password+"\"";
-        List<Map<String, Object>> resultList = executeQuery(Query);
-        Boolean b = false;
         try{
+            String Query = "SELECT COUNT(adminId) AS \"adminCount\" FROM adminTable WHERE adminId = "+adminId+" AND password = \""+password+"\"";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            boolean b = false;
             int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
             if(result == 1 )
                 b = true;
-        }catch(Exception e){
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
         return b;
@@ -189,5 +191,15 @@ public class Repository extends Database implements Dao {
         return true;
     }
 
-
+    public boolean cancelCruiseBoooking(int bookingID){
+        String Query="UPDATE cruiseBookingTable SET statusFlag='"+3+"' WHERE cruiseShipID='"+bookingID+"'";
+        executeQuery(Query);
+        return true;
+    }
+    public boolean cancelCargoBoooking(int bookingID){
+        String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoShipID='"+bookingID+"'";
+        executeQuery(Query);
+        return true;
+    }
 }
+//statusofbooking(userID)
