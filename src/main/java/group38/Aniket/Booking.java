@@ -2,7 +2,7 @@ package Aniket;
 
 abstract class Booking
 {
-	public int bookingID
+	public int bookingID;
 	public int shipID;
 	public int userId;
 	public boolean isWaiting;
