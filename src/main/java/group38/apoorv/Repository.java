@@ -46,47 +46,32 @@ public class Repository extends Database implements Dao {
 
 
     public boolean bookCruiseShip(int shipID , int cost , int userID , int status_flag){
-        // CruiseBooking booking = new CruiseBooking();
-        // booking.shipID = shipId;
-        // booking.userId  = userId;
-        // booking.cost = cost;
-        // booking.isWaiting = isWaiting;//removed?????
-
-        // System.out.println("Enter number of tonnes to be Booked: ");
-        // int space=sc.nextInt();
-        //CALCULATE COST
-
-        // String Query="SELECT COUNT(cruiseBookingID) AS Seats_Booked FROM cruiseBookingTable WHERE cruiseShipID='"+shipId+"'";
-        // List<Map<String, Object>> resultList = executeQuery(Query);
-        // try{
-        //     int result = Integer.parseInt(resultList.get(0).get("Seats_Booked").toString());
-        //     Query="SELECT totalSeats FROM cruiseShipTable WHERE cruiseShipID='"+shipId+"'";
-        //     resultList = executeQuery(Query);
-        //     int result2 = Integer.parseInt(resultList.get(0).get("totalSeats").toString());
-        //     if(result<result2)
-        //     {
-        //         // isWaiting=false;
-        //     }
-        //     else
-        //     {
-        //         // isWaiting=true;
-        //     }
-        //     Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(";
-        // }catch(Exception e){
-        //     e.printStackTrace();
-        // }
-        return false ;
-        
+        assert(status_flag==1||status_flag==2);
+        String Query;
+        try{
+            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+status_flag+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
     
 
     public boolean bookCargoShip(int shipID , int cost, int userID, int status_flag){
-        // CargoBooking booking=new CargoBooking();
-        // booking.shipID = shipId;
-        // booking.userId  = userId;
-        // booking.cost = cost;
-        // booking.isWaiting = isWaiting;//removed?????
-        return false ;
+        assert(status_flag==1||status_flag==2);
+        String Query;
+        try{
+            Query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+status_flag+"'";
+            executeUpdate(Query);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
    
@@ -240,6 +225,7 @@ public class Repository extends Database implements Dao {
     }
     public boolean cancelCruiseBoooking(int bookingID){
         String Query="UPDATE cruiseBookingTable SET statusFlag='"+3+"' WHERE cruiseShipID='"+bookingID+"'";
+        //String nextQuerry = "SELECT seats , cruiseShipID FROM cruiseBookingTable WHERE cruiseShipID='"+bookingID+"'";
         executeUpdate(Query);
         return true;
     }
@@ -272,22 +258,52 @@ public class Repository extends Database implements Dao {
         }
         return result;
     }
+
     
 
+    public boolean cancelCargoBooking(int bookingID){
+        int shipID;
+        int statusFlag;
+        int capacity;
+        String Query = "SELECT statusFlag , cargoShipID FROM cargoBookingTable WHERE cargoBookingID = "+bookingID;
+            try{
+                List<Map<String, Object>> resultList = executeQuery(Query);
+                Map<String, Object> row = resultList.get(0);
+                shipID = convertObjectToInt(row.get("cargoShipID"));
+                statusFlag = convertObjectToInt(row.get("statusFlag"));
+                capacity = convertObjectToInt(row.get("capacity"));
+                if(statusFlag == 1){
+                    String nextQuery = "DELETE * FROM cargoBookingTable WHERE cargoBookingID = "+bookingID;
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return true;
+    }
+    
     /*
 
-    public void cleanUpBookings(){
+    public void refreshBookings(){
 
-        long currnetTIme = Util.getCurrentTimeInMilli()
+        long currnetTIme = Util.getCurrentTimeInMinutes()
 
-        String query = "UPDATE cruiseBookingTable SET statusFlag = "+3+"WHERE statusFlag = "2 +"and "; 
+        String query = "UPDATE cruiseBookingTable SET statusFlag = "+3+"WHERE statusFlag = "2 +"and ";//select * from cargoSHipTable
         try {
+            executeUpdate(querry);
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    public void listAllUserBookings(){
+
+        String qe
+        
+    }
     */
+
 }
 
 

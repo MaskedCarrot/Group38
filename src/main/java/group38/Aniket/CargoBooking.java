@@ -2,6 +2,14 @@ package Aniket;
 
 public class CargoBooking extends Booking
 {
+
+	public CargoBooking(int bookingID , int shipID , int userID , int statusFlag , int capacity , int cost){
+		super(bookingID , shipID , userID , statusFlag);
+		this.capacity  =capacity;
+		this.cost = cost;
+
+	}
+	
 	public int capacity;
 	public int cost;
 	/*

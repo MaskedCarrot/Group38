@@ -24,6 +24,14 @@ public abstract class Ship
 		this.arrivalTime = arrivalTime;
 	}
 
+	public abstract void addShip();
+	public abstract void removeShip();
+	public abstract void updateShip();
+	// public abstract void searchShipsByDepartureTime();
+	// public abstract void searchShipsByArrivalTime();
+	// public abstract void searchShipsBySource();
+	// public abstract void searchShipsByDestination();
+
 	public int getShipID() {
 		return shipID;
 	}
@@ -43,10 +51,4 @@ public abstract class Ship
 	public Long getArrivalTime() {
 		return arrivalTime;
 	}
-
-	public abstract void addShip();
-	// public abstract void searchShipsByDepartureTime();
-	// public abstract void searchShipsByArrivalTime();
-	// public abstract void searchShipsBySource();
-	// public abstract void searchShipsByDestination();
 }

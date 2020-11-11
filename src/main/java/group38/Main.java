@@ -32,29 +32,27 @@ public class Main {
 		System.out.print("Enter password: ");
     	String password = sc.next();
         if (choice == 1) {
-			int userID = repository.getUserID(emailID);
         	while (!repository.checkUserCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
 		    	emailID = sc.next();
-				userID = repository.getUserID(emailID);
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
 
+			int userID = repository.getUserID(emailID);
         	System.out.println("User login successful.");
         	userFunctionality(userID, password);
         } else {
-			int adminID = repository.getAdminID(emailID);
         	while (!repository.checkAdminCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
 		    	emailID = sc.next();
-				adminID = repository.getAdminID(emailID);
 		    	System.out.print("Enter password: ");
 		    	password = sc.next();
         	}
 
+			int adminID = repository.getAdminID(emailID);
         	System.out.println("Admin login successful.");
         	adminFunctionality(adminID, password);
         }
@@ -110,9 +108,20 @@ public class Main {
 
 			CruiseShip cruiseShip = new CruiseShip();
 			CargoShip cargoShip = new CargoShip();
-			if (choice == 1) {
+			if (choice == 1)
 				cruiseShip.addShip();
-			}
+			else if (choice == 2)
+				cargoShip.addShip();
+			else if (choice == 3)
+				cruiseShip.removeShip();
+			else if (choice == 4)
+				cargoShip.removeShip();
+			else if (choice == 5)
+				cruiseShip.updateShip();
+			else if (choice == 6)
+				cargoShip.updateShip();
+			else
+				System.out.println("Invalid choice.");
     	}
     }
 }

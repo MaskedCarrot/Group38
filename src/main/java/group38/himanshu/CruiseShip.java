@@ -23,8 +23,8 @@ public class CruiseShip extends Ship
 	}
 
 	public void addShip() {
-		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter source: ");
+		Scanner sc = new Scanner(System.in);
 		from = sc.nextLine();
 		System.out.print("Enter destination: ");
 		to = sc.nextLine();
@@ -49,11 +49,56 @@ public class CruiseShip extends Ship
 		bookedSeats = 0;
 
 		Repository repository = new Repository();
-		boolean success = repository.addCruiseShip(this);
-		if (success)
+		if (repository.addCruiseShip(this))
 			System.out.println("Ship added successfully.");
 		else
 			System.out.println("Could not add ship.");
+	}
+
+	public void removeShip() {
+		System.out.print("Enter ship ID: ");
+		Scanner sc = new Scanner(System.in);
+		shipID = sc.nextInt();
+		Repository repository = new Repository();
+		if (repository.removeCruiseShip(shipID))
+			System.out.println("Ship removed successfully.");
+		else
+			System.out.println("Could not remove ship.");
+	}
+
+	public void updateShip() {
+		System.out.print("Enter ship ID: ");
+		Scanner sc = new Scanner(System.in);
+		shipID = sc.nextInt();
+		System.out.print("Enter new source: ");
+		from = sc.nextLine();
+		System.out.print("Enter new destination: ");
+		to = sc.nextLine();
+
+		System.out.print("Enter new departure time in HH:MM format: ");
+		String time = sc.nextLine();
+		int hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+		int mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		Util u = new Util();
+		departureTime = u.convertTimeToMinutes(hh, mm);
+
+		System.out.print("Enter new arrival time in HH:MM format: ");
+		time = sc.nextLine();
+		hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+		mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		arrivalTime = u.convertTimeToMinutes(hh, mm);
+
+		System.out.print("Enter new total seats: ");
+		totalSeats = sc.nextInt();
+		System.out.print("Enter new cost per person: ");
+		costPerPerson = sc.nextInt();
+		bookedSeats = 0;
+
+		Repository repository = new Repository();
+		if (repository.updateCruiseShip(this))
+			System.out.println("Ship updated successfully.");
+		else
+			System.out.println("Could not update ship.");
 	}
 
 	public int getTotalSeats() {
