@@ -72,6 +72,7 @@ public class CargoShip extends Ship
 		System.out.print("Enter ship ID: ");
 		Scanner sc = new Scanner(System.in);
 		shipID = sc.nextInt();
+		sc.nextLine();
 		System.out.print("Enter new source: ");
 		from = sc.nextLine();
 		System.out.print("Enter new destination: ");

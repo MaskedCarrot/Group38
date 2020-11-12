@@ -7,7 +7,7 @@ import himanshu.CargoShip;
 import himanshu.CruiseShip;
 import Aniket.CruiseBooking;
 import Aniket.CargoBooking;
-
+import Ritik.User;
 
 
 public class Repository extends Database implements Dao {
@@ -27,7 +27,20 @@ public class Repository extends Database implements Dao {
         }
         return b;
     }
-
+    public boolean isUniqueEmail(String userEmail)
+    {
+        boolean b = false;
+        try{
+            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
+            if(result == 1 )
+                b = true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return b;
+    }
 
     public boolean checkAdminCredentials(String adminEmail, String password){
         boolean b = false;
@@ -73,9 +86,7 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
-
-   
-    
+  
     
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
         ArrayList<CargoShip> list = new ArrayList<>();
@@ -280,7 +291,13 @@ public class Repository extends Database implements Dao {
             }
             return true;
     }
-    
+
+
+    public boolean addUser(User user){
+        String querry = "INSERT INTO "
+    }
+
+
     /*
 
     public void refreshBookings(){
