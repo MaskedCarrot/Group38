@@ -94,3 +94,11 @@ insert into cruiseShipsTable( fromLocation , toLocation , departureTime , arriva
 ("tokyo" , "mumbai" , 209842042 , 04234234 , 433 , 34 , 343),
 ("tokyo" , "london" , 209842042 , 04234234 , 433 , 34 , 343),
 ("tokyo" , "mumbai" , 2098422342 , 0423422334 , 4332 , 323 , 3);
+
+CREATE TRIGGER add_no_of_seats
+BEFORE INSERT
+ON cruiseBookingTable
+FOR EACH ROW
+UPDATE cruiseBookingTable SET NEW.seats=(NEW.cost)/(SELECT cost FROM cruiseShipsTable WHERE cruiseShipID=NEW.cruiseShipID);
+
+insert into cruiseBookingTable(cruiseShipID,userID,seats,cost) VALUES(1,2,5,100); 
