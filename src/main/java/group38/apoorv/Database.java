@@ -17,8 +17,8 @@ class Database {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ship_booking";
     
     //User Credentials
-    private static final String USER = "maskedcarrot";
-    private static final String PASS = "oshuoshu";
+    private static final String USER = "root";
+    private static final String PASS = "#C9022cuv";
 
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 

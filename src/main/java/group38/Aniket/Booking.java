@@ -23,6 +23,17 @@ abstract class Booking
 
 	}
 
+
+
+/*
+statusFlag flags
+0 is past booking 
+1 is confirm 
+2 is wainting
+3 is cancelled 
+*/
+
+
 	/*
 	public abstract void Book();
 	public abstract void getBookingStatus();

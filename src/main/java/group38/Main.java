@@ -1,5 +1,6 @@
 package group38;
 import apoorv.*;
+import Ritik.User;
 import java.util.*;
 import himanshu.*;
 import Aniket.*;
@@ -16,16 +17,22 @@ public class Main {
     private static void loginMenu()
     {
     	System.out.println("\n1. Login as user");
-        System.out.println("2. Login as admin");
+		System.out.println("2. Login as admin");
+		System.out.println("3. Sign up");
         System.out.println("0. Exit");
-        System.out.print("Enter a choice: ");
+		System.out.print("Enter a choice: ");
+		
         int choice = sc.nextInt();
-        while (!(choice >= 0 && choice <= 2)) {
+        while (!(choice >= 0 && choice <= 3)) {
         	System.out.print("Please enter a valid choice: ");
         	choice = sc.nextInt();
         }
     	if (choice == 0)
     		return;
+
+		if (choice == 3) {
+			while (true) {
+				if (user.addUser()) {
 
         System.out.print("Enter email ID: ");
     	String emailID = sc.next();
@@ -43,7 +50,7 @@ public class Main {
 			int userID = repository.getUserID(emailID);
         	System.out.println("User login successful.");
         	userFunctionality(userID, password);
-        } else {
+		} else {
         	while (!repository.checkAdminCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
         		System.out.print("Enter email ID: ");
@@ -69,21 +76,15 @@ public class Main {
     		System.out.println("0. Logout");
 
     		System.out.print("Enter a choice: ");
-    		int choice = sc.nextInt();
+			int choice = sc.nextInt();
+			sc.nextLine();
 
 			if (choice == 0) {
 				System.out.println("Logged out successfully.");
 				loginMenu();
 				break;
 			}
-    		if (choice == 1) {
-    			CruiseShip cruiseShip;
-    			CruiseBooking cruiseBooking;
-    			System.out.print("Enter source: ");
-    			String source = sc.next();
-    			System.out.print("Enter destination: ");
-    			String destination;
-    		}
+    		// if (choice == 1)
     	}
     }
 
@@ -99,6 +100,7 @@ public class Main {
 
     		System.out.print("Enter a choice: ");
     		int choice = sc.nextInt();
+			sc.nextLine();
 
 			if (choice == 0) {
 				System.out.println("Logged out successfully.");
