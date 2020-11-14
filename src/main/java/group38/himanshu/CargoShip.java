@@ -114,8 +114,7 @@ public class CargoShip extends Ship
 
 	public int getBookedCapacity() {
 		return bookedCapacity;
-	}	
-
+	}
 	/*
 	public void addShip()
 	{

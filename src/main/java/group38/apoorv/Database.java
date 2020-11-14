@@ -17,8 +17,8 @@ class Database {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ship_booking";
     
     //User Credentials
-    private static final String USER = "root";
-    private static final String PASS = "#C9022cuv";
+    private static final String USER = "";
+    private static final String PASS = "";
 
     private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); 
 
@@ -60,21 +60,25 @@ class Database {
             rs.close();
             stmt.close();
             conn.close();
-        }catch(Exception e){
+        }
+        catch(Exception e){
             LOGGER.log(Level.WARNING ,"errors for Class.forName");
             e.printStackTrace();
-        }finally{
+        }
+        finally{
             try{
                 if(stmt!=null)
                     stmt.close();
-            }catch(SQLException se2){
+            }
+            catch(SQLException se2){
                 LOGGER.log(Level.WARNING , "SQL EXCEPTION");
                 se2.printStackTrace();
             }
             try{
                 if(conn!=null)
                     conn.close();
-            }catch(SQLException se){
+            }
+            catch(SQLException se){
                 LOGGER.log(Level.WARNING , "SQL EXCEPTION");
                 se.printStackTrace();
             }
@@ -105,21 +109,25 @@ class Database {
             //LOGGER.log(Level.INFO ,"Cleaning environment" );
             stmt.close();
             conn.close();
-        }catch(Exception e){
+        }
+        catch(Exception e){
             LOGGER.log(Level.WARNING ,"errors for Class.forName");
             e.printStackTrace();
-        }finally{
+        }
+        finally{
             try{
                 if(stmt!=null)
                     stmt.close();
-            }catch(SQLException se2){
+            }
+            catch(SQLException se2){
                 LOGGER.log(Level.WARNING , "SQL EXCEPTION");
                 se2.printStackTrace();
             }
             try{
                 if(conn!=null)
                     conn.close();
-            }catch(SQLException se){
+            }
+            catch(SQLException se){
                 LOGGER.log(Level.WARNING , "SQL EXCEPTION");
                 se.printStackTrace();
             }
