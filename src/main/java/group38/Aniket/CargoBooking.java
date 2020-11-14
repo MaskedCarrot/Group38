@@ -12,7 +12,7 @@ public class CargoBooking extends Booking
 	
 	public int capacity;
 	public int cost;
-	/*
+	
 	public void Book()
 	{
 		System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
@@ -28,7 +28,11 @@ public class CargoBooking extends Booking
 		CargoBookingDatabase DB=new CargoBookingDatabase();
 		DB.insertCargoBooking(B_id,S_id,U_id,space,cost);
 	}
-	public void getBookingStatus()
+	public void Book_After_Search(int shipID,int userID)
+	{
+		
+	}
+	/*public void getBookingStatus()
 	{
 		System.out.println("Enter Booking ID: ");
 		int ID=getIDInput();

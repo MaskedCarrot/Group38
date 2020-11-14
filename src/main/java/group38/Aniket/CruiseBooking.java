@@ -1,9 +1,21 @@
 package Aniket;
+
+import java.util.Scanner;
+import himanshu.CruiseShip;
+
 public class CruiseBooking extends Booking
 {
 	public int seats;
 	public int cost;
 	
+	public void Book_After_Search(int shipID,int userID,int costPerSeat)
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter number of seats to be Booked: ");
+		int seats = sc.nextInt();
+		cost = seats * costPerSeat;
+		
+	}
 	// public void Book()
 	// {
 	// 	System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
@@ -11,8 +23,8 @@ public class CruiseBooking extends Booking
 	// 	System.out.println("Enter your User ID: ");
 	// 	int U_id=getIDInput();
 	// 	int B_id=generateBookingID();
-	// 	System.out.println("Enter number of seats to be Booked: ");
-	// 	seats=getCapacityInput();
+		// System.out.println("Enter number of seats to be Booked: ");
+		// seats=getCapacityInput();
 	// 	//calculate cost
 
 	// 	CruiseBookingDatabase DB=new CruiseBookingDatabase();

@@ -27,6 +27,7 @@ public class Repository extends Database implements Dao {
         }
         return b;
     }
+
     public boolean isUniqueEmail(String userEmail)
     {
         boolean b = false;
@@ -57,7 +58,6 @@ public class Repository extends Database implements Dao {
     
     }
 
-
     public boolean bookCruiseShip(int shipID , int cost , int userID , int status_flag){
         assert(status_flag==1||status_flag==2);
         String Query;
@@ -72,7 +72,6 @@ public class Repository extends Database implements Dao {
         return true;
     }
     
-
     public boolean bookCargoShip(int shipID , int cost, int userID, int status_flag){
         assert(status_flag==1||status_flag==2);
         String Query;
@@ -86,7 +85,6 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
-  
     
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
         ArrayList<CargoShip> list = new ArrayList<>();
@@ -139,7 +137,6 @@ public class Repository extends Database implements Dao {
         }
         return list;        
     }
-
 
     public boolean addCargoShip(CargoShip cargoShip){
         int capacity,chargesPerTonne,bookedCapacity;
@@ -197,6 +194,7 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
+
     public boolean removeCruiseShip(int shipID){
         try{
             String Query="DELETE FROM cruiseShipsTable WHERE cruiseShipID='"+shipID+"'";
@@ -208,7 +206,6 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
-
         
     public boolean updateCargoShip(CargoShip cargoShip){
         try{
@@ -222,6 +219,7 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
+
     public boolean updateCruiseShip(CruiseShip cruiseShip){
         try{   
             String Query="UPDATE cruiseShipsTable SET fromLocation='"+cruiseShip.getFrom()+"',toLocation='"+cruiseShip.getTo()+"',departureTime='"+cruiseShip.getDepartureTime()+"',arrivalTime='"+cruiseShip.getArrivalTime()
@@ -234,17 +232,20 @@ public class Repository extends Database implements Dao {
         }
         return true;
     }
+
     public boolean cancelCruiseBoooking(int bookingID){
         String Query="UPDATE cruiseBookingTable SET statusFlag='"+3+"' WHERE cruiseShipID='"+bookingID+"'";
         //String nextQuerry = "SELECT seats , cruiseShipID FROM cruiseBookingTable WHERE cruiseShipID='"+bookingID+"'";
         executeUpdate(Query);
         return true;
     }
+
     public boolean cancelCargoBoooking(int bookingID){
         String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoShipID='"+bookingID+"'";
         executeUpdate(Query);
         return true;
     }
+    
     public int getUserID(String emailID)
     {
         String Query="SELECT userID FROM userTable WHERE email='"+emailID+"'";
@@ -257,6 +258,7 @@ public class Repository extends Database implements Dao {
         }
         return result;
     }
+
     public int getAdminID(String emailID)
     {
         String Query="SELECT adminID FROM adminTable WHERE email='"+emailID+"'";
@@ -269,8 +271,6 @@ public class Repository extends Database implements Dao {
         }
         return result;
     }
-
-    
 
     public boolean cancelCargoBooking(int bookingID){
         int shipID;
@@ -292,12 +292,9 @@ public class Repository extends Database implements Dao {
             return true;
     }
 
-
     public boolean addUser(User user){
         String querry = "INSERT INTO "
     }
-
-
     /*
 
     public void refreshBookings(){
