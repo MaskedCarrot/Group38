@@ -1,9 +1,9 @@
 package group38;
-import apoorv.*;
-import Ritik.User;
+import  group38.apoorv.*;
+import group38.Ritik.User;
 import java.util.*;
-import himanshu.*;
-import Aniket.*;
+import group38.himanshu.*;
+import group38.Aniket.*;
 
 public class Main {
 
@@ -31,13 +31,16 @@ public class Main {
     		return;
 
 		if (choice == 3) {
-			while (true) {
-				if (user.addUser()) {
+			sc.nextLine();
+			new User().signup();
+			loginMenu();
+			return;
+		}
 
-        System.out.print("Enter email ID: ");
-    	String emailID = sc.next();
+		System.out.print("Enter email ID: ");
+		String emailID = sc.next();
 		System.out.print("Enter password: ");
-    	String password = sc.next();
+		String password = sc.next();
         if (choice == 1) {
         	while (!repository.checkUserCredentials(emailID, password)) {
         		System.out.println("Invalid login details.");
@@ -72,7 +75,9 @@ public class Main {
     		System.out.println("3. Search cargo ships");
     		System.out.println("4. Search cruise ships");
     		System.out.println("5. Cancel booking");
-    		System.out.println("6. List bookings");
+    		System.out.println("6. List your bookings");
+			System.out.println("7. Check booking status");
+			System.out.println("8. Display profile");	
     		System.out.println("0. Logout");
 
     		System.out.print("Enter a choice: ");
@@ -84,7 +89,10 @@ public class Main {
 				loginMenu();
 				break;
 			}
-    		// if (choice == 1)
+                     
+			if (choice == 8) {
+				new User().displayDetails(userID);
+			}
     	}
     }
 
@@ -127,3 +135,7 @@ public class Main {
     	}
     }
 }
+
+
+//change repo = new to new Repos.
+//

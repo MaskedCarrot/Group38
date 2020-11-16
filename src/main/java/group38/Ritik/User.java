@@ -1,8 +1,6 @@
-package Ritik;
-
+package group38.Ritik;
 import java.util.Scanner;
-
-import apoorv.*;
+import group38.apoorv.*;
 
 public class User {
 	private int userID;
@@ -12,7 +10,75 @@ public class User {
 	private char gender;
 	private String email;
 	private String password;
-	
+
+	public User() {
+		userID = -1;
+		phoneNumber = -1L;
+		name = "";
+		age = -1;
+		gender = '?';
+		email = "";
+		password = "";
+	}
+
+	public User(int userID, long phoneNumber, String name, int age, char gender, String email, String password) {
+		this.userID = userID;
+		this.phoneNumber = phoneNumber;
+		this.name = name;
+		this.age = age;
+		this.gender = gender;
+		this.email = email;
+		this.password = password;
+	}
+
+	public void signup() {
+		System.out.print("Enter name: ");
+		Scanner sc = new Scanner(System.in);
+		name = sc.nextLine();
+		System.out.print("Enter phone number: ");
+		phoneNumber = sc.nextLong();
+		System.out.print("Enter age: ");
+		age = sc.nextInt();
+		System.out.print("Enter gender (M or F): ");
+		sc.nextLine();
+		gender = sc.nextLine().charAt(0);
+		while (gender != 'M' && gender != 'F') {
+			System.out.print("Please enter M or F: ");
+			gender = sc.nextLine().charAt(0);
+		}
+
+		System.out.print("Enter email ID: ");
+		email = sc.next();
+		System.out.print("Enter password (should not contain spaces): ");
+		password = sc.next();
+		Repository repository = new Repository();
+		while (!repository.isUniqueEmail(email)) {
+			System.out.print("Email ID already registered, enter new email ID: ");
+			email = sc.next();
+			System.out.print("Enter password (should not contain spaces): ");
+			password = sc.next();
+		}
+
+		if (repository.addUser(this))
+			System.out.println("Signed up successfully.");
+		else
+			System.out.println("Sign up failed.");
+	}
+
+	public void displayDetails(int userID) {
+		Repository repository = new Repository();
+		User user = repository.displayUserDetails(userID);
+		if (user == null) {
+			System.out.println("Could not display user details.");
+			return;
+		}
+
+		System.out.println("Name: " + user.name);
+		System.out.println("Age: " + user.age);
+		System.out.println("Gender: " + user.gender);
+		System.out.println("Phone number: " + user.phoneNumber);
+	}
+
 	public int getUserID() {
   		return userID;
 	}
@@ -43,39 +109,5 @@ public class User {
 
 	public String getPassword() {
   		return password;
-	}
-
-	public boolean addUser(){
-		Repository repository = new Repository();
-		Scanner sc = new Scanner(System.in);
-		User user = new User();
-		System.out.print("Enter name: ");
-		user.name = sc.nextLine();
-		System.out.print("Enter phone number: ");
-		user.phoneNumber = sc.nextLong();
-		System.out.print("Enter age: ");
-		user.age = sc.nextInt();
-		System.out.print("Enter gender (M or F): ");
-		user.gender = sc.nextLine().charAt(0);
-		while(user.gender!='M'&&user.gender!='F'){
-			System.out.print("Enter gender (M or F): ");
-			user.gender = sc.nextLine().charAt(0);
-		}
-		System.out.print("Enter Password (No Spaces Allowed)");
-		user.password = sc.next();
-		System.out.println("Enter Email");
-		user.email = sc.nextLine();
-		while (!repository.isUniqueEmail(user.email)) {
-			System.out.println("Email Already Registered!, Enter New Email");
-			user.email=sc.nextLine();
-		}
-		boolean b=repository.addUser(this);
-		return b;
-	} 
-	public boolean displayDetails(int userID)
-	{
-		Repository repository = new Repository();
-		boolean b=repository.addUser(user);
-		return b;
 	}
 }

@@ -1,5 +1,5 @@
-package himanshu;
-import apoorv.*;
+package group38.himanshu;
+import group38.apoorv.*;
 import java.util.Scanner;
 
 public class CruiseShip extends Ship

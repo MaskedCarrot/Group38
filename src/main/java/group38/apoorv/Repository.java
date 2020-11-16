@@ -1,13 +1,13 @@
-package apoorv;
+package group38.apoorv;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import himanshu.CargoShip;
-import himanshu.CruiseShip;
-import Aniket.CruiseBooking;
-import Aniket.CargoBooking;
-import Ritik.User;
+import group38.himanshu.CargoShip;
+import group38.himanshu.CruiseShip;
+import group38.Aniket.CruiseBooking;
+import group38.Aniket.CargoBooking;
+import group38.Ritik.User;
 
 
 public class Repository extends Database implements Dao {
@@ -28,6 +28,29 @@ public class Repository extends Database implements Dao {
         return b;
     }
 
+    public User displayUserDetails(int userID)
+    {
+        long phoneNumber;
+	    String name;
+	    int age;
+	    char gender;
+	    String email;
+	    String password;
+        try{
+            String Query = "SELECT * FROM userTable WHERE userID = '" + userID +"'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            phoneNumber = Integer.parseInt(resultList.get(0).get("phoneNumber").toString());
+            name = resultList.get(0).get("name").toString();
+            age = Integer.parseInt(resultList.get(0).get("age").toString());
+            gender = resultList.get(0).get("gender").toString().charAt(0);
+            email = resultList.get(0).get("email").toString();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
+        return user;        
+    }
     public boolean isUniqueEmail(String userEmail)
     {
         boolean b = false;
@@ -86,23 +109,62 @@ public class Repository extends Database implements Dao {
         return true;
     }
     
-    public ArrayList<CargoShip> listAllCargoShips(String from , String to){        
+    public User CruiseBookingStatus(int bookingID)
+    {
+        int shipID,userID,seats,cost,status_flag;
+        try{
+            String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            shipID = Integer.parseInt(resultList.get(0).get("shipID").toString());
+            userID = Integer.parseInt(resultList.get(0).get("userID").toString());
+            seats = Integer.parseInt(resultList.get(0).get("seats").toString());
+            cost = Integer.parseInt(resultList.get(0).get("cost").toString());
+            email = Integer.paresultList.get(0).get("email").toString();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
+        return user;
+    }
+
+    public User CargoBookingStatus(int bookingID)
+    {
+        int shipID,userID,seats,cost,status_flag;
+        try{
+            String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            shipID = Integer.parseInt(resultList.get(0).get("shipID").toString());
+            userID = Integer.parseInt(resultList.get(0).get("userID").toString());
+            seats = Integer.parseInt(resultList.get(0).get("seats").toString());
+            cost = Integer.parseInt(resultList.get(0).get("cost").toString());
+            email = Integer.paresultList.get(0).get("email").toString();
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
+        return user;
+    }
+
+
+    public ArrayList<CargoShip> listAllCargoShips(String from , String to){
         ArrayList<CargoShip> list = new ArrayList<>();
         try { 
             String Query = "SELECT * FROM cargoShipsTable WHERE toLocation = \""+to+"\" AND fromLocation = \""+from+"\" ORDER BY arrivalTime ASC";
             List<Map<String, Object>> resultList = executeQuery(Query);
 
-            for(int i =0 ;i<resultList.size() ;i++){
-                Map<String, Object> row = resultList.get(i);
+            for (Map<String, Object> row : resultList) {
                 CargoShip cargoShip = new CargoShip(
-                    convertObjectToInt(row.get("cargoShipID")),
-                    convertObjectToString(row.get("fromLocation")),
-                    convertObjectToString(row.get("toLocation")),
-                    convertObjectToLong(row.get("departureTime")),
-                    convertObjectToLong(row.get("arrivalTime")),
-                    convertObjectToInt(row.get("chargesPerTonne")),
-                    convertObjectToInt(row.get("capacity")),
-                    convertObjectToInt(row.get("bookedCapacity")));
+                        convertObjectToInt(row.get("cargoShipID")),
+                        convertObjectToString(row.get("fromLocation")),
+                        convertObjectToString(row.get("toLocation")),
+                        convertObjectToLong(row.get("departureTime")),
+                        convertObjectToLong(row.get("arrivalTime")),
+                        convertObjectToInt(row.get("chargesPerTonne")),
+                        convertObjectToInt(row.get("capacity")),
+                        convertObjectToInt(row.get("bookedCapacity")));
                 list.add(cargoShip);
             }
         }
@@ -112,7 +174,7 @@ public class Repository extends Database implements Dao {
         return list;
         
     }
-    
+
     public ArrayList<CruiseShip> listAllCruiseShips(String from , String to){
                 
         ArrayList<CruiseShip> list = new ArrayList<>();
@@ -120,19 +182,18 @@ public class Repository extends Database implements Dao {
         List<Map<String, Object>> resultList = executeQuery(Query);
 
 
-        for(int i =0 ;i<resultList.size() ;i++){
-            Map<String, Object> row = resultList.get(i);
+        for (Map<String, Object> row : resultList) {
             CruiseShip cruiseShip = new CruiseShip(
-                convertObjectToInt(row.get("CruiseShipID")),
-                convertObjectToString(row.get("fromLocation")),
-                convertObjectToString(row.get("toLocation")),
-                convertObjectToLong(row.get("departureTime")),
-                convertObjectToLong(row.get("arrivalTime")),
-                convertObjectToInt(row.get("totalSeats")), 
-                convertObjectToInt(row.get("cost")),
-                convertObjectToInt(row.get("bookedSeats"))
+                    convertObjectToInt(row.get("CruiseShipID")),
+                    convertObjectToString(row.get("fromLocation")),
+                    convertObjectToString(row.get("toLocation")),
+                    convertObjectToLong(row.get("departureTime")),
+                    convertObjectToLong(row.get("arrivalTime")),
+                    convertObjectToInt(row.get("totalSeats")),
+                    convertObjectToInt(row.get("cost")),
+                    convertObjectToInt(row.get("bookedSeats"))
             );
-        
+
             list.add(cruiseShip);
         }
         return list;        
@@ -272,51 +333,45 @@ public class Repository extends Database implements Dao {
         return result;
     }
 
-    public boolean cancelCargoBooking(int bookingID){
-        int shipID;
-        int statusFlag;
-        int capacity;
-        String Query = "SELECT statusFlag , cargoShipID FROM cargoBookingTable WHERE cargoBookingID = "+bookingID;
-            try{
-                List<Map<String, Object>> resultList = executeQuery(Query);
-                Map<String, Object> row = resultList.get(0);
-                shipID = convertObjectToInt(row.get("cargoShipID"));
-                statusFlag = convertObjectToInt(row.get("statusFlag"));
-                capacity = convertObjectToInt(row.get("capacity"));
-                if(statusFlag == 1){
-                    String nextQuery = "DELETE * FROM cargoBookingTable WHERE cargoBookingID = "+bookingID;
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            return true;
-    }
 
     public boolean addUser(User user){
-        String querry = "INSERT INTO "
-    }
-    /*
-
-    public void refreshBookings(){
-
-        long currnetTIme = Util.getCurrentTimeInMinutes()
-
-        String query = "UPDATE cruiseBookingTable SET statusFlag = "+3+"WHERE statusFlag = "2 +"and ";//select * from cargoSHipTable
-        try {
+        String querry = "INSERT INTO userTable(phoneNumber , name , age , gender, password , email) VALUES("+user.getPhoneNumber()+","+user.getName()+","+user.getAge()+","+user.getGender()+","+user.getPassword()+","+user.getEmail()+")";
+        boolean result = false;
+        try{
             executeUpdate(querry);
-            
-        } catch (Exception e) {
+            result = true;
+        }catch(Exception e){
             e.printStackTrace();
         }
+            return result;
     }
 
-
-    public void listAllUserBookings(){
-
-        String qe
-        
+    /*
+    public boolean handleBookings(){
+        String querry = ""
+        return false;
     }
     */
+
+
+    private boolean cancelLeftBookings(){
+        String querry = "UPDATE cruiseBookingTable SET statusFlag = 3 WHERE statusFlag = 2";
+        String querry2 = "UPDATE cargoBookingTable  SET statusFlag = 3 WHERE statusFlag = 2";
+        boolean result = false;
+        try{
+            executeUpdate(querry);
+            executeUpdate(querry2);
+            result = true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    
+
+
+
 
 }
 
