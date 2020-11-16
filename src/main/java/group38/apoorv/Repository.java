@@ -81,11 +81,11 @@ public class Repository extends Database implements Dao {
     
     }
 
-    public boolean bookCruiseShip(int shipID , int cost , int userID , int status_flag){
-        assert(status_flag==1||status_flag==2);
+    public boolean bookCruiseShip(int shipID , int cost , int userID , int statusFlag){
+        assert(statusFlag==1||statusFlag==2);
         String Query;
         try{
-            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+status_flag+"'";
+            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
             executeUpdate(Query);
         }
         catch(Exception e){
@@ -95,11 +95,11 @@ public class Repository extends Database implements Dao {
         return true;
     }
     
-    public boolean bookCargoShip(int shipID , int cost, int userID, int status_flag){
-        assert(status_flag==1||status_flag==2);
+    public boolean bookCargoShip(int shipID , int cost, int userID, int statusFlag){
+        assert(statusFlag==1||statusFlag==2);
         String Query;
         try{
-            Query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+status_flag+"'";
+            Query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
             executeUpdate(Query);
         }
         catch(Exception e){
@@ -111,7 +111,7 @@ public class Repository extends Database implements Dao {
     
     public User CruiseBookingStatus(int bookingID)
     {
-        int shipID,userID,seats,cost,status_flag;
+        int shipID,userID,seats,cost,statusFlag;
         try{
             String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
@@ -130,7 +130,7 @@ public class Repository extends Database implements Dao {
 
     public User CargoBookingStatus(int bookingID)
     {
-        int shipID,userID,seats,cost,status_flag;
+        int shipID,userID,seats,cost,statusFlag;
         try{
             String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
