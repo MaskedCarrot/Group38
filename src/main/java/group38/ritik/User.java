@@ -1,4 +1,4 @@
-package group38.Ritik;
+package group38.ritik;
 import java.util.Scanner;
 import group38.apoorv.*;
 

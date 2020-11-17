@@ -1,4 +1,4 @@
-package group38.Aniket;
+package group38.aniket;
 
 abstract class Booking
 {

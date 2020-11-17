@@ -5,21 +5,20 @@ import java.util.List;
 import java.util.Map;
 import group38.himanshu.CargoShip;
 import group38.himanshu.CruiseShip;
-import group38.Aniket.CruiseBooking;
-import group38.Aniket.CargoBooking;
-import group38.Ritik.User;
+import group38.ritik.User;
+import group38.aniket.CargoBooking;
+import group38.aniket.CruiseBooking;
 
 
 public class Repository extends Database implements Dao {
 
 
-
     public boolean checkUserCredentials(String userEmail , String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "' AND password = '"+password+"'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
+            String query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "' AND password = '"+password+"'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int result = convertObjectToInt(resultList.get(0).get("userCount"));
             if(result == 1 )
                 b = true;
         }catch(Exception e){
@@ -28,38 +27,36 @@ public class Repository extends Database implements Dao {
         return b;
     }
 
-    public User displayUserDetails(int userID)
-    {
-        long phoneNumber;
-	    String name;
-	    int age;
-	    char gender;
-	    String email;
-	    String password;
+    public User displayUserDetails(int userID) {
+        User user;
         try{
-            String Query = "SELECT * FROM userTable WHERE userID = '" + userID +"'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            phoneNumber = Integer.parseInt(resultList.get(0).get("phoneNumber").toString());
-            name = resultList.get(0).get("name").toString();
-            age = Integer.parseInt(resultList.get(0).get("age").toString());
-            gender = resultList.get(0).get("gender").toString().charAt(0);
-            email = resultList.get(0).get("email").toString();
+            String query = "SELECT * FROM userTable WHERE userID = '" + userID +"'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            user = new User(
+                userID,
+                convertObjectToLong(resultList.get(0).get("phoneNumber")),
+                convertObjectToString(resultList.get(0).get("name")),
+                convertObjectToInt(resultList.get(0).get("age")),
+                convertObjectToString(resultList.get(0).get("gender")).charAt(0),
+                convertObjectToString(resultList.get(0).get("email")),
+                ""
+            );
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
+        
         return user;        
     }
-    public boolean isUniqueEmail(String userEmail)
-    {
-        boolean b = false;
+
+    public boolean isUniqueEmail(String userEmail) {
+        boolean b = true;
         try{
-            String Query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            int result = Integer.parseInt(resultList.get(0).get("userCount").toString());
+            String query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int result = convertObjectToInt(resultList.get(0).get("userCount"));
             if(result == 1 )
-                b = true;
+                b = false;
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -69,9 +66,9 @@ public class Repository extends Database implements Dao {
     public boolean checkAdminCredentials(String adminEmail, String password){
         boolean b = false;
         try{
-            String Query = "SELECT COUNT(adminID) as \"adminCount\" from adminTable WHERE email = '"+adminEmail+"' and password = '"+password+"'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            int result = Integer.parseInt(resultList.get(0).get("adminCount").toString());
+            String query = "SELECT COUNT(adminID) as \"adminCount\" from adminTable WHERE email = '"+adminEmail+"' and password = '"+password+"'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int result = convertObjectToInt(resultList.get(0).get("adminCount"));
             if(result == 1 )
                 b = true;
         }catch(Exception e){
@@ -82,34 +79,39 @@ public class Repository extends Database implements Dao {
     }
 
     public boolean bookCruiseShip(int shipID , int cost , int userID , int statusFlag){
-        assert(statusFlag==1||statusFlag==2);
-        String Query;
+        
+        boolean b = false;
         try{
-            Query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
-            executeUpdate(Query);
+            if(!(statusFlag==1||statusFlag==2)){
+                throw new AssertionError();
+            }
+            String query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
+            executeUpdate(query);
+            b = true;
         }
         catch(Exception e){
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return b;
     }
     
     public boolean bookCargoShip(int shipID , int cost, int userID, int statusFlag){
-        assert(statusFlag==1||statusFlag==2);
-        String Query;
+        boolean b = false;
         try{
-            Query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
-            executeUpdate(Query);
+            if(!(statusFlag==1||statusFlag==2)){
+                throw new AssertionError();
+            }
+            String query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
+            executeUpdate(query);
+            b = true;
         }
         catch(Exception e){
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return b;
     }
     
-    public User CruiseBookingStatus(int bookingID)
+    public CruiseBooking cruiseBookingStatus(int bookingID)
     {
         int shipID,userID,seats,cost,statusFlag;
         try{
@@ -119,35 +121,31 @@ public class Repository extends Database implements Dao {
             userID = Integer.parseInt(resultList.get(0).get("userID").toString());
             seats = Integer.parseInt(resultList.get(0).get("seats").toString());
             cost = Integer.parseInt(resultList.get(0).get("cost").toString());
-            email = Integer.paresultList.get(0).get("email").toString();
+            statusFlag = convertObjectToInt(resultList.get(0).get("statusFlag"));
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
-        return user;
+        return new CruiseBooking(bookingID, shipID, userID, seats, cost, statusFlag);
     }
 
-    public User CargoBookingStatus(int bookingID)
+    public CargoBooking cargoBookingStatus(int bookingID)
     {
-        int shipID,userID,seats,cost,statusFlag;
+        int shipID,userID,cost,capacity,statusFlag;
         try{
             String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
             shipID = Integer.parseInt(resultList.get(0).get("shipID").toString());
             userID = Integer.parseInt(resultList.get(0).get("userID").toString());
-            seats = Integer.parseInt(resultList.get(0).get("seats").toString());
+            capacity = Integer.parseInt(resultList.get(0).get("capacity").toString());
             cost = Integer.parseInt(resultList.get(0).get("cost").toString());
-            email = Integer.paresultList.get(0).get("email").toString();
-            
+            statusFlag = convertObjectToInt(resultList.get(0).get("statusFlag"));
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        User user=new User(userID,phoneNumber,name,age,gender,email,"");    
-        return user;
+        return new CargoBooking(bookingID, shipID, userID, statusFlag ,  capacity, cost);
     }
-
 
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){
         ArrayList<CargoShip> list = new ArrayList<>();
@@ -335,7 +333,7 @@ public class Repository extends Database implements Dao {
 
 
     public boolean addUser(User user){
-        String querry = "INSERT INTO userTable(phoneNumber , name , age , gender, password , email) VALUES("+user.getPhoneNumber()+","+user.getName()+","+user.getAge()+","+user.getGender()+","+user.getPassword()+","+user.getEmail()+")";
+        String querry = "INSERT INTO userTable(phoneNumber , name , age , gender, password , email) VALUES("+user.getPhoneNumber()+",'"+user.getName()+"',"+user.getAge()+",'"+user.getGender()+"','"+user.getPassword()+"','"+user.getEmail()+"')";
         boolean result = false;
         try{
             executeUpdate(querry);
@@ -352,7 +350,6 @@ public class Repository extends Database implements Dao {
         return false;
     }
     */
-
 
     private boolean cancelLeftBookings(){
         String querry = "UPDATE cruiseBookingTable SET statusFlag = 3 WHERE statusFlag = 2";

@@ -1,4 +1,4 @@
-package group38.Aniket;
+package group38.aniket;
 
 public class CargoBooking extends Booking
 {

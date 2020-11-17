@@ -1,4 +1,4 @@
-package group38.Ritik;
+package group38.ritik;
 
 public class admin{
 	int adminId;

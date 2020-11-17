@@ -1,20 +1,19 @@
-package group38.Aniket;
+package group38.aniket;
 
 import java.util.Scanner;
-import group38.himanshu.CruiseShip;
 import  group38.apoorv.*;
 public class CruiseBooking extends Booking
 {
-	public int seats;
-	public int cost;
-	public CruiseBooking(int bookingID , int shipID , int userID ,int seats,int cost,int statusFlag)
-	{
+	private int seats;
+	private int cost;
+
+	public CruiseBooking(int bookingID , int shipID , int userID ,int seats,int cost,int statusFlag) {
 		super(bookingID , shipID , userID , statusFlag);
 		this.seats=seats;
 		this.cost=cost;
 	}
-	public void Book_After_Search(int shipID,int userID,int costPerSeat,int bookedSeats,int totalSeats)
-	{
+	
+	public void Book_After_Search(int shipID,int userID,int costPerSeat,int bookedSeats,int totalSeats) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter number of seats to be Booked: ");
 		seats = sc.nextInt();
@@ -29,29 +28,30 @@ public class CruiseBooking extends Booking
 			rep.bookCruiseShip(shipID, cost, userID, 1);
 		}
 	}	
-	public void getBookingStatus()
-	{
+
+	public void getBookingStatus() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Booking ID: ");
 		int bookingID=sc.nextInt();
-		CruiseBooking cruisebooking=new Repository().CruiseBookingStatus(bookingID);
+		CruiseBooking cruisebooking=new Repository().cruiseBookingStatus(bookingID);
 		System.out.println("Booking Details: ");
 		System.out.println("Booking ID: "+cruisebooking.bookingID);
 		System.out.println("Ship ID: "+cruisebooking.shipID);
 		System.out.println("userID: "+cruisebooking.userID);
 		System.out.println("Seats: "+cruisebooking.seats);
 		System.out.println("Cost: "+cruisebooking.cost);
-		switch(cruisebooking.statusFlag){
-			case 1 :{
-				System.out.println("Confirmed");
-				break;
-			}
-			case 2:{
-				System.out.println("Waiting");
-				break;
-			}
+		System.out.println("\n");
+		if(cruisebooking.statusFlag == 1){
+			System.out.println("Confirmed");
+		}
+		else if (cruisebooking.statusFlag == 2){
+			System.out.println("Waiting");
 		}
 	}
+	
+	
+}
+	
 	// public void cancelBooking()
 	// {
 	// 	System.out.println("Enter Booking ID for Cancellation: ");
@@ -60,8 +60,6 @@ public class CruiseBooking extends Booking
 	// 	.deleteCruiseBooking(ID);
 	// }
 
-
-}
 	// public void Book()
 	// {
 	// 	System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
