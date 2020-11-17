@@ -1,6 +1,7 @@
 package group38.himanshu;
 import group38.apoorv.*;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class CruiseShip extends Ship
 {
@@ -17,9 +18,9 @@ public class CruiseShip extends Ship
 	
 	public CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats, int costPerPerson, int bookedSeats) {
 		super(shipID, from, to, departureTime, arrivalTime);
-		totalSeats = this.totalSeats;
-		costPerPerson = this.costPerPerson;
-		bookedSeats = this.bookedSeats;
+		this.totalSeats = totalSeats;
+		this.costPerPerson = costPerPerson;
+		this.bookedSeats = bookedSeats;
 	}
 
 	public void addShip() {
@@ -100,6 +101,30 @@ public class CruiseShip extends Ship
 			System.out.println("Ship updated successfully.");
 		else
 			System.out.println("Could not update ship.");
+	}
+
+	public ArrayList<CruiseShip> listShips() {
+		System.out.print("Enter the starting place: ");
+		Scanner sc = new Scanner(System.in);
+		String from = sc.nextLine();
+		System.out.print("Enter the destination: ");
+		String to = sc.nextLine();
+
+		Arraylist<CruiseShip> ship = new Repository().listAllCruiseShips(from, to);
+		if (ship.isEmpty()) {
+			System.out.println("No ships found.");
+			return ship;
+		}
+
+		for (int i = 0; i < ship.size(); ++i) {
+			System.out.println((i + 1) + ". Source: " + ship[i].getFrom());
+			System.out.println("Destination: " + ship[i].getTo());
+			System.out.println("Departure time: " + ship[i].getDepartureTime());
+			System.out.println("Arrival time: " + ship[i].getArrivalTime());
+			System.out.println("Cost per person: " + ship[i].getCostPerPerson());
+		}
+
+		return ship;
 	}
 
 	public int getTotalSeats() {

@@ -7,7 +7,6 @@ public class CargoBooking extends Booking
 		super(bookingID , shipID , userID , statusFlag);
 		this.capacity  =capacity;
 		this.cost = cost;
-
 	}
 	
 	public int capacity;

@@ -1,7 +1,6 @@
 package group38;
-import  group38.apoorv.*;
+import group38.apoorv.*;
 import group38.aniket.*;
-
 import java.util.*;
 import group38.himanshu.*;
 import group38.ritik.User;
@@ -73,8 +72,8 @@ public class Main {
     	while (true) {
     		System.out.println("\n1. Book a cruise ship");
     		System.out.println("2. Book a cargo ship");
-    		System.out.println("3. Search cargo ships");
-    		System.out.println("4. Search cruise ships");
+    		System.out.println("3. Search cruise ships");
+    		System.out.println("4. Search cargo ships");
     		System.out.println("5. Cancel booking");
     		System.out.println("6. List your bookings");
 			System.out.println("7. Check booking status");
@@ -90,10 +89,19 @@ public class Main {
 				loginMenu();
 				break;
 			}
-                     
-			if (choice == 8) {
+
+			if (choice == 1)
+				new CruiseBooking().book(userID);
+			else if (choice == 2)
+				new CargoBooking().book(userID);
+			else if (choice == 3)
+				new CruiseShip().listShips();
+			else if (choice == 4)
+				new CargoShip().listShips();
+			// else if (choice == 7)
+				// new Cruise
+			else if (choice == 8)
 				new User().displayDetails(userID);
-			}
     	}
     }
 

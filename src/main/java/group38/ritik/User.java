@@ -73,10 +73,10 @@ public class User {
 			return;
 		}
 
-		System.out.println("Name: " + user.name);
-		System.out.println("Age: " + user.age);
-		System.out.println("Gender: " + user.gender);
-		System.out.println("Phone number: " + user.phoneNumber);
+		System.out.println("Name: " + user.getName());
+		System.out.println("Age: " + user.getAge());
+		System.out.println("Gender: " + user.getGender());
+		System.out.println("Phone number: " + user.getPhoneNumber());
 	}
 
 	public int getUserID() {
