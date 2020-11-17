@@ -3,14 +3,31 @@ package group38.aniket;
 public class CargoBooking extends Booking
 {
 
+	private int capacity;
+	private int cost;
+
+	public CargoBooking()
+	{
+		super();
+		capacity=-1;
+		cost=-1;
+	}
+
 	public CargoBooking(int bookingID , int shipID , int userID , int statusFlag , int capacity , int cost){
 		super(bookingID , shipID , userID , statusFlag);
 		this.capacity  =capacity;
 		this.cost = cost;
 	}
 	
-	public int capacity;
-	public int cost;
+
+	public int getCapacity(){
+		return capacity;
+	}
+	
+	public int getCost(){
+		return cost;
+	}
+	
 	
 	// public void Book()
 	// {

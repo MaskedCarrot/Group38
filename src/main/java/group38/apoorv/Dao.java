@@ -47,6 +47,5 @@ interface Dao  {
     /** Functions for user/admin in [Repository] */
 
     boolean refreshBookingTable();
-    boolean confirmWaitingBookings();
     
 }

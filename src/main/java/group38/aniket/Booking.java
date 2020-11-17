@@ -2,10 +2,10 @@ package group38.aniket;
 
 abstract class Booking
 {
-	public int bookingID;
-	public int shipID;
-	public int userID;
-	public int statusFlag;
+	private int bookingID;
+	private int shipID;
+	private int userID;
+	private int statusFlag;
 
 	public Booking() {
 		bookingID = -1;
@@ -21,6 +21,22 @@ abstract class Booking
 		this.statusFlag = statusFlag;
 	}
 
+
+	public int getBookingID() {
+        return bookingID;
+    }
+
+    public int getShipID() {
+        return shipID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
 
 
 /*

@@ -23,6 +23,19 @@ public class CruiseShip extends Ship
 		this.bookedSeats = bookedSeats;
 	}
 
+
+	public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public void setCostPerPerson(int costPerPerson) {
+        this.costPerPerson = costPerPerson;
+    }
+
+    public void setBookedSeats(int bookedSeats) {
+        this.bookedSeats = bookedSeats;
+    }
+
 	public void addShip() {
 		System.out.print("Enter source: ");
 		Scanner sc = new Scanner(System.in);
@@ -110,18 +123,18 @@ public class CruiseShip extends Ship
 		System.out.print("Enter the destination: ");
 		String to = sc.nextLine();
 
-		Arraylist<CruiseShip> ship = new Repository().listAllCruiseShips(from, to);
+		ArrayList<CruiseShip> ship = new Repository().listAllCruiseShips(from, to);
 		if (ship.isEmpty()) {
 			System.out.println("No ships found.");
 			return ship;
 		}
 
 		for (int i = 0; i < ship.size(); ++i) {
-			System.out.println((i + 1) + ". Source: " + ship[i].getFrom());
-			System.out.println("Destination: " + ship[i].getTo());
-			System.out.println("Departure time: " + ship[i].getDepartureTime());
-			System.out.println("Arrival time: " + ship[i].getArrivalTime());
-			System.out.println("Cost per person: " + ship[i].getCostPerPerson());
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Cost per person: " + ship.get(i).getCostPerPerson());
 		}
 
 		return ship;

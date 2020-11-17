@@ -92,14 +92,14 @@ public class Main {
 
 			if (choice == 1)
 				new CruiseBooking().book(userID);
-			else if (choice == 2)
-				new CargoBooking().book(userID);
+			// else if (choice == 2)
+				// new CargoBooking().book(userID);
 			else if (choice == 3)
 				new CruiseShip().listShips();
-			else if (choice == 4)
-				new CargoShip().listShips();
-			// else if (choice == 7)
-				// new Cruise
+			// else if (choice == 4)
+				// new CargoShip().listShips();
+			else if (choice == 7)
+				new CruiseBooking().getBookingStatus();
 			else if (choice == 8)
 				new User().displayDetails(userID);
     	}

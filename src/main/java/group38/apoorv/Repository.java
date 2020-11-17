@@ -74,67 +74,64 @@ public class Repository extends Database implements Dao {
             e.printStackTrace();
         }
         return b;
-    
     }
 
     public boolean bookCruiseShip(int shipID , int cost , int userID , int statusFlag){
-        
-        boolean b = false;
+
         try{
             if(!(statusFlag==1||statusFlag==2)){
                 throw new AssertionError();
             }
-            String query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,seats,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
+            String query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','"+cost+"','"+statusFlag+"')";
+            System.out.println(query);
             executeUpdate(query);
-            b = true;
         }
         catch(Exception e){
             e.printStackTrace();
+            return false;
         }
-        return b;
+        return true;
     }
     
     public boolean bookCargoShip(int shipID , int cost, int userID, int statusFlag){
-        boolean b = false;
         try{
             if(!(statusFlag==1||statusFlag==2)){
                 throw new AssertionError();
             }
-            String query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"'";
+            String query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"')";
             executeUpdate(query);
-            b = true;
+            return false;
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return b;
+        return true;
     }
-    
+
     public CruiseBooking cruiseBookingStatus(int bookingID)
     {
-        int shipID,userID,seats,cost,statusFlag;
+        int shipID,userID,cost,statusFlag;
         try{
-            String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
+            String Query = "SELECT * FROM cruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
-            shipID = Integer.parseInt(resultList.get(0).get("shipID").toString());
+            shipID = Integer.parseInt(resultList.get(0).get("cruiseShipID").toString());
             userID = Integer.parseInt(resultList.get(0).get("userID").toString());
-            seats = Integer.parseInt(resultList.get(0).get("seats").toString());
             cost = Integer.parseInt(resultList.get(0).get("cost").toString());
             statusFlag = convertObjectToInt(resultList.get(0).get("statusFlag"));
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        return new CruiseBooking(bookingID, shipID, userID, seats, cost, statusFlag);
+        return new CruiseBooking(bookingID, shipID, userID, 0, cost, statusFlag);
     }
 
     public CargoBooking cargoBookingStatus(int bookingID)
     {
         int shipID,userID,cost,capacity,statusFlag;
         try{
-            String Query = "SELECT * FROM userTcruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
+            String Query = "SELECT * FROM cruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
-            shipID = Integer.parseInt(resultList.get(0).get("shipID").toString());
+            shipID = Integer.parseInt(resultList.get(0).get("cargoShipID").toString());
             userID = Integer.parseInt(resultList.get(0).get("userID").toString());
             capacity = Integer.parseInt(resultList.get(0).get("capacity").toString());
             cost = Integer.parseInt(resultList.get(0).get("cost").toString());
@@ -150,7 +147,7 @@ public class Repository extends Database implements Dao {
         ArrayList<CargoShip> list = new ArrayList<>();
         try { 
             String query = "SELECT * FROM cargoShipsTable WHERE toLocation = \""+to+
-                "\" ,fromLocation = \""+from+"\" and departureTime >="+
+                "\" and suserfromLocation = \""+from+"\" and departureTime >="+
                 (new Util().getCurrentTimeInMinutes()+20)+" order by arrivalTime asc";
                 
             List<Map<String, Object>> resultList = executeQuery(query);
@@ -180,15 +177,15 @@ public class Repository extends Database implements Dao {
         ArrayList<CruiseShip> list = new ArrayList<>();
 
        try{
-            String query = "select * from cruiseShipsDatabase where toLocation = \""+to+
-            "\" ,fromLocation = \""+from+"\" and departureTime >="+
+            String query = "select * from cruiseShipsTable where toLocation = \""+to+
+            "\" and fromLocation = \""+from+"\" and departureTime >="+
             (new Util().getCurrentTimeInMinutes()+20)+" order by arrivalTime asc";
 
             List<Map<String, Object>> resultList = executeQuery(query);
 
             for (Map<String, Object> row : resultList) {
                 CruiseShip cruiseShip = new CruiseShip(
-                        convertObjectToInt(row.get("CruiseShipID")),
+                        convertObjectToInt(row.get("cruiseShipID")),
                         convertObjectToString(row.get("fromLocation")),
                         convertObjectToString(row.get("toLocation")),
                         convertObjectToLong(row.get("departureTime")),
@@ -312,7 +309,7 @@ public class Repository extends Database implements Dao {
         try {
             String Query;
             //SELECT row with same shipID order by biD
-            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"'";
+            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"')";
             executeUpdate(Query);   
 
             Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID='"+bookingID+"'";
@@ -329,11 +326,11 @@ public class Repository extends Database implements Dao {
                 int seats=convertObjectToInt(row.get("seats")); 
                 if(seats+bookedSeats<=totalSeats)
                 {
-                    updateCruiseWaiting(row.get("cruiseBookingID"));
+                    updateCruiseWaiting(convertObjectToInt(row.get("cruiseBookingID")));
                     bookedSeats+=seats;
                 }
             }
-            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"'";
+            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"')";
             executeUpdate(Query);    
         } 
         catch (Exception e) {
@@ -345,7 +342,7 @@ public class Repository extends Database implements Dao {
 
     public boolean cancelCargoBoooking(int bookingID){
         try {    
-            String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoBookingID='"+bookingID+"'";
+            String Query="UPDATE cargoBookingTable SET statusFlag='"+3+"' WHERE cargoBookingID='"+bookingID+"')";
             executeUpdate(Query);
         } catch (Exception e) {
             e.printStackTrace();
@@ -392,6 +389,7 @@ public class Repository extends Database implements Dao {
     }
 
     public boolean refreshBookingTable(){
+        confirmWaitingBookings();
         boolean result = false;
         try{
             String query = "UPDATE carogoShipBookingView set statusFlag = 3 where statusFlag = 2 where departureTime <="+new Util().getCurrentTimeInMinutes()+20;
@@ -404,7 +402,7 @@ public class Repository extends Database implements Dao {
     }
 
 
-    public boolean confirmWaitingBookings(){
+    private boolean confirmWaitingBookings(){
         try{
             String query1 = "SELECT DISTINCT cargoShipID FROM cargoBookingTable";
             String query2 = "SELECT MAX(bookedCapacity) FROM cargoBookingTable INNER JOIN cargoShipTable on cargoBooknigTable.cargoShipID = cargoShipTable.cargoShipID where cargoBookingTable.cargoShipID =";
@@ -455,6 +453,8 @@ public class Repository extends Database implements Dao {
                         available = available - required;
                         executeUpdate(query5+bookingID);
                     }
+                    else 
+                        break;
                 }
             }
         }catch(Exception e){
