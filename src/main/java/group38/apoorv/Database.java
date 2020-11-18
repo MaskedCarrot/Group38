@@ -147,4 +147,8 @@ class Database {
         return Long.parseLong(object.toString());
     }
 
+    protected Double convertObjectToDouble(Object object){
+        return Double.parseDouble(object.toString());
+    }
+
 }

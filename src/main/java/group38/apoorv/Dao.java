@@ -19,8 +19,8 @@ interface Dao  {
     ArrayList<CargoShip> listAllCargoShips(String to , String from);
     ArrayList<CruiseShip> listAllCruiseShips(String to , String from);
 
-    boolean bookCruiseShip(int shipID , int cost ,int userID , int statusFlag);
-    boolean bookCargoShip(int shipID , int cost , int userID, int statusFlag);
+    int bookCruiseShip(int shipID , int cost ,int userID , int statusFlag);
+    int bookCargoShip(int shipID , int cost , int userID, int statusFlag);
 
     public CruiseBooking cruiseBookingStatus(int bookingID);
     public CargoBooking cargoBookingStatus(int bookingID);
@@ -46,6 +46,6 @@ interface Dao  {
     
     /** Functions for user/admin in [Repository] */
 
-    boolean refreshBookingTable();
+    void refreshBookingTable();
     
 }

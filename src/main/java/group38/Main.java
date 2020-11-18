@@ -11,6 +11,13 @@ public class Main {
 	private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
+
+		System.out.println("  ____ ____   ___  _   _ ____ _   ____  ___  ");
+		System.out.println(" / ___|  _   / _  | | | |  _  _   __ / ( _ ) ");
+		System.out.println("| |  _| |_) | | | | | | | |_) |   |_   / _   ");
+		System.out.println("| |_| |  _ <| |_| | |_| |  __/   ___) | (_) |");
+		System.out.println("  ____|_|  _  ___/  ___/|_|     |____/  ___/ ");
+
         loginMenu();
     }
 
@@ -92,16 +99,22 @@ public class Main {
 
 			if (choice == 1)
 				new CruiseBooking().book(userID);
-			// else if (choice == 2)
-				// new CargoBooking().book(userID);
+			else if (choice == 2)
+				new CargoBooking().book(userID);
 			else if (choice == 3)
 				new CruiseShip().listShips();
-			// else if (choice == 4)
-				// new CargoShip().listShips();
+			else if (choice == 4)
+				new CargoShip().listShips();
+			else if (choice == 5)
+				new CruiseBooking().cancelBooking();//tba
+			else if (choice == 6)
+				new CruiseBooking().listBookings();//to be added
 			else if (choice == 7)
 				new CruiseBooking().getBookingStatus();
 			else if (choice == 8)
 				new User().displayDetails(userID);
+			else
+				System.out.println("Invalid choice.");
     	}
     }
 

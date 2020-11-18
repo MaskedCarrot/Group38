@@ -12,6 +12,12 @@ import group38.aniket.CruiseBooking;
 
 public class Repository extends Database implements Dao {
 
+
+    public Repository(){
+        refreshBookingTable();
+    }
+
+
     public boolean checkUserCredentials(String userEmail , String password){
         boolean b = false;
         try{
@@ -25,7 +31,7 @@ public class Repository extends Database implements Dao {
         }
         return b;
     }
-
+    
     public User displayUserDetails(int userID) {
         User user;
         try{
@@ -76,58 +82,117 @@ public class Repository extends Database implements Dao {
         return b;
     }
 
-    public boolean bookCruiseShip(int shipID , int cost , int userID , int statusFlag){
+    public int bookCruiseShip(int shipID , int cost , int userID , int statusFlag){
 
+        int bookingResult = -2;
         try{
             if(!(statusFlag==1||statusFlag==2)){
                 throw new AssertionError();
             }
+
+            long time = new Util().getCurrentTimeInMinutes();
+            String query0 = "SELECT IF("+(time+20)+"< departureTime, 1 , 0) as result FROM cruiseShipsTable where cruiseShipID = "+shipID;
+
+
+            List<Map<String, Object>> resultQuery = executeQuery(query0);
+            int result = convertObjectToInt(resultQuery.get(0).get("result"));
+            if(result == 0)
+                return -1;
+
+
             String query="INSERT INTO cruiseBookingTable(cruiseShipID,userID,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','"+cost+"','"+statusFlag+"')";
-            System.out.println(query);
             executeUpdate(query);
+            String query2 = "SELECT cruiseBookingID FROM cruiseBookingTable ORDER BY cruiseBookingID DESC LIMIT 1";
+            List<Map<String, Object>> resultList = executeQuery(query2);
+            bookingResult = convertObjectToInt(resultList.get(0).get("cruiseBookingID"));
         }
         catch(Exception e){
             e.printStackTrace();
-            return false;
+
         }
-        return true;
+        return bookingResult;
     }
     
-    public boolean bookCargoShip(int shipID , int cost, int userID, int statusFlag){
+    public int bookCargoShip(int shipID , int cost, int userID, int statusFlag){
+        int bookingResult = -2;
         try{
             if(!(statusFlag==1||statusFlag==2)){
                 throw new AssertionError();
             }
-            String query="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"')";
-            executeUpdate(query);
-            return false;
+
+
+            long time = new Util().getCurrentTimeInMinutes();
+            String query0 = "SELECT IF("+(time+20)+"< departureTime, 1 , 0) as result FROM cargoShipsTable where cargoShipID = "+shipID;
+            
+            
+            List<Map<String, Object>> resultQuery = executeQuery(query0);
+            int result = convertObjectToInt(resultQuery.get(0).get("result"));
+            
+            
+            if(result == 0)
+                return -1;
+            
+            String query1="INSERT INTO cargoBookingTable(cargoShipID,userID,capacity,cost,statusFlag) VALUES('"+shipID+"','"+userID+"','0','"+cost+"','"+statusFlag+"')";
+            String query2 = "SELECT cargoBookingID , statusFlag FROM cargoBookingTable ORDER BY cargoBookingID DESC LIMIT 1";
+            executeUpdate(query1);
+            List<Map<String, Object>> resultList = executeQuery(query2);
+            bookingResult = convertObjectToInt(resultList.get(0).get("cargoBookingID"));
+            
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return true;
+        return bookingResult;
     }
+    
 
     public CruiseBooking cruiseBookingStatus(int bookingID)
     {
-        int shipID,userID,cost,statusFlag;
+        int shipID,userID,cost,statusFlag,seats;
         try{
-            String Query = "SELECT * FROM cruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
+            String Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
-            shipID = Integer.parseInt(resultList.get(0).get("cruiseShipID").toString());
-            userID = Integer.parseInt(resultList.get(0).get("userID").toString());
-            cost = Integer.parseInt(resultList.get(0).get("cost").toString());
+            shipID = convertObjectToInt(resultList.get(0).get("cruiseShipID"));
+            userID = convertObjectToInt(resultList.get(0).get("userID"));
+            cost = convertObjectToInt(resultList.get(0).get("cost"));
             statusFlag = convertObjectToInt(resultList.get(0).get("statusFlag"));
+            double st=convertObjectToDouble(resultList.get(0).get("seats"));
+            seats = (int) st;
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-        return new CruiseBooking(bookingID, shipID, userID, 0, cost, statusFlag);
+        return new CruiseBooking(bookingID, shipID, userID, seats, cost, statusFlag);
+    }
+
+    public CruiseShip cruiseBookingFullStatus(int bookingID)
+    {
+        String from="",to=""; 
+        Long departureTime=0l,arrivalTime=0l;
+        int shipID=0;
+        try {
+            String Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID = '" + bookingID +"'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            // CruiseShip cruiseShip = new CruiseShip();
+            // cruiseShip.setShipID(convertObjectToInt(resultList.get(0).get("cruiseShipID")));
+            // cruiseShip.setFromLocation(resultList.get(0).get("fromLocation").toString());
+            // cruiseShip.setToLocation(resultList.get(0).get("toLocation").toString());
+            // cruiseShip.setDepartureTime(convertObjecttoLong(resultList.get(0).get("fromLocation").toString()));
+            // cruiseShip.setArrivalTime(convertObjecttoLong(resultList.get(0).get("fromLocation").toString()));
+            shipID=convertObjectToInt(resultList.get(0).get("cruiseShipID"));
+            from=resultList.get(0).get("fromLocation").toString();
+            to=resultList.get(0).get("toLocation").toString();
+            departureTime=convertObjectToLong(resultList.get(0).get("departureTime"));
+            arrivalTime=convertObjectToLong(resultList.get(0).get("arrivalTime"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new CruiseShip(shipID,from,to,departureTime,arrivalTime,0,0,0);
     }
 
     public CargoBooking cargoBookingStatus(int bookingID)
     {
-        int shipID,userID,cost,capacity,statusFlag;
+        int shipID=0 ,userID=0,cost=0,capacity=0,statusFlag = 0;
         try{
             String Query = "SELECT * FROM cruiseBookingTable WHERE cruiseBookingID = '" + bookingID +"'";
             List<Map<String, Object>> resultList = executeQuery(Query);
@@ -140,7 +205,7 @@ public class Repository extends Database implements Dao {
             e.printStackTrace();
             return null;
         }
-        return new CargoBooking(bookingID, shipID, userID, statusFlag ,  capacity, cost);
+        return new CargoBooking(bookingID, shipID, userID,   statusFlag , capacity, cost);
     }
 
     public ArrayList<CargoShip> listAllCargoShips(String from , String to){
@@ -302,6 +367,8 @@ public class Repository extends Database implements Dao {
 
     private void updateCruiseWaiting(int bookingID)
     {
+        String Query="UPDATE cruiseBookingTable SET statusFlag='1' WHERE cruiseBookingID='" + bookingID + "'";
+        executeUpdate(Query);
         
     }
 
@@ -309,8 +376,8 @@ public class Repository extends Database implements Dao {
         try {
             String Query;
             //SELECT row with same shipID order by biD
-            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"')";
-            executeUpdate(Query);   
+            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID='" + bookingID + "'";
+            executeUpdate(Query);
 
             Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID='"+bookingID+"'";
             
@@ -329,9 +396,7 @@ public class Repository extends Database implements Dao {
                     updateCruiseWaiting(convertObjectToInt(row.get("cruiseBookingID")));
                     bookedSeats+=seats;
                 }
-            }
-            Query="UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID"+bookingID+"')";
-            executeUpdate(Query);    
+            }    
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -388,11 +453,16 @@ public class Repository extends Database implements Dao {
             return result;
     }
 
-    public boolean refreshBookingTable(){
-        confirmWaitingBookings();
+    public void refreshBookingTable(){
+        cancelWaitingBookings();
+        changeConfirmBookingStatusFlag();
+    }
+
+
+    private boolean cancelWaitingBookings(){
         boolean result = false;
         try{
-            String query = "UPDATE carogoShipBookingView set statusFlag = 3 where statusFlag = 2 where departureTime <="+new Util().getCurrentTimeInMinutes()+20;
+            String query = "UPDATE cruiseBookingJoin set statusFlag = 3 where statusFlag = 2 AND departureTime <="+new Util().getCurrentTimeInMinutes()+20;
             executeUpdate(query);
             result = true;
         }catch(Exception e){
@@ -401,67 +471,16 @@ public class Repository extends Database implements Dao {
         return result;
     }
 
-
-    private boolean confirmWaitingBookings(){
+    private boolean changeConfirmBookingStatusFlag(){
+        boolean result = false;
         try{
-            String query1 = "SELECT DISTINCT cargoShipID FROM cargoBookingTable";
-            String query2 = "SELECT MAX(bookedCapacity) FROM cargoBookingTable INNER JOIN cargoShipTable on cargoBooknigTable.cargoShipID = cargoShipTable.cargoShipID where cargoBookingTable.cargoShipID =";
-            String query3 = "SELECT capacity , chargesPerTonne FROM cargoShipTable WHERE cargoShipID =";
-            String query4 = "SELECT cost , cargoBookingID FROM cargoBookingTable where statusFlag = 2 and cargoShipID =";
-            String query5 = "UPDATE cargoBookingTable SET statusFlag = 1 WHERE statusFlag = 2 and bookingID =";
-            List<Map<String, Object>> resultList1 = executeQuery(query1);
-            for (Map<String, Object> row1 : resultList1) {
-                int shipID = convertObjectToInt(row1.get("cargoShipID"));
-                List<Map<String, Object>> resultList2 = executeQuery(query2+shipID);
-                List<Map<String, Object>> resultList3 = executeQuery(query3+shipID+" LIMIT 1");
-                List<Map<String, Object>> resultList4 = executeQuery(query4+shipID);
-                int available = convertObjectToInt(resultList2.get(0).get("capacity")) - convertObjectToInt(resultList2.get(0).get("bookedCapacity"));
-                int cost = convertObjectToInt(resultList3.get(0).get("chargesPerTonne"));
-                for (Map<String, Object> row4 : resultList4) {
-                    int required = convertObjectToInt(row4.get("cost"))/cost;
-                    int bookingID = convertObjectToInt(row4.get("cargoBookingID"));
-                    if(available - required >= 0){
-                        available = available - required;
-                        executeUpdate(query5+bookingID);
-                    }
-                }
-
-            }
+            String query = "UPDATE cruiseBookingJoin set statusFlag = 0 where statusFlag = 1 AND departureTime <="+new Util().getCurrentTimeInMinutes();
+            executeUpdate(query);
+            result = true;
         }catch(Exception e){
             e.printStackTrace();
-            return false;
         }
-
-        try{
-            String query1 = "SELECT DISTINCT cruiseShipID FROM cruiseBookingTable";
-            String query2 = "SELECT MAX(bookedCapacity) FROM cruiseBookingTable INNER JOIN cruiseShipTable on cruiseBooknigTable.cruiseShipID = cruiseShipTable.cruiseShipID where cruiseBookingTable.cruiseShipID =";
-            String query3 = "SELECT capacity , cost FROM cruiseShipTable WHERE cruiseShipID =";
-            String query4 = "SELECT cost , cruiseBookingID FROM cruiseBookingTable where statusFlag = 2 and cruiseShipID =";
-            String query5 = "UPDATE cruiseBookingTable SET statusFlag = 1 WHERE statusFlag = 2 and bookingID =";
-            List<Map<String, Object>> resultList1 = executeQuery(query1);
-            for (Map<String, Object> row1 : resultList1) {
-                int shipID = convertObjectToInt(row1.get("cargoShipID"));
-                List<Map<String, Object>> resultList2 = executeQuery(query2+shipID);
-                List<Map<String, Object>> resultList3 = executeQuery(query3+shipID+" LIMIT 1");
-                List<Map<String, Object>> resultList4 = executeQuery(query4+shipID);
-                int available = convertObjectToInt(resultList2.get(0).get("capacity")) - convertObjectToInt(resultList2.get(0).get("bookedCapacity"));
-                int cost = convertObjectToInt(resultList3.get(0).get("cost"));
-                for (Map<String, Object> row4 : resultList4) {
-                    int required = convertObjectToInt(row4.get("cost"))/cost;
-                    int bookingID = convertObjectToInt(row4.get("cruiseBookingID"));
-                    if(available - required >= 0){
-                        available = available - required;
-                        executeUpdate(query5+bookingID);
-                    }
-                    else 
-                        break;
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return result;
     }
 
 }
@@ -469,8 +488,8 @@ public class Repository extends Database implements Dao {
 
 /*
 statusFlag flags
-0 is past booking 
-1 is confirm 
+0 is confirmed past
+1 is confirm acitve 
 2 is wainting
 3 is cancelled 
 */

@@ -40,21 +40,40 @@ public class CruiseShip extends Ship
 		System.out.print("Enter source: ");
 		Scanner sc = new Scanner(System.in);
 		from = sc.nextLine();
+		from.toLowerCase();
 		System.out.print("Enter destination: ");
 		to = sc.nextLine();
-
-		System.out.print("Enter departure time in HH:MM format: ");
-		String time = sc.nextLine();
-		int hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
-		int mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		to.toLowerCase();
+		String time = "25:61";
+		int hh, mm ;
 		Util u = new Util();
-		departureTime = u.convertTimeToMinutes(hh, mm);
 
-		System.out.print("Enter arrival time in HH:MM format: ");
-		time = sc.nextLine();
-		hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
-		mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
-		arrivalTime = u.convertTimeToMinutes(hh, mm);
+		while(true){
+			System.out.print("Enter departure time in HH:MM format: ");
+			time = sc.nextLine();
+			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+			if(u.isValidTime(hh, mm)){
+				departureTime = u.convertTimeToMinutes(hh, mm);
+				break;
+			}
+			System.out.println("Please enter valid time.");
+		}
+		
+
+		while(true){
+			System.out.print("Enter arrival time in HH:MM format: ");
+			time = sc.nextLine();
+			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+			if(u.isValidTime(hh, mm)){
+				arrivalTime = u.convertTimeToMinutes(hh, mm);
+				break;
+			}
+			System.out.println("Please enter valid time.");
+		}
+
+		
 
 		System.out.print("Enter total seats: ");
 		totalSeats = sc.nextInt();
@@ -87,21 +106,38 @@ public class CruiseShip extends Ship
 		sc.nextLine();
 		System.out.print("Enter new source: ");
 		from = sc.nextLine();
+		from.toLowerCase();
 		System.out.print("Enter new destination: ");
 		to = sc.nextLine();
-
-		System.out.print("Enter new departure time in HH:MM format: ");
-		String time = sc.nextLine();
-		int hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
-		int mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+		to.toLowerCase();
 		Util u = new Util();
-		departureTime = u.convertTimeToMinutes(hh, mm);
+		String time = "25:61";
+		int hh , mm;
 
-		System.out.print("Enter new arrival time in HH:MM format: ");
-		time = sc.nextLine();
-		hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
-		mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
-		arrivalTime = u.convertTimeToMinutes(hh, mm);
+		while(true) {
+			System.out.print("Enter new departure time in HH:MM format: ");
+			time = sc.nextLine();
+			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+			if (u.isValidTime(hh, mm)) {
+				departureTime = u.convertTimeToMinutes(hh, mm);
+				break;
+			}
+			System.out.println("Please enter valid time.");
+		}
+		
+
+		while(true){
+			System.out.print("Enter new arrival time in HH:MM format: ");
+			time = sc.nextLine();
+			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
+			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
+			if(u.isValidTime(hh, mm)){
+				arrivalTime = u.convertTimeToMinutes(hh, mm);
+				break;
+			}
+			System.out.println("Please enter valid time.");
+		}
 
 		System.out.print("Enter new total seats: ");
 		totalSeats = sc.nextInt();
@@ -120,8 +156,10 @@ public class CruiseShip extends Ship
 		System.out.print("Enter the starting place: ");
 		Scanner sc = new Scanner(System.in);
 		String from = sc.nextLine();
+		from.toLowerCase();
 		System.out.print("Enter the destination: ");
 		String to = sc.nextLine();
+		to.toLowerCase();
 
 		ArrayList<CruiseShip> ship = new Repository().listAllCruiseShips(from, to);
 		if (ship.isEmpty()) {
@@ -129,11 +167,12 @@ public class CruiseShip extends Ship
 			return ship;
 		}
 
+		Util u = new Util();
 		for (int i = 0; i < ship.size(); ++i) {
 			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
 			System.out.println("Destination: " + ship.get(i).getTo());
-			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
-			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Departure time: " + u.convertMinutesToTime(ship.get(i).getDepartureTime()));
+			System.out.println("Arrival time: " + u.convertMinutesToTime(ship.get(i).getArrivalTime()));
 			System.out.println("Cost per person: " + ship.get(i).getCostPerPerson());
 		}
 

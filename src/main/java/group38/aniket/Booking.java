@@ -2,10 +2,10 @@ package group38.aniket;
 
 abstract class Booking
 {
-	private int bookingID;
-	private int shipID;
-	private int userID;
-	private int statusFlag;
+	protected int bookingID;
+	protected int shipID;
+	protected int userID;
+	protected int statusFlag;
 
 	public Booking() {
 		bookingID = -1;
@@ -36,8 +36,27 @@ abstract class Booking
 
     public int getStatusFlag() {
         return statusFlag;
+	}
+	
+
+	public void setBookingID(int bookingID) {
+        this.bookingID = bookingID;
     }
 
+    public void setShipID(int shipID) {
+        this.shipID = shipID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
+    }
+
+
+}
 
 /*
 statusFlag flags
@@ -46,11 +65,3 @@ statusFlag flags
 2 is wainting
 3 is cancelled 
 */
-
-
-	/*
-	public abstract void Book();
-	public abstract void getBookingStatus();
-	public abstract void cancelBooking();
-	*/
-}

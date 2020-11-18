@@ -117,7 +117,42 @@ public class CargoShip extends Ship
 	public int getBookedCapacity() {
 		return bookedCapacity;
 	}
-	public ArrayList<CruiseShip> listShips() {
-		return null;
+	
+	public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setChargesPerTonne(int chargesPerTonne) {
+        this.chargesPerTonne = chargesPerTonne;
+    }
+
+    public void setBookedCapacity(int bookedCapacity) {
+        this.bookedCapacity = bookedCapacity;
+    }
+	
+	public ArrayList<CargoShip> listShips() {
+		System.out.print("Enter the starting place: ");
+		Scanner sc = new Scanner(System.in);
+		String from = sc.nextLine();
+		from.toLowerCase();
+		System.out.print("Enter the destination: ");
+		String to = sc.nextLine();
+		to.toLowerCase();
+
+		ArrayList<CargoShip> ship = new Repository().listAllCargoShips(from, to);
+		if (ship.isEmpty()) {
+			System.out.println("No ships found.");
+			return ship;
+		}
+
+		for (int i = 0; i < ship.size(); ++i) {
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Charges per tonne: " + ship.get(i).getChargesPerTonne());
+		}
+
+		return ship;
 	}
 }

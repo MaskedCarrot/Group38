@@ -51,4 +51,25 @@ public abstract class Ship
 	public Long getArrivalTime() {
 		return arrivalTime;
 	}
+
+	public void setShipID(int shipID) {
+        this.shipID = shipID;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public void setDepartureTime(Long departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setArrivalTime(Long arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
 }
