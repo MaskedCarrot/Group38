@@ -1,12 +1,12 @@
 package group38.himanshu;
+
 import java.util.Scanner;
 import group38.apoorv.*;
 import java.util.ArrayList;
 
 // import java.time.*;
 
-public class CargoShip extends Ship
-{
+public class CargoShip extends Ship {
 	private int capacity;
 	private int chargesPerTonne;
 	private int bookedCapacity;
@@ -17,14 +17,14 @@ public class CargoShip extends Ship
 		chargesPerTonne = -1;
 		bookedCapacity = -1;
 	}
-	
-	public CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity, int chargesPerTonne, int bookedCapacity) {
+
+	public CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity,
+			int chargesPerTonne, int bookedCapacity) {
 		super(shipID, from, to, departureTime, arrivalTime);
 		this.capacity = capacity;
 		this.chargesPerTonne = chargesPerTonne;
 		this.bookedCapacity = bookedCapacity;
 	}
-
 
 	public void addShip() {
 		System.out.print("Enter source: ");
@@ -117,19 +117,19 @@ public class CargoShip extends Ship
 	public int getBookedCapacity() {
 		return bookedCapacity;
 	}
-	
+
 	public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
+		this.capacity = capacity;
+	}
 
-    public void setChargesPerTonne(int chargesPerTonne) {
-        this.chargesPerTonne = chargesPerTonne;
-    }
+	public void setChargesPerTonne(int chargesPerTonne) {
+		this.chargesPerTonne = chargesPerTonne;
+	}
 
-    public void setBookedCapacity(int bookedCapacity) {
-        this.bookedCapacity = bookedCapacity;
-    }
-	
+	public void setBookedCapacity(int bookedCapacity) {
+		this.bookedCapacity = bookedCapacity;
+	}
+
 	public ArrayList<CargoShip> listShips() {
 		System.out.print("Enter the starting place: ");
 		Scanner sc = new Scanner(System.in);

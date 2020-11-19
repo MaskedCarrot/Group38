@@ -1,20 +1,22 @@
 package group38.ritik;
 
-public class admin{
+public class admin {
 	int adminId;
 	String password;
+
 	public void setAdminId(int adminId) {
-  	this.adminId = adminId;
+		this.adminId = adminId;
 	}
-	
+
 	public int getAdminId() {
-  	return adminId;
+		return adminId;
 	}
+
 	public void setPassword(String password) {
-  	this.password = password;
+		this.password = password;
 	}
-	
+
 	public String getPassword() {
-  	return password;
+		return password;
 	}
 }

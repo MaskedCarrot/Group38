@@ -1,10 +1,10 @@
 package group38.himanshu;
+
 import group38.apoorv.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class CruiseShip extends Ship
-{
+public class CruiseShip extends Ship {
 	private int totalSeats;
 	private int costPerPerson;
 	private int bookedSeats;
@@ -15,26 +15,26 @@ public class CruiseShip extends Ship
 		costPerPerson = -1;
 		bookedSeats = -1;
 	}
-	
-	public CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats, int costPerPerson, int bookedSeats) {
+
+	public CruiseShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int totalSeats,
+			int costPerPerson, int bookedSeats) {
 		super(shipID, from, to, departureTime, arrivalTime);
 		this.totalSeats = totalSeats;
 		this.costPerPerson = costPerPerson;
 		this.bookedSeats = bookedSeats;
 	}
 
-
 	public void setTotalSeats(int totalSeats) {
-        this.totalSeats = totalSeats;
-    }
+		this.totalSeats = totalSeats;
+	}
 
-    public void setCostPerPerson(int costPerPerson) {
-        this.costPerPerson = costPerPerson;
-    }
+	public void setCostPerPerson(int costPerPerson) {
+		this.costPerPerson = costPerPerson;
+	}
 
-    public void setBookedSeats(int bookedSeats) {
-        this.bookedSeats = bookedSeats;
-    }
+	public void setBookedSeats(int bookedSeats) {
+		this.bookedSeats = bookedSeats;
+	}
 
 	public void addShip() {
 		System.out.print("Enter source: ");
@@ -45,35 +45,32 @@ public class CruiseShip extends Ship
 		to = sc.nextLine();
 		to.toLowerCase();
 		String time = "25:61";
-		int hh, mm ;
+		int hh, mm;
 		Util u = new Util();
 
-		while(true){
+		while (true) {
 			System.out.print("Enter departure time in HH:MM format: ");
 			time = sc.nextLine();
 			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
 			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
-			if(u.isValidTime(hh, mm)){
+			if (u.isValidTime(hh, mm)) {
 				departureTime = u.convertTimeToMinutes(hh, mm);
 				break;
 			}
 			System.out.println("Please enter valid time.");
 		}
-		
 
-		while(true){
+		while (true) {
 			System.out.print("Enter arrival time in HH:MM format: ");
 			time = sc.nextLine();
 			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
 			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
-			if(u.isValidTime(hh, mm)){
+			if (u.isValidTime(hh, mm)) {
 				arrivalTime = u.convertTimeToMinutes(hh, mm);
 				break;
 			}
 			System.out.println("Please enter valid time.");
 		}
-
-		
 
 		System.out.print("Enter total seats: ");
 		totalSeats = sc.nextInt();
@@ -112,9 +109,9 @@ public class CruiseShip extends Ship
 		to.toLowerCase();
 		Util u = new Util();
 		String time = "25:61";
-		int hh , mm;
+		int hh, mm;
 
-		while(true) {
+		while (true) {
 			System.out.print("Enter new departure time in HH:MM format: ");
 			time = sc.nextLine();
 			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
@@ -125,14 +122,13 @@ public class CruiseShip extends Ship
 			}
 			System.out.println("Please enter valid time.");
 		}
-		
 
-		while(true){
+		while (true) {
 			System.out.print("Enter new arrival time in HH:MM format: ");
 			time = sc.nextLine();
 			hh = (time.charAt(0) - '0') * 10 + (time.charAt(1) - '0');
 			mm = (time.charAt(3) - '0') * 10 + (time.charAt(4) - '0');
-			if(u.isValidTime(hh, mm)){
+			if (u.isValidTime(hh, mm)) {
 				arrivalTime = u.convertTimeToMinutes(hh, mm);
 				break;
 			}
@@ -182,45 +178,31 @@ public class CruiseShip extends Ship
 	public int getTotalSeats() {
 		return totalSeats;
 	}
-	
+
 	public int getCostPerPerson() {
 		return costPerPerson;
 	}
-	
+
 	public int getBookedSeats() {
 		return bookedSeats;
 	}
-/*
-	public void searchShipsByDepartureTime()
-	{
-		System.out.println("Enter departure time: ");
-		LocalTime time = getTimeInput();
-		Database DB = new Database();
-		DB.searchCruiseShipsByDepartureTime(time);
-	}
-
-	public void searchShipsByArrivalTime()
-	{
-		System.out.println("Enter arrival time: ");
-		LocalTime time = getTimeInput();
-		Database DB = new Database();
-		DB.searchCruiseShipsByArrivalTime(time);
-	}
-
-	public void searchShipsBySource()
-	{
-		System.out.println("Enter source: ");
-		String location = getLocationInput();
-		Database DB = new Database();
-		DB.searchCruiseShipsBySource(location);
-	}
-
-	public void searchShipsByDestination()
-	{
-		System.out.println("Enter destination: ");
-		String location = getLocationInput();
-		Database DB = new Database();
-		DB.searchCruiseShipsByDestination(location);
-	}
-	*/
+	/*
+	 * public void searchShipsByDepartureTime() {
+	 * System.out.println("Enter departure time: "); LocalTime time =
+	 * getTimeInput(); Database DB = new Database();
+	 * DB.searchCruiseShipsByDepartureTime(time); }
+	 * 
+	 * public void searchShipsByArrivalTime() {
+	 * System.out.println("Enter arrival time: "); LocalTime time = getTimeInput();
+	 * Database DB = new Database(); DB.searchCruiseShipsByArrivalTime(time); }
+	 * 
+	 * public void searchShipsBySource() { System.out.println("Enter source: ");
+	 * String location = getLocationInput(); Database DB = new Database();
+	 * DB.searchCruiseShipsBySource(location); }
+	 * 
+	 * public void searchShipsByDestination() {
+	 * System.out.println("Enter destination: "); String location =
+	 * getLocationInput(); Database DB = new Database();
+	 * DB.searchCruiseShipsByDestination(location); }
+	 */
 }

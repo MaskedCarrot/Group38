@@ -1,4 +1,5 @@
 package group38.ritik;
+
 import java.util.Scanner;
 import group38.apoorv.*;
 
@@ -80,34 +81,34 @@ public class User {
 	}
 
 	public int getUserID() {
-  		return userID;
+		return userID;
 	}
-	
+
 	public long getPhoneNumber() {
-  		return phoneNumber;
+		return phoneNumber;
 	}
 
 	public void setName(String name) {
-  		this.name = name;
+		this.name = name;
 	}
-	
+
 	public String getName() {
-  		return name;
+		return name;
 	}
-	
+
 	public int getAge() {
-  		return age;
+		return age;
 	}
-	
+
 	public char getGender() {
-  		return gender;
+		return gender;
 	}
-	
+
 	public String getEmail() {
-  		return email;
+		return email;
 	}
 
 	public String getPassword() {
-  		return password;
+		return password;
 	}
 }

@@ -1,7 +1,6 @@
 package group38.himanshu;
 
-public abstract class Ship
-{
+public abstract class Ship {
 	protected int shipID;
 	protected String from;
 	protected String to;
@@ -25,7 +24,9 @@ public abstract class Ship
 	}
 
 	public abstract void addShip();
+
 	public abstract void removeShip();
+
 	public abstract void updateShip();
 	// public abstract void searchShipsByDepartureTime();
 	// public abstract void searchShipsByArrivalTime();
@@ -53,23 +54,23 @@ public abstract class Ship
 	}
 
 	public void setShipID(int shipID) {
-        this.shipID = shipID;
-    }
+		this.shipID = shipID;
+	}
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
+	public void setFrom(String from) {
+		this.from = from;
+	}
 
-    public void setTo(String to) {
-        this.to = to;
-    }
+	public void setTo(String to) {
+		this.to = to;
+	}
 
-    public void setDepartureTime(Long departureTime) {
-        this.departureTime = departureTime;
-    }
+	public void setDepartureTime(Long departureTime) {
+		this.departureTime = departureTime;
+	}
 
-    public void setArrivalTime(Long arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
+	public void setArrivalTime(Long arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
 
 }

@@ -1,4 +1,5 @@
 package group38.aniket;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import group38.apoorv.*;
@@ -7,39 +8,40 @@ import group38.himanshu.*;
 public class CruiseBooking extends Booking {
 	private int cost;
 	private int seats;
+
 	public CruiseBooking() {
 		super();
 		seats = -1;
 		cost = -1;
 	}
 
-	public CruiseBooking(int bookingID , int shipID , int userID ,int seats,int cost,int statusFlag) {
-		super(bookingID , shipID , userID , statusFlag);
+	public CruiseBooking(int bookingID, int shipID, int userID, int seats, int cost, int statusFlag) {
+		super(bookingID, shipID, userID, statusFlag);
 		this.seats = seats;
 		this.cost = cost;
 	}
 
-	public int getCost(){
-        return cost;
-    }
+	public int getCost() {
+		return cost;
+	}
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
 
-    public int getSeats() {
-        return seats;
-    }
+	public int getSeats() {
+		return seats;
+	}
 
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-	
+	public void setSeats(int seats) {
+		this.seats = seats;
+	}
+
 	public void book(int userID) {
 		ArrayList<CruiseShip> ship = new CruiseShip().listShips();
 		if (ship.isEmpty())
 			return;
-		
+
 		System.out.print("Choose a ship (1 - " + ship.size() + "): ");
 		Scanner sc = new Scanner(System.in);
 		int choice = sc.nextInt();
@@ -56,12 +58,9 @@ public class CruiseBooking extends Booking {
 		// -1: late booking
 		// -2: failed booking
 		/*
-		statusFlag flags
-		0 is confirmed past
-		1 is confirm acitve 
-		2 is wainting
-		3 is cancelled 
-		*/
+		 * statusFlag flags 0 is confirmed past 1 is confirm acitve 2 is wainting 3 is
+		 * cancelled
+		 */
 		if (ship.get(choice).getBookedSeats() + seats > ship.get(choice).getTotalSeats()) {
 			bookingID = new Repository().bookCruiseShip(ship.get(choice).getShipID(), cost, userID, 2);
 			if (bookingID == -2)
@@ -87,7 +86,13 @@ public class CruiseBooking extends Booking {
 		int bookingID = sc.nextInt();
 		Repository repository = new Repository();
 		CruiseBooking cruiseBooking = repository.cruiseBookingStatus(bookingID);
-		
+
+		if (cruiseBooking == null) {
+			System.out.println(
+					"An error has occured. Either the bookingID does not exits or there was an error communicating with the database.");
+			return;
+		}
+
 		System.out.println("Booking Details");
 		System.out.println("Booking ID: " + cruiseBooking.getBookingID());
 		System.out.println("Ship ID: " + cruiseBooking.getShipID());
@@ -96,12 +101,9 @@ public class CruiseBooking extends Booking {
 		System.out.println("Cost: " + cruiseBooking.getCost());
 
 		/*
-		statusFlag flags
-		0 is confirmed past
-		1 is confirm acitve 
-		2 is wainting
-		3 is cancelled 
-		*/
+		 * statusFlag flags 0 is confirmed past 1 is confirm acitve 2 is wainting 3 is
+		 * cancelled
+		 */
 		if (cruiseBooking.getStatusFlag() == 0)
 			System.out.println("Past confirmed booking");
 		else if (cruiseBooking.getStatusFlag() == 1)
@@ -110,7 +112,7 @@ public class CruiseBooking extends Booking {
 			System.out.println("Waiting");
 		else // statusFlag 3
 			System.out.println("Cancelled booking");
-		
+
 		System.out.print("Enter 1 to view more details, 0 to return: ");
 		int choice = sc.nextInt();
 		while (choice != 0 && choice != 1) {
@@ -120,7 +122,7 @@ public class CruiseBooking extends Booking {
 		}
 		if (choice == 0)
 			return;
-		
+
 		CruiseShip cruiseShip = repository.cruiseBookingFullStatus(bookingID);
 		System.out.println("Booking Details");
 		System.out.println("Booking ID: " + cruiseBooking.getBookingID());
@@ -138,37 +140,48 @@ public class CruiseBooking extends Booking {
 		System.out.println("Cost: " + cruiseBooking.getCost());
 	}
 
-	public void cancelBooking(){
-		Scanner sc=new Scanner(System.in);
+	public void cancelBooking() {
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Booking ID for Cancellation: ");
-		int bookingID=sc.nextInt();
-		// 
-		Repository rep=new Repository();
-		if(rep.cancelCruiseBoooking(bookingID)) {
+		int bookingID = sc.nextInt();
+		//
+		Repository rep = new Repository();
+		if (rep.cancelCruiseBoooking(bookingID)) {
 			System.out.println("Booking Cancelled");
-		}
-		else {
+		} else {
 			System.out.println("Booking Not Cancelled");
 		}
 	}
 
-	public void listBookings() {
-		//
+	public void listBookings(int userID) {
+		ArrayList<CruiseBooking> list = new Repository().listAllCruiseBooking(userID);
+		for (CruiseBooking cruiseBooking : list) {
+			System.out.println("BookingID: " + cruiseBooking.getBookingID());
+			System.out.println("Cost: " + cruiseBooking.getCost());
+			System.out.println("Seats: " + cruiseBooking.getSeats());
+			System.out.println("ShipID: " + cruiseBooking.getShipID());
+			System.out.println("UserID: " + cruiseBooking.getUserID());
+			switch (cruiseBooking.getStatusFlag()) {
+				case 0: {
+					System.out.println("Status: Past");
+					break;
+				}
+				case 1: {
+		 			System.out.println("Status: Active ");
+					break;
+				}
+				case 2: {
+					System.out.println("Status: Waiting");
+					break;
+				}
+				case 3: {
+					System.out.println("Status: Cancelled");
+				}
+
+			}
+
+		}
+
 	}
-	
+
 }
-
-	// public void Book()
-	// {
-	// 	System.out.println("Enter Ship ID of Ship in which Booking is to be made: ");
-	// 	int S_id=getIDInput();
-	// 	System.out.println("Enter your User ID: ");
-	// 	int U_id=getIDInput();
-	// 	int B_id=generateBookingID();
-		// System.out.println("Enter number of seats to be Booked: ");
-		// seats=getCapacityInput();
-	// 	//calculate cost
-
-	// 	CruiseBookingDatabase DB=new CruiseBookingDatabase();
-	// 	DB.insertCruiseBooking(B_id,S_id,U_id,seats,cost);
-	// }

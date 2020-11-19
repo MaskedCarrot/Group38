@@ -1,9 +1,10 @@
 package group38.apoorv;
+
 import java.util.Calendar;
 
 public class Util {
 
-        public long getCurrentTimeInMinutes(){
+        public long getCurrentTimeInMinutes() {
                 int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 int minutes = Calendar.getInstance().get(Calendar.MINUTE);
                 return Long.valueOf(hours * 60 + minutes);
@@ -22,6 +23,6 @@ public class Util {
         public boolean isValidTime(long hours, long minutes) {
                 if (0 <= hours && hours < 24 && 0 <= minutes && minutes < 60)
                         return true;
-                return false;       
+                return false;
         }
 }
