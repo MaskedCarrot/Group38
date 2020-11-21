@@ -4,22 +4,25 @@ import java.util.Calendar;
 
 public class Util {
 
-        public long getCurrentTimeInMinutes(){
-                int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        public long getCurrentTimeInMinutes() {
+                int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 int minutes = Calendar.getInstance().get(Calendar.MINUTE);
-                return Long.valueOf(hour * 60 + minutes); 
-
+                return Long.valueOf(hours * 60 + minutes);
         }
 
-        public long convertTimeToMinutes(long hh, long mm) {
-                return Long.valueOf(hh * 60 + mm);
+        public long convertTimeToMinutes(long hours, long minutes) {
+                return Long.valueOf(hours * 60 + minutes);
         }
 
-
-        public String convertMinuteToTime(int minutes){
-                int hour = minutes%60;
-                int min = minutes/60;
-                return hour+":"+min;
+        public String convertMinutesToTime(long minutes) {
+                long hours = minutes / 60;
+                minutes = minutes % 60;
+                return (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
         }
 
+        public boolean isValidTime(long hours, long minutes) {
+                if (0 <= hours && hours < 24 && 0 <= minutes && minutes < 60)
+                        return true;
+                return false;
+        }
 }

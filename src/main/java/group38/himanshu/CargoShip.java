@@ -1,12 +1,12 @@
 package group38.himanshu;
+
 import java.util.Scanner;
 import group38.apoorv.*;
 import java.util.ArrayList;
 
 // import java.time.*;
 
-public class CargoShip extends Ship
-{
+public class CargoShip extends Ship {
 	private int capacity;
 	private int chargesPerTonne;
 	private int bookedCapacity;
@@ -17,8 +17,9 @@ public class CargoShip extends Ship
 		chargesPerTonne = -1;
 		bookedCapacity = -1;
 	}
-	
-	public CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity, int chargesPerTonne, int bookedCapacity) {
+
+	public CargoShip(int shipID, String from, String to, Long departureTime, Long arrivalTime, int capacity,
+			int chargesPerTonne, int bookedCapacity) {
 		super(shipID, from, to, departureTime, arrivalTime);
 		this.capacity = capacity;
 		this.chargesPerTonne = chargesPerTonne;
@@ -116,45 +117,57 @@ public class CargoShip extends Ship
 	public int getBookedCapacity() {
 		return bookedCapacity;
 	}
-	/*
-	public void addShip()
-	{
-		//getCargoShipInput(); 
-		Database DB = new Database();
-		DB.insertCargoShip(shipID, from, to, departureTime,
-			arrivalTime, capacity, chargesPerTonne, bookedCapacity);
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
-	public void searchShipsByDepartureTime()
-	{
-		System.out.println("Enter departure time: ");
-		LocalTime time = getTimeInput();
-		Database DB = new Database();
-		DB.searchCargoShipsByDepartureTime(time);
+	public void setChargesPerTonne(int chargesPerTonne) {
+		this.chargesPerTonne = chargesPerTonne;
 	}
 
-	public void searchShipsByArrivalTime()
-	{
-		System.out.println("Enter arrival time: ");
-		LocalTime time = getTimeInput();
-		Database DB = new Database();
-		DB.searchCargoShipsByArrivalTime(time);
+	public void setBookedCapacity(int bookedCapacity) {
+		this.bookedCapacity = bookedCapacity;
 	}
 
-	public void searchShipsBySource()
-	{
-		System.out.println("Enter source: ");
-		String location = getLocationInput();
-		Database DB = new Database();
-		DB.searchCargoShipsBySource(location);
+	public ArrayList<CargoShip> listShips() {
+		System.out.print("Enter the starting place: ");
+		Scanner sc = new Scanner(System.in);
+		String from = sc.nextLine();
+		from.toLowerCase();
+		System.out.print("Enter the destination: ");
+		String to = sc.nextLine();
+		to.toLowerCase();
+
+		ArrayList<CargoShip> ship = new Repository().listAllCargoShips(from, to);
+		if (ship.isEmpty()) {
+			System.out.println("No ships found.");
+			return ship;
+		}
+
+		for (int i = 0; i < ship.size(); ++i) {
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Charges per tonne: " + ship.get(i).getChargesPerTonne());
+		}
+
+		return ship;
 	}
 
-	public void searchShipsByDestination()
-	{
-		System.out.println("Enter destination: ");
-		String location = getLocationInput();
-		Database DB = new Database();
-		DB.searchCargoShipsByDestination(location);
+	public void listFleetOfCargoShips(){
+		ArrayList<CargoShip> ship = new Repository().getAllCargoShips();
+		for (int i = 0; i < ship.size(); ++i) {
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("ShipID: "+ship.get(i).getShipID());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Charges per tonne: " + ship.get(i).getChargesPerTonne());
+			System.out.println("Booked Capacity: "+ship.get(i).getBookedCapacity());
+		}
+
 	}
-	*/
+
 }
