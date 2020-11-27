@@ -17,6 +17,8 @@ interface Dao {
 
     int getUserID(String emailID);
 
+    public boolean isUniqueEmail(String userEmail);
+
     public User displayUserDetails(int userID);
 
     ArrayList<CargoShip> listAllCargoShips(String to, String from);
@@ -39,6 +41,14 @@ interface Dao {
 
     boolean addCruiseShip(CruiseShip cruiseShip);
 
+    public ArrayList<CruiseBooking> listAllCruiseBooking(int userID);
+
+    public ArrayList<CargoBooking> listAllCargoBooking(int userID);
+
+    public CruiseShip cruiseBookingFullStatus(int bookingID);
+
+    public CargoShip cargoBookingFullStatus(int bookingID);
+
     /** Functions for admin in [Repository] */
 
     boolean checkAdminCredentials(String adminEmail, String password);
@@ -52,6 +62,10 @@ interface Dao {
     boolean updateCargoShip(CargoShip cargoShip);
 
     boolean updateCruiseShip(CruiseShip cruiseShip);
+
+    public ArrayList<CruiseShip> getAllCruiseShips();
+
+    public ArrayList<CargoShip> getAllCargoShips();
 
     /** Functions for user/admin in [Repository] */
 

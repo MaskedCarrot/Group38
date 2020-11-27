@@ -32,6 +32,46 @@ public class Repository extends Database implements Dao {
         return b;
     }
 
+    public boolean addUser(User user) {
+        boolean result = false;
+        try {
+            String querry = "INSERT INTO userTable(phoneNumber , name , age , gender, password , email) VALUES("
+                    + user.getPhoneNumber() + ",'" + user.getName() + "'," + user.getAge() + ",'" + user.getGender()
+                    + "','" + user.getPassword() + "','" + user.getEmail() + "')";
+            executeUpdate(querry);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getUserID(String emailID) {
+        String Query = "SELECT userID FROM userTable WHERE email='" + emailID + "'";
+        int result = 0;
+        try {
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            result = convertObjectToInt(resultList.get(0).get("userID"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean isUniqueEmail(String userEmail) {
+        boolean b = false;
+        try {
+            String query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int result = convertObjectToInt(resultList.get(0).get("userCount"));
+            if (result == 0)
+                b = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
     public User displayUserDetails(int userID) {
         User user;
         try {
@@ -50,33 +90,54 @@ public class Repository extends Database implements Dao {
         return user;
     }
 
-    public boolean isUniqueEmail(String userEmail) {
-        boolean b = false;
+    public ArrayList<CargoShip> listAllCargoShips(String from, String to) {
+        ArrayList<CargoShip> list = new ArrayList<>();
         try {
-            String query = "SELECT COUNT(userID) AS \"userCount\" FROM userTable WHERE email = '" + userEmail + "'";
+            String query = "SELECT * FROM cargoShipsTable WHERE toLocation = \"" + to + "\" and fromLocation = \""
+                    + from + "\" and departureTime >=" + (new Util().getCurrentTimeInMinutes() + 20)
+                    + " order by arrivalTime asc";
+
             List<Map<String, Object>> resultList = executeQuery(query);
-            int result = convertObjectToInt(resultList.get(0).get("userCount"));
-            if (result == 0)
-                b = true;
+
+            for (Map<String, Object> row : resultList) {
+                CargoShip cargoShip = new CargoShip(convertObjectToInt(row.get("cargoShipID")),
+                        convertObjectToString(row.get("fromLocation")), convertObjectToString(row.get("toLocation")),
+                        convertObjectToLong(row.get("departureTime")), convertObjectToLong(row.get("arrivalTime")),
+                        convertObjectToInt(row.get("chargesPerTonne")), convertObjectToInt(row.get("capacity")),
+                        convertObjectToInt(row.get("bookedCapacity")));
+                list.add(cargoShip);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return b;
+        return list;
+
     }
 
-    public boolean checkAdminCredentials(String adminEmail, String password) {
-        boolean b = false;
+    public ArrayList<CruiseShip> listAllCruiseShips(String from, String to) {
+
+        ArrayList<CruiseShip> list = new ArrayList<>();
+
         try {
-            String query = "SELECT COUNT(adminID) as \"adminCount\" from adminTable WHERE email = '" + adminEmail
-                    + "' and password = '" + password + "'";
+            String query = "select * from cruiseShipsTable where toLocation = \"" + to + "\" and fromLocation = \""
+                    + from + "\" and departureTime >=" + (new Util().getCurrentTimeInMinutes() + 20)
+                    + " order by arrivalTime asc";
+
             List<Map<String, Object>> resultList = executeQuery(query);
-            int result = convertObjectToInt(resultList.get(0).get("adminCount"));
-            if (result == 1)
-                b = true;
+
+            for (Map<String, Object> row : resultList) {
+                CruiseShip cruiseShip = new CruiseShip(convertObjectToInt(row.get("cruiseShipID")),
+                        convertObjectToString(row.get("fromLocation")), convertObjectToString(row.get("toLocation")),
+                        convertObjectToLong(row.get("departureTime")), convertObjectToLong(row.get("arrivalTime")),
+                        convertObjectToInt(row.get("totalSeats")), convertObjectToInt(row.get("cost")),
+                        convertObjectToInt(row.get("bookedSeats")));
+
+                list.add(cruiseShip);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return b;
+        return list;
     }
 
     public int bookCruiseShip(int shipID, int cost, int userID, int statusFlag) {
@@ -177,139 +238,115 @@ public class Repository extends Database implements Dao {
         return new CargoBooking(bookingID, shipID, userID, statusFlag, capacity, cost);
     }
 
-    public CruiseShip cruiseBookingFullStatus(int bookingID) {
-        String from = "", to = "";
-        Long departureTime = 0l, arrivalTime = 0l;
-        int shipID = 0;
+    private boolean checkIfCruiseBookingExists(int bookingID) {
+        boolean result = false;
         try {
-            String Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID = '" + bookingID + "'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            shipID = convertObjectToInt(resultList.get(0).get("cruiseShipID"));
-            from = convertObjectToString(resultList.get(0).get("fromLocation"));
-            to = convertObjectToString(resultList.get(0).get("toLocation"));
-            departureTime = convertObjectToLong(resultList.get(0).get("departureTime"));
-            arrivalTime = convertObjectToLong(resultList.get(0).get("arrivalTime"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new CruiseShip(shipID, from, to, departureTime, arrivalTime, 0, 0, 0);
-    }
-
-
-    public CargoShip cargoBookingFullStatus(int bookingID) {
-        String from = "", to = "";
-        Long departureTime = 0l, arrivalTime = 0l;
-        int shipID = 0;
-        try {
-            String Query = "SELECT * FROM cargoBookingJoin WHERE cruiseBookingID = '" + bookingID + "'";
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            shipID = convertObjectToInt(resultList.get(0).get("cargoShipID"));
-            from = convertObjectToString(resultList.get(0).get("fromLocation"));
-            to = convertObjectToString(resultList.get(0).get("toLocation"));
-            departureTime = convertObjectToLong(resultList.get(0).get("departureTime"));
-            arrivalTime = convertObjectToLong(resultList.get(0).get("arrivalTime"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new CargoShip(shipID, from, to, departureTime, arrivalTime, 0, 0, 0);
-    }
-
-
-
-    public ArrayList<CruiseBooking> listAllCruiseBooking(int userID) {
-        ArrayList<CruiseBooking> list = new ArrayList<>();
-        try {
-            String Query = "SELECT * FROM cruiseBookingJoin WHERE userID='" + userID + "'";
-
-            List<Map<String, Object>> resultList = executeQuery(Query);
-
-            for (Map<String, Object> row : resultList) {
-                // int bookingID, int shipID, int userID, int seats, int cost, int statusFlag
-                CruiseBooking cruiseBooking = new CruiseBooking(convertObjectToInt(resultList.get(0).get("cruiseBookingID")),
-                        convertObjectToInt(resultList.get(0).get("cruiseShipID")),
-                        convertObjectToInt(resultList.get(0).get("userID")),
-                        convertObjectToInt(resultList.get(0).get("seats")),
-                        convertObjectToInt(resultList.get(0).get("cost")),
-                        convertObjectToInt(resultList.get(0).get("statusFlag")));
-                        list.add(cruiseBooking);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public ArrayList<CargoBooking> listAllCargoBooking(int userID) {
-        ArrayList<CargoBooking> list = new ArrayList<>();
-        try {
-            String Query = "SELECT * FROM cargoBookingJoin WHERE userID='" + userID + "'";
-
-            List<Map<String, Object>> resultList = executeQuery(Query);
-
-            for (Map<String, Object> row : resultList) {
-                // int bookingID, int shipID, int userID, int seats, int cost, int statusFlag
-                CargoBooking cargoBooking = new CargoBooking(convertObjectToInt(resultList.get(0).get("cargoBookingID")),
-                        convertObjectToInt(resultList.get(0).get("cargoShipID")),
-                        convertObjectToInt(resultList.get(0).get("userID")),
-                        convertObjectToInt(resultList.get(0).get("capacityBooked")),
-                        convertObjectToInt(resultList.get(0).get("cost")),
-                        convertObjectToInt(resultList.get(0).get("statusFlag")));
-                        list.add(cargoBooking);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public ArrayList<CargoShip> listAllCargoShips(String from, String to) {
-        ArrayList<CargoShip> list = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM cargoShipsTable WHERE toLocation = \"" + to + "\" and fromLocation = \""
-                    + from + "\" and departureTime >=" + (new Util().getCurrentTimeInMinutes() + 20)
-                    + " order by arrivalTime asc";
-
+            String query = "SELECT COUNT(cruiseBookingID) AS result FROM cruiseBookingTable WHERE cruiseBookingID = "
+                    + bookingID;
             List<Map<String, Object>> resultList = executeQuery(query);
-
-            for (Map<String, Object> row : resultList) {
-                CargoShip cargoShip = new CargoShip(convertObjectToInt(row.get("cargoShipID")),
-                        convertObjectToString(row.get("fromLocation")), convertObjectToString(row.get("toLocation")),
-                        convertObjectToLong(row.get("departureTime")), convertObjectToLong(row.get("arrivalTime")),
-                        convertObjectToInt(row.get("chargesPerTonne")), convertObjectToInt(row.get("capacity")),
-                        convertObjectToInt(row.get("bookedCapacity")));
-                list.add(cargoShip);
-            }
+            int check = convertObjectToInt(resultList.get(0).get("result"));
+            if (check == 1)
+                result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return result;
+    }
+
+    private void updateCruiseWaiting(int bookingID) {
+        String Query = "UPDATE cruiseBookingTable SET statusFlag='1' WHERE cruiseBookingID='" + bookingID + "'";
+        executeUpdate(Query);
 
     }
 
-    public ArrayList<CruiseShip> listAllCruiseShips(String from, String to) {
-
-        ArrayList<CruiseShip> list = new ArrayList<>();
-
+    public boolean cancelCruiseBoooking(int bookingID) {
         try {
-            String query = "select * from cruiseShipsTable where toLocation = \"" + to + "\" and fromLocation = \""
-                    + from + "\" and departureTime >=" + (new Util().getCurrentTimeInMinutes() + 20)
-                    + " order by arrivalTime asc";
+            if (!checkIfCruiseBookingExists(bookingID)) {
+                return false;
+            }
 
-            List<Map<String, Object>> resultList = executeQuery(query);
+            String Query = "UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID='" + bookingID + "'";
+            executeUpdate(Query);
+
+            Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID='" + bookingID + "'";
+
+            List<Map<String, Object>> resultList = executeQuery(Query);
+
+            int cruiseShipID = convertObjectToInt(resultList.get(0).get("cruiseShipID"));
+            int bookedSeats = convertObjectToInt(resultList.get(0).get("bookedSeats"));
+            int totalSeats = convertObjectToInt(resultList.get(0).get("totalSeats"));
+            Query = "SELECT * FROM cruiseBookingJoin WHERE statusFlag='2' AND cruiseShipID='" + cruiseShipID
+                    + "' ORDER BY cruiseBookingID";
+            resultList = executeQuery(Query);
 
             for (Map<String, Object> row : resultList) {
-                CruiseShip cruiseShip = new CruiseShip(convertObjectToInt(row.get("cruiseShipID")),
-                        convertObjectToString(row.get("fromLocation")), convertObjectToString(row.get("toLocation")),
-                        convertObjectToLong(row.get("departureTime")), convertObjectToLong(row.get("arrivalTime")),
-                        convertObjectToInt(row.get("totalSeats")), convertObjectToInt(row.get("cost")),
-                        convertObjectToInt(row.get("bookedSeats")));
 
-                list.add(cruiseShip);
+                int seats = convertObjectToInt(row.get("seats"));
+                if (seats + bookedSeats <= totalSeats) {
+                    updateCruiseWaiting(convertObjectToInt(row.get("cruiseBookingID")));
+                    bookedSeats += seats;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return list;
+        return true;
+    }
+
+    private boolean checkIfCargoBookingExists(int bookingID) {
+        boolean result = false;
+        try {
+            String query = "SELECT COUNT(cargoBookingID) AS result FROM cargoBookingTable where cargoBookingID = "
+                    + bookingID;
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int check = convertObjectToInt(resultList.get(0).get("result"));
+            if (check == 1)
+                result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void updateCargoWaiting(int bookingID) {
+        String Query = "UPDATE cargoBookingTable SET statusFlag='1' WHERE cargoBookingID='" + bookingID + "'";
+        executeUpdate(Query);
+
+    }
+
+    public boolean cancelCargoBoooking(int bookingID) {
+        try {
+            if (!checkIfCargoBookingExists(bookingID))
+                return false;
+
+            String Query = "UPDATE cargoBookingTable SET statusFlag='" + 3 + "' WHERE cargoBookingID= '" + bookingID
+                    + "'";
+            executeUpdate(Query);
+
+            Query = "SELECT * FROM cargoBookingJoin WHERE cargoBookingID='" + bookingID + "'";
+
+            List<Map<String, Object>> resultList = executeQuery(Query);
+
+            int cargoShipID = convertObjectToInt(resultList.get(0).get("cargoShipID"));
+            int bookedCapacity = convertObjectToInt(resultList.get(0).get("bookedCapacity"));
+            int totalCapacity = convertObjectToInt(resultList.get(0).get("capacity"));
+            Query = "SELECT * FROM cargoBookingJoin WHERE statusFlag='2' AND cargoShipID='" + cargoShipID
+                    + "' ORDER BY cargoBookingID";
+            resultList = executeQuery(Query);
+            for (Map<String, Object> row : resultList) {
+
+                int cap = convertObjectToInt(row.get("capacityBooked"));
+                if (cap + bookedCapacity <= totalCapacity) {
+                    updateCargoWaiting(convertObjectToInt(row.get("cargoBookingID")));
+                    bookedCapacity += cap;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public boolean addCargoShip(CargoShip cargoShip) {
@@ -356,6 +393,33 @@ public class Repository extends Database implements Dao {
             return false;
         }
         return true;
+    }
+
+    public boolean checkAdminCredentials(String adminEmail, String password) {
+        boolean b = false;
+        try {
+            String query = "SELECT COUNT(adminID) as \"adminCount\" from adminTable WHERE email = '" + adminEmail
+                    + "' and password = '" + password + "'";
+            List<Map<String, Object>> resultList = executeQuery(query);
+            int result = convertObjectToInt(resultList.get(0).get("adminCount"));
+            if (result == 1)
+                b = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    public int getAdminID(String emailID) {
+        String Query = "SELECT adminID FROM adminTable WHERE email='" + emailID + "'";
+        int result = 0;
+        try {
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            result = convertObjectToInt(resultList.get(0).get("adminID"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public boolean removeCargoShip(int shipID) {
@@ -411,102 +475,6 @@ public class Repository extends Database implements Dao {
         return result;
     }
 
-    private void updateCruiseWaiting(int bookingID) {
-        String Query = "UPDATE cruiseBookingTable SET statusFlag='1' WHERE cruiseBookingID='" + bookingID + "'";
-        executeUpdate(Query);
-
-    }
-
-    public boolean cancelCruiseBoooking(int bookingID) {
-        try {
-            // SELECT row with same shipID order by biD
-
-            if (!checkIfCruiseBookingExists(bookingID)) {
-                return false;
-            }
-
-            String Query = "UPDATE cruiseBookingTable SET statusFlag='3' WHERE cruiseBookingID='" + bookingID + "'";
-            executeUpdate(Query);
-
-            Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID='" + bookingID + "'";
-
-            List<Map<String, Object>> resultList = executeQuery(Query);
-
-            int cruiseShipID = convertObjectToInt(resultList.get(0).get("cruiseShipID"));
-            int bookedSeats = convertObjectToInt(resultList.get(0).get("bookedSeats"));
-            int totalSeats = convertObjectToInt(resultList.get(0).get("totalSeats"));
-            Query = "SELECT * FROM cruiseBookingJoin WHERE statusFlag='2' AND cruiseShipID='" + cruiseShipID
-                    + "' ORDER BY cruiseBookingID";
-            resultList = executeQuery(Query);
-
-            for (Map<String, Object> row : resultList) {
-                int seats = convertObjectToInt(row.get("seats"));
-                if (seats + bookedSeats <= totalSeats) {
-                    updateCruiseWaiting(convertObjectToInt(row.get("cruiseBookingID")));
-                    bookedSeats += seats;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean cancelCargoBoooking(int bookingID) {
-
-        if (!checkIfCargoBookingExists(bookingID))
-            return false;
-
-        try {
-            String Query = "UPDATE cargoBookingTable SET statusFlag='" + 3 + "' WHERE cargoBookingID= '" + bookingID
-                    + "'";
-            executeUpdate(Query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public int getUserID(String emailID) {
-        String Query = "SELECT userID FROM userTable WHERE email='" + emailID + "'";
-        int result = 0;
-        try {
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            result = convertObjectToInt(resultList.get(0).get("userID"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public int getAdminID(String emailID) {
-        String Query = "SELECT adminID FROM adminTable WHERE email='" + emailID + "'";
-        int result = 0;
-        try {
-            List<Map<String, Object>> resultList = executeQuery(Query);
-            result = convertObjectToInt(resultList.get(0).get("adminID"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public boolean addUser(User user) {
-        boolean result = false;
-        try {
-            String querry = "INSERT INTO userTable(phoneNumber , name , age , gender, password , email) VALUES("
-                    + user.getPhoneNumber() + ",'" + user.getName() + "'," + user.getAge() + ",'" + user.getGender()
-                    + "','" + user.getPassword() + "','" + user.getEmail() + "')";
-            executeUpdate(querry);
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     public void refreshBookingTable() {
         cancelWaitingBookings();
         changeConfirmBookingStatusFlag();
@@ -515,8 +483,9 @@ public class Repository extends Database implements Dao {
     private boolean cancelWaitingBookings() {
         boolean result = false;
         try {
+            long time = (new Util().getCurrentTimeInMinutes() + 20);
             String query = "UPDATE cruiseBookingJoin set statusFlag = 3 where statusFlag = 2 AND departureTime <="
-                    + new Util().getCurrentTimeInMinutes() + 20;
+                    + time;
             executeUpdate(query);
             result = true;
         } catch (Exception e) {
@@ -538,39 +507,143 @@ public class Repository extends Database implements Dao {
         return result;
     }
 
-    private boolean checkIfCargoBookingExists(int bookingID) {
-        boolean result = false;
+    public ArrayList<CruiseBooking> listAllCruiseBooking(int userID) {
+        ArrayList<CruiseBooking> list = new ArrayList<>();
         try {
-            String query = "SELECT COUNT(cargoBookingID) AS result FROM cargoBookingTable where cargoBookingID = "
-                    + bookingID;
-            List<Map<String, Object>> resultList = executeQuery(query);
-            int check = convertObjectToInt(resultList.get(0).get("result"));
-            if (check == 1)
-                result = true;
+            String Query = "SELECT * FROM cruiseBookingJoin WHERE userID='" + userID + "'";
+
+            List<Map<String, Object>> resultList = executeQuery(Query);
+
+            for (Map<String, Object> row : resultList) {
+                CruiseBooking cruiseBooking = new CruiseBooking(convertObjectToInt(row.get("cruiseBookingID")),
+                        convertObjectToInt(row.get("cruiseShipID")), convertObjectToInt(row.get("userID")),
+                        convertObjectToInt(row.get("seats")), convertObjectToInt(row.get("cost")),
+                        convertObjectToInt(row.get("statusFlag")));
+
+                list.add(cruiseBooking);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return list;
     }
 
-    private boolean checkIfCruiseBookingExists(int bookingID) {
-        boolean result = false;
+    public ArrayList<CargoBooking> listAllCargoBooking(int userID) {
+        ArrayList<CargoBooking> list = new ArrayList<>();
         try {
-            String query = "SELECT COUNT(cruiseBookingID) AS result FROM cruiseBookingTable WHERE cruiseBookingID = "
-                    + bookingID;
-            List<Map<String, Object>> resultList = executeQuery(query);
-            int check = convertObjectToInt(resultList.get(0).get("result"));
-            if (check == 1)
-                result = true;
+            String Query = "SELECT * FROM cargoBookingJoin WHERE userID='" + userID + "'";
+
+            List<Map<String, Object>> resultList = executeQuery(Query);
+
+            for (Map<String, Object> row : resultList) {
+                CargoBooking cargoBooking = new CargoBooking(
+                        convertObjectToInt(resultList.get(0).get("cargoBookingID")),
+                        convertObjectToInt(resultList.get(0).get("cargoShipID")),
+                        convertObjectToInt(resultList.get(0).get("userID")),
+                        convertObjectToInt(resultList.get(0).get("capacityBooked")),
+                        convertObjectToInt(resultList.get(0).get("cost")),
+                        convertObjectToInt(resultList.get(0).get("statusFlag")));
+                list.add(cargoBooking);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return list;
+    }
+
+    public CruiseShip cruiseBookingFullStatus(int bookingID) {
+        String from = "", to = "";
+        Long departureTime = 0l, arrivalTime = 0l;
+        int shipID = 0;
+        try {
+            String Query = "SELECT * FROM cruiseBookingJoin WHERE cruiseBookingID = '" + bookingID + "'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            shipID = convertObjectToInt(resultList.get(0).get("cruiseShipID"));
+            from = convertObjectToString(resultList.get(0).get("fromLocation"));
+            to = convertObjectToString(resultList.get(0).get("toLocation"));
+            departureTime = convertObjectToLong(resultList.get(0).get("departureTime"));
+            arrivalTime = convertObjectToLong(resultList.get(0).get("arrivalTime"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new CruiseShip(shipID, from, to, departureTime, arrivalTime, 0, 0, 0);
+    }
+
+    public CargoShip cargoBookingFullStatus(int bookingID) {
+        String from = "", to = "";
+        Long departureTime = 0l, arrivalTime = 0l;
+        int shipID = 0;
+        try {
+            String Query = "SELECT * FROM cargoBookingJoin WHERE cruiseBookingID = '" + bookingID + "'";
+            List<Map<String, Object>> resultList = executeQuery(Query);
+            shipID = convertObjectToInt(resultList.get(0).get("cargoShipID"));
+            from = convertObjectToString(resultList.get(0).get("fromLocation"));
+            to = convertObjectToString(resultList.get(0).get("toLocation"));
+            departureTime = convertObjectToLong(resultList.get(0).get("departureTime"));
+            arrivalTime = convertObjectToLong(resultList.get(0).get("arrivalTime"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new CargoShip(shipID, from, to, departureTime, arrivalTime, 0, 0, 0);
+    }
+    
+    public ArrayList<CruiseShip> getAllCruiseShips(){
+        ArrayList<CruiseShip> list = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM cruiseShipsTable";
+            List<Map<String , Object>> resuList = executeQuery(query);
+            for(Map<String , Object> row : resuList){
+                CruiseShip cruiseShip = new CruiseShip(
+                    convertObjectToInt(row.get("cruiseShipID")),
+                    convertObjectToString(row.get("fromLocation")),
+                    convertObjectToString(row.get("toLocation")),
+                    convertObjectToLong(row.get("departureTime")),
+                    convertObjectToLong(row.get("arrivalTime")),
+                    convertObjectToInt(row.get("totalSeats")),
+                    convertObjectToInt(row.get("cost")),
+                    convertObjectToInt(row.get("bookedSeats")
+                ));
+                list.add(cruiseShip);
+            }
+            
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<CargoShip> getAllCargoShips(){
+        ArrayList<CargoShip> list = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM cargoShipsTable";
+            List<Map<String , Object>> resuList = executeQuery(query);
+            for(Map<String , Object> row : resuList){
+                CargoShip cargoShip = new CargoShip(
+                    convertObjectToInt(row.get("cargoShipID")),
+                    convertObjectToString(row.get("fromLocation")),
+                    convertObjectToString(row.get("toLocation")),
+                    convertObjectToLong(row.get("departureTime")),
+                    convertObjectToLong(row.get("arrivalTime")),
+                    convertObjectToInt(row.get("capacity")),
+                    convertObjectToInt(row.get("chargesPerTonne")),
+                    convertObjectToInt(row.get("bookedCapacity"))
+                );
+                list.add(cargoShip);
+            }
+            
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }
 
 /*
- * statusFlag flags 0 is confirmed past. 1 is confirm acitve. 2 is wainting . 3
- * is cancelled.
+ * statusFlag flags 0 is confirmed past.
+ * 1 is confirm acitve. 
+ * 2 is waiting .
+ * 3 is cancelled.
  */

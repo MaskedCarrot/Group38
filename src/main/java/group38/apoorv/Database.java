@@ -34,10 +34,8 @@ class Database {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // LOGGER.log(Level.INFO ,"Connecting to database..." );
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            // LOGGER.log(Level.INFO ,"Creating statement..." );
             stmt = conn.createStatement();
             rs = stmt.executeQuery(Query);
 
@@ -53,7 +51,6 @@ class Database {
                 resultList.add(row);
             }
 
-            // LOGGER.log(Level.INFO ,"Cleaning environment" );
             rs.close();
             stmt.close();
             conn.close();
@@ -85,20 +82,16 @@ class Database {
         Statement stmt = null;
         int rs = 0;
 
-        // List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // LOGGER.log(Level.INFO ,"Connecting to database..." );
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            // LOGGER.log(Level.INFO ,"Creating statement..." );
             stmt = conn.createStatement();
             rs = stmt.executeUpdate(Query);
 
-            // LOGGER.log(Level.INFO ,"Cleaning environment" );
             stmt.close();
             conn.close();
         } catch (Exception e) {

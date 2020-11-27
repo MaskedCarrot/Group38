@@ -1,5 +1,7 @@
 package group38.himanshu;
 
+import java.util.ArrayList;
+
 public abstract class Ship {
 	protected int shipID;
 	protected String from;
@@ -24,15 +26,9 @@ public abstract class Ship {
 	}
 
 	public abstract void addShip();
-
 	public abstract void removeShip();
-
 	public abstract void updateShip();
-	// public abstract void searchShipsByDepartureTime();
-	// public abstract void searchShipsByArrivalTime();
-	// public abstract void searchShipsBySource();
-	// public abstract void searchShipsByDestination();
-
+	
 	public int getShipID() {
 		return shipID;
 	}

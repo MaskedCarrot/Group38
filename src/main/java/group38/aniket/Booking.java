@@ -21,6 +21,11 @@ abstract class Booking {
         this.statusFlag = statusFlag;
     }
 
+    public abstract void book(int userID);
+    public abstract void getBookingStatus();
+    public abstract void cancelBooking();
+    public abstract void listBookings(int userID);
+
     public int getBookingID() {
         return bookingID;
     }
@@ -52,5 +57,4 @@ abstract class Booking {
     public void setStatusFlag(int statusFlag) {
         this.statusFlag = statusFlag;
     }
-
 }

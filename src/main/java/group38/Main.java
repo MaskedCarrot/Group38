@@ -12,12 +12,14 @@ public class Main {
 	private static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-
-		System.out.println("  ____ ____   ___  _   _ ____ _   ____  ___  ");
-		System.out.println(" / ___|  _   / _  | | | |  _  _   __ / ( _ ) ");
-		System.out.println("| |  _| |_) | | | | | | | |_) |   |_   / _   ");
-		System.out.println("| |_| |  _ <| |_| | |_| |  __/   ___) | (_) |");
-		System.out.println("  ____|_|  _  ___/  ___/|_|     |____/  ___/ ");
+		/*
+		 * 
+		 * System.out.println("  ____ ____   ___  _   _ ____ _  ");
+		 * System.out.println(" / ___|  _   / _  | | | |  _  _  ");
+		 * System.out.println("| |  _| |_) | | | | | | | |_) |  ");
+		 * System.out.println("| |_| |  _ <| |_| | |_| |  __/   ");
+		 * System.out.println("  ____|_|  _  ___/  ___/|_|      ");
+		 */
 
 		loginMenu();
 	}
@@ -105,61 +107,58 @@ public class Main {
 				new CruiseShip().listShips();
 			else if (choice == 4)
 				new CargoShip().listShips();
-			else if (choice == 5){
-				while(true){
-					System.out.print("Select class of ship\n1 for cruise ship\n2 for cargo ship\n0 to return\nEnter your choice: ");
+			else if (choice == 5) {
+				while (true) {
+					System.out.print(
+							"Select class of ship\n1 for cruise ship\n2 for cargo ship\n0 to return\nEnter your choice: ");
 					choice = sc.nextInt();
-					if(choice == 1){
-						new CruiseBooking().cancelBooking();;
+					sc.nextLine();
+					if (choice == 1) {
+						new CruiseBooking().cancelBooking();
 						break;
-					}
-					else if (choice == 2 ){
-						new CargoBooking().cancelBooking();;
+					} else if (choice == 2) {
+						new CargoBooking().cancelBooking();
 						break;
-					}
-					else if(choice == 0)
+					} else if (choice == 0)
 						break;
 					else
 						System.out.println("Invalid choice entered.");
 				}
-			}
-			else if (choice == 6) {
-				while(true){
-					System.out.print("Select class of ship\n1 for cruise ship\n2 for cargo ship\n0 to return\nEnter your choice: ");
+			} else if (choice == 6) {
+				while (true) {
+					System.out.print(
+							"Select class of ship\n1 for cruise ship\n2 for cargo ship\n0 to return\nEnter your choice: ");
 					choice = sc.nextInt();
-					if(choice == 1){
-						new CruiseBooking().listBookings(userID);;;
+					sc.nextLine();
+					if (choice == 1) {
+						new CruiseBooking().listBookings(userID);
 						break;
-					}
-					else if (choice == 2 ){
-						new CargoBooking().listBookings(userID);;
+					} else if (choice == 2) {
+						new CargoBooking().listBookings(userID);
 						break;
-					}
-					else if(choice == 0)
+					} else if (choice == 0)
 						break;
 					else
 						System.out.println("Invalid choice entered.");
 				}
-			} 
-			else if (choice == 7){
-				while(true){
-					System.out.println("Select class of cargo ship\n1 for cruise ship\n2 for cargo ship\n0 to exit\nEnter your choice: ");
+			} else if (choice == 7) {
+				while (true) {
+					System.out.print(
+							"Select class of ship\n1 for cruise ship\n2 for cargo ship\n0 to return\nEnter your choice: ");
 					choice = sc.nextInt();
-					if(choice == 1){
+					sc.nextLine();
+					if (choice == 1) {
 						new CruiseBooking().getBookingStatus();
 						break;
-					}
-					else if (choice == 2 ){
+					} else if (choice == 2) {
 						new CargoBooking().getBookingStatus();
 						break;
-					}
-					else if(choice == 0)
+					} else if (choice == 0)
 						break;
 					else
 						System.out.println("Invalid choice entered.");
 				}
-			}
-			else if (choice == 8)
+			} else if (choice == 8)
 				new User().displayDetails(userID);
 			else
 				System.out.println("Invalid choice.");
@@ -174,6 +173,8 @@ public class Main {
 			System.out.println("4. Remove a cargo ship");
 			System.out.println("5. Update a cruise ship");
 			System.out.println("6. Update a cargo ship");
+			System.out.println("7. List all cruise ships");
+			System.out.println("8. List all cargo ships");
 			System.out.println("0. Logout");
 
 			System.out.print("Enter a choice: ");
@@ -200,6 +201,10 @@ public class Main {
 				cruiseShip.updateShip();
 			else if (choice == 6)
 				cargoShip.updateShip();
+			else if (choice == 7)
+				new CruiseShip().listFleetOfCruiseShips();
+			else if (choice == 8)
+				new CargoShip().listFleetOfCargoShips();
 			else
 				System.out.println("Invalid choice.");
 		}

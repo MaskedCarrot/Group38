@@ -36,6 +36,18 @@ public class CruiseShip extends Ship {
 		this.bookedSeats = bookedSeats;
 	}
 
+	public int getTotalSeats() {
+		return totalSeats;
+	}
+
+	public int getCostPerPerson() {
+		return costPerPerson;
+	}
+
+	public int getBookedSeats() {
+		return bookedSeats;
+	}
+
 	public void addShip() {
 		System.out.print("Enter source: ");
 		Scanner sc = new Scanner(System.in);
@@ -175,34 +187,17 @@ public class CruiseShip extends Ship {
 		return ship;
 	}
 
-	public int getTotalSeats() {
-		return totalSeats;
+	public void listFleetOfCruiseShips(){
+		ArrayList<CruiseShip> ship = new Repository().getAllCruiseShips();
+		for(int i=0 ; i<ship.size() ; i++ ){
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("ShipID: "+ship.get(i).getShipID());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Cost per seat: " + ship.get(i).getCostPerPerson());
+			System.out.println("Booked Seats: "+ship.get(i).getBookedSeats());
+			
+		}
 	}
-
-	public int getCostPerPerson() {
-		return costPerPerson;
-	}
-
-	public int getBookedSeats() {
-		return bookedSeats;
-	}
-	/*
-	 * public void searchShipsByDepartureTime() {
-	 * System.out.println("Enter departure time: "); LocalTime time =
-	 * getTimeInput(); Database DB = new Database();
-	 * DB.searchCruiseShipsByDepartureTime(time); }
-	 * 
-	 * public void searchShipsByArrivalTime() {
-	 * System.out.println("Enter arrival time: "); LocalTime time = getTimeInput();
-	 * Database DB = new Database(); DB.searchCruiseShipsByArrivalTime(time); }
-	 * 
-	 * public void searchShipsBySource() { System.out.println("Enter source: ");
-	 * String location = getLocationInput(); Database DB = new Database();
-	 * DB.searchCruiseShipsBySource(location); }
-	 * 
-	 * public void searchShipsByDestination() {
-	 * System.out.println("Enter destination: "); String location =
-	 * getLocationInput(); Database DB = new Database();
-	 * DB.searchCruiseShipsByDestination(location); }
-	 */
 }

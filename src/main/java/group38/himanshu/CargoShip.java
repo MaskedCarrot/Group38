@@ -155,4 +155,19 @@ public class CargoShip extends Ship {
 
 		return ship;
 	}
+
+	public void listFleetOfCargoShips(){
+		ArrayList<CargoShip> ship = new Repository().getAllCargoShips();
+		for (int i = 0; i < ship.size(); ++i) {
+			System.out.println((i + 1) + ". Source: " + ship.get(i).getFrom());
+			System.out.println("ShipID: "+ship.get(i).getShipID());
+			System.out.println("Destination: " + ship.get(i).getTo());
+			System.out.println("Departure time: " + ship.get(i).getDepartureTime());
+			System.out.println("Arrival time: " + ship.get(i).getArrivalTime());
+			System.out.println("Charges per tonne: " + ship.get(i).getChargesPerTonne());
+			System.out.println("Booked Capacity: "+ship.get(i).getBookedCapacity());
+		}
+
+	}
+
 }

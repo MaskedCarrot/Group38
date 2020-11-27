@@ -144,7 +144,6 @@ public class CruiseBooking extends Booking {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Booking ID for Cancellation: ");
 		int bookingID = sc.nextInt();
-		//
 		Repository rep = new Repository();
 		if (rep.cancelCruiseBoooking(bookingID)) {
 			System.out.println("Booking Cancelled");
@@ -163,11 +162,11 @@ public class CruiseBooking extends Booking {
 			System.out.println("UserID: " + cruiseBooking.getUserID());
 			switch (cruiseBooking.getStatusFlag()) {
 				case 0: {
-					System.out.println("Status: Past");
+					System.out.println("Status: Past confirmed booking");
 					break;
 				}
 				case 1: {
-		 			System.out.println("Status: Active ");
+		 			System.out.println("Status: Confirmed booking");
 					break;
 				}
 				case 2: {
@@ -175,7 +174,7 @@ public class CruiseBooking extends Booking {
 					break;
 				}
 				case 3: {
-					System.out.println("Status: Cancelled");
+					System.out.println("Status: Cancelled booking");
 				}
 
 			}
