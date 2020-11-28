@@ -3,3 +3,4 @@
 3. Use this command from 
     gradle run -q --console=plain
 (install gradle if not installed by the following command sudo apt install gradle)
+Codacy Badge
